@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BCP MV GO — Floor Location</title>
+    <style>
+        :root{
+            --ease: cubic-bezier(.4, 0, .2, 1);
+            --bg-color: #f0f0f0;
+            --text-color: #000;
+            --menu-bg: #ffffff;
+            --menu-shadow: -6px 0 24px rgba(0,0,0,0.2);
+            --menu-title-color: #073763;
+            --menu-subtitle-color: #3b546e;
+            --menu-sep-color: linear-gradient(90deg, rgba(10,30,60,0.06), rgba(10,30,60,0.02));
+            --menu-link-color: #0a65a1;
+            --menu-link-hover-bg: rgba(91,192,222,0.16);
+            --menu-link-hover-color: #033f72;
+            --menu-footer-border: 1px solid rgba(10,30,60,0.04);
+            --social-link-color: #0a65a1;
+            --toggle-bg: rgba(255,255,255,0.9);
+            --toggle-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            --card-bg: rgba(255,255,255,0.06);
+            --search-bg: rgba(255,255,255,0.6);
+            --search-border: rgba(255,255,255,0.12);
+            --search-text: #000;
+            --search-placeholder: rgba(0,0,0,0.6);
+            --floor-text-color: #fff;
+            --toggle-icon-color: #000; 
+            /* Added variables for the back button */
+            --back-button-bg: rgba(255,255,255,0.8);
+            --back-button-color: #033f72;
+            --back-button-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        body.dark-mode {
+            --bg-color: #1a1a2e;
+            --text-color: #e0e0e0;
+            --menu-bg: #22253c;
+            --menu-shadow: -6px 0 24px rgba(0,0,0,0.5);
+            --menu-title-color: #8ed0e2;
+            --menu-subtitle-color: #b0c4de;
+            --menu-sep-color: linear-gradient(90deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+            --menu-link-color: #8ed0e2;
+            --menu-link-hover-bg: rgba(91,192,222,0.1);
+            --menu-link-hover-color: #8ed0e2;
+            --menu-footer-border: 1px solid rgba(255,255,255,0.08);
+            --social-link-color: #8ed0e2;
+            --toggle-bg: rgba(0,0,0,0.8);
+            --toggle-shadow: 0 4px 10px rgba(255,255,255,0.1);
+            --card-bg: rgba(0,0,0,0.3);
+            --search-bg: rgba(255,255,255,0.15);
+            --search-border: rgba(255,255,255,0.1);
+            --search-text: #fff;
+            --search-placeholder: rgba(255,255,255,0.6);
+            --floor-text-color: #8ed0e2;
+            --toggle-icon-color: #8ed0e2; 
+            /* Dark mode variables for the back button */
+            --back-button-bg: rgba(34, 37, 60, 0.9);
+            --back-button-color: #8ed0e2;
+            --back-button-shadow: 0 4px 10px rgba(0,0,0,0.4);
+        }
+
+        body{ 
+            margin:0; padding:0; min-height:100vh; width:100vw; height:100vh; font-family: Arial, sans-serif; 
+            position:relative; overflow:hidden; 
+            color: var(--text-color); 
+        }
+        body::before{ 
+            content:''; position:absolute; inset:0; background-image: url('img/bgmv.jpg'); background-size:cover; 
+            background-position:center; transform:scale(1.03); filter: blur(6px) brightness(0.55); 
+            z-index:0; 
+            transition: filter 0.5s ease; 
+        }
+        body.dark-mode::before {
+            filter: blur(6px) brightness(0.3); 
+        }
+        body::after{ 
+            content:''; position:absolute; inset:0; background: linear-gradient(to top, rgba(0,0,0,0.6), rgba(0,0,0,0) 60%); 
+            z-index:1; transition: background 260ms var(--ease), opacity 260ms var(--ease); 
+        }
+
+        .menu-toggle{ 
+            position:fixed; top:18px; left:18px; z-index:120; 
+            background: var(--toggle-bg); padding:8px 12px; border-radius:6px; 
+            box-shadow:var(--toggle-shadow); cursor:pointer; font-size:1.2rem; 
+            color: var(--toggle-icon-color); 
+            transition: background 0.3s ease, box-shadow 0.3s ease, color 0.3s ease; 
+        }
+        .side-menu{ 
+            position:fixed; inset:0 auto 0 0; width:320px; max-width:80vw; height:100vh; 
+            background:var(--menu-bg); box-shadow:var(--menu-shadow); 
+            transform:translateX(-110%); transition: transform 320ms cubic-bezier(.2,.9,.2,1), background 0.3s ease, box-shadow 0.3s ease; 
+            z-index:130; padding:20px; overflow-y:auto; 
+            display:flex; flex-direction:column; justify-content:space-between; 
+        }
+        .side-menu.open{ transform:translateX(0); animation: menuSlideIn 420ms cubic-bezier(.2,.9,.2,1) both; }
+        .side-menu.closing{ animation: menuSlideOut 320ms var(--ease) both; }
+        @keyframes menuSlideIn{ 0%{ transform:translateX(-110%);}70%{ transform:translateX(10%);}100%{ transform:translateX(0);} }
+        @keyframes menuSlideOut{ 0%{ transform:translateX(0);}100%{ transform:translateX(-110%);} }
+
+        .menu-header{ display:flex; gap:12px; align-items:center; margin-bottom:8px; }
+        .menu-logo{ width:72px; height:72px; border-radius:50%; object-fit:cover; border:4px solid #ADD8E6; box-shadow:0 8px 20px rgba(0,0,0,0.2); }
+        .menu-title h2{ margin:0; font-size:1.4rem; color:var(--menu-title-color); font-weight:800; transition: color 0.3s ease; }
+        .menu-sep{ border:none; height:1px; background:var(--menu-sep-color); margin:12px 0; transition: background 0.3s ease; }
+
+        .menu-list{ list-style:none; padding:0; margin:18px 0 0 0; flex-grow: 1; }
+        .menu-list li{ margin:14px 0; }
+        .menu-list a{ 
+            color:var(--menu-link-color); text-decoration:none; font-weight:700; display:block; 
+            padding:14px 12px; border-radius:10px; font-size:1.05rem; 
+            transition: transform 220ms var(--ease), background 220ms var(--ease), box-shadow 220ms var(--ease), color 160ms linear; 
+        }
+        @media (hover: hover) and (pointer: fine){ 
+            .menu-list a:hover, .menu-list a:focus{ 
+                background: var(--menu-link-hover-bg); 
+                color:var(--menu-link-hover-color); 
+                transform:translateX(8px) scale(1.01); 
+                box-shadow:0 10px 24px rgba(3,63,114,0.08); outline:none; 
+            } 
+        }
+        .menu-list a:focus-visible{ outline:2px solid rgba(0,0,0,0.12); outline-offset:3px; }
+
+        .menu-close{ 
+            background:transparent; border:none; font-size:1.6rem; 
+            position:absolute; top:12px; right:12px; cursor:pointer; 
+            color: var(--text-color); transition: color 0.3s ease;
+        }
+        .menu-backdrop{ position:fixed; inset:0; background: rgba(0,0,0,0.35); z-index:125; transition: opacity 220ms ease; }
+
+        .menu-footer {
+            margin-top: 25px;
+            padding-top: 10px;
+            border-top: var(--menu-footer-border);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .dark-mode-toggle {
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            gap: 10px; 
+            padding: 10px 12px;
+            background: var(--menu-link-hover-bg); 
+            border-radius: 10px;
+            font-weight: 700; 
+            color: var(--menu-link-color); 
+            cursor: pointer;
+            transition: background 0.3s ease, color 0.3s ease, transform 0.2s ease;
+            user-select: none;
+            width: 50px;
+            height: 50px;
+            box-sizing: border-box;
+        }
+        .dark-mode-toggle:hover {
+            transform: translateX(4px);
+        }
+        .dark-mode-icon { font-size: 1.8em; }
+        .social-link { 
+            display: flex; align-items: center; gap: 8px; text-decoration: none; 
+            color: var(--social-link-color); font-weight: 700; transition: color 0.3s ease; 
+            font-size: 0.95rem;
+        }
+        .social-link svg {
+            margin-right: -4px;
+        }
+        
+        .brand-top-right{ position:fixed; top:12px; right:12px; z-index:140; opacity:0; transform:translateY(-6px); transition: opacity 480ms var(--ease), transform 480ms var(--ease); }
+        .brand-top-right.visible{ opacity:1; transform:translateY(0); }
+        .brand-top-right { text-decoration: none; display: inline-block; }
+        .brand-img{ display:block; height:auto; width:84px; }
+        @keyframes brandZoomOut { 0% { transform: scale(1) translateZ(0); opacity: 1; } 60% { transform: scale(1.18) translateZ(0); opacity: 0.96; } 100% { transform: scale(1.6) translateZ(0); opacity: 0; } }
+        .brand-top-right.zooming { animation: brandZoomOut 600ms cubic-bezier(.45, 0, .55, 1) both; }
+
+
+        @keyframes floorLinkZoomOut { 0% { transform: scale(1); opacity: 1; } 60% { transform: scale(1.08); opacity: 0.96; } 100% { transform: scale(1.2); opacity: 0; } }
+        .floor-wrap.zooming { animation: floorLinkZoomOut 600ms cubic-bezier(.45, 0, .55, 1) both; }
+        .floor-wrap{ position:relative; z-index:2; padding:10px 12px; }
+        .floor-card{ 
+            max-width:1100px; margin:18px auto; background: var(--card-bg); 
+            padding:12px; border-radius:10px; position:relative; 
+            transition: background 0.3s ease;
+        }
+
+        .floor-card h1, .floor-card p, 
+        .top-row figure figcaption, .bottom-row figure figcaption {
+            color: var(--floor-text-color);
+            transition: color 0.3s ease;
+        }
+        
+        /* --- Back Button Styling --- */
+        .back-button {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            z-index: 4;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 8px 12px;
+            border-radius: 20px;
+            background: var(--back-button-bg);
+            color: var(--back-button-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.95rem;
+            box-shadow: var(--back-button-shadow);
+            transition: all 0.2s var(--ease);
+        }
+
+        .back-button:hover, .back-button:focus {
+            transform: scale(1.03);
+            box-shadow: 0 6px 14px rgba(0,0,0,0.3);
+        }
+        
+        .floor-card h1 {
+            /* Adjust heading margin to account for back button and search */
+            margin-top: 48px !important;
+        }
+        /* --- End Back Button Styling --- */
+
+        .floor-search{ position:absolute; top:12px; right:12px; display:flex; gap:8px; align-items:center; z-index:4; }
+        .floor-search .sr-only{ position:absolute; left:-10000px; top:auto; width:1px; height:1px; overflow:hidden; }
+        .floor-search input[type="search"]{ 
+            width:260px; max-width:calc(100% - 36px); padding:8px 12px; border-radius:20px; 
+            border:1px solid var(--search-border); background: var(--search-bg); 
+            color: var(--search-text); box-shadow: 0 2px 8px rgba(0,0,0,0.18); 
+            transition: all 0.3s ease;
+        }
+        .floor-search input::placeholder{ color: var(--search-placeholder); }
+        .floor-search button{ 
+            border: none; background: var(--toggle-bg); color: var(--text-color); 
+            padding:8px 10px; border-radius:12px; cursor:pointer; 
+            box-shadow: 0 2px 8px rgba(0,0,0,0.12); transition: all 0.3s ease;
+        }
+        @media (max-width:700px){ 
+            .floor-search input[type="search"]{ width:160px; } 
+            .back-button {
+                /* On smaller screens, move back button down to clear the menu toggle button */
+                top: 55px; 
+                left: 12px;
+            }
+            .floor-search{
+                /* On smaller screens, move search down to clear the brand logo */
+                top: 55px;
+            }
+            .floor-card h1 {
+                /* Further adjust heading margin to account for moved buttons */
+                margin-top: 90px !important;
+            }
+        }
+        @media (max-width:380px){
+            .floor-search{
+                /* Stack elements on very small screens */
+                position: static;
+                margin-bottom: 10px;
+            }
+            .back-button {
+                position: static;
+                width: calc(100% - 24px); /* Full width minus padding */
+                justify-content: center;
+                margin-bottom: 10px;
+                box-sizing: border-box;
+            }
+            .floor-card h1 {
+                margin-top: 0 !important;
+            }
+        }
+
+
+        .top-row{ display:grid; grid-template-columns: repeat(3, 1fr); gap:10px; align-items:stretch; }
+        .bottom-row{ display:grid; grid-template-columns: repeat(2, 1fr); gap:10px; width:66.666%; margin:12px auto 0 auto; }
+        
+        @keyframes itemPopIn { 0% { opacity: 0; transform: translateY(12px) scale(.98); } 60% { opacity: 1; transform: translateY(-6px) scale(1.02); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
+        @keyframes pulseSoft { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
+        .top-row figure, .bottom-row figure { display:flex; flex-direction:column; gap:8px; padding:6px; align-items:stretch; opacity: 0; animation: itemPopIn 520ms var(--ease) both; }
+        .top-row img, .bottom-row img{ width:100%; height:auto; aspect-ratio: 4 / 3; object-fit:contain; display:block; border-radius:6px; border:1px solid rgba(255,255,255,0.06); box-shadow: 0 6px 14px rgba(0,0,0,0.18); transition: transform 260ms var(--ease), filter 260ms var(--ease), box-shadow 260ms var(--ease); will-change: transform, filter, box-shadow; }
+
+        .top-row figure:nth-child(1){ animation-delay: 120ms; }
+        .top-row figure:nth-child(2){ animation-delay: 200ms; }
+        .top-row figure:nth-child(3){ animation-delay: 280ms; }
+        .bottom-row figure:nth-child(1){ animation-delay: 360ms; }
+        .bottom-row figure:nth-child(2){ animation-delay: 420ms; }
+        .floor-link[aria-pressed="true"] img{ animation: pulseSoft 1400ms ease-in-out 1s infinite; box-shadow: 0 20px 46px rgba(0,0,0,0.36); }
+        
+        @media (max-width:900px){ .top-row img, .bottom-row img{ aspect-ratio: 4 / 3; } .bottom-row{ width:100%; grid-template-columns: repeat(2, 1fr); } }
+        @media (hover: hover) and (pointer: fine) {
+            .floor-link:hover img, .floor-link:focus img {
+                transform: translateY(-8px) scale(1.06); filter: brightness(1.06) saturate(1.04);
+                box-shadow: 0 22px 48px rgba(0,0,0,0.36);
+            }
+            .floor-link:active img { transform: translateY(-3px) scale(1.03); }
+        }
+        .floor-link:focus-visible img { outline: 3px solid rgba(255,255,255,0.14); outline-offset: 4px; transform: none; }
+        @media (prefers-reduced-motion: reduce){ *{ transition:none !important; animation:none !important; } }
+    </style>
+</head>
+<body class="light-mode">
+
+    <div class="menu-toggle" aria-controls="sideMenu" aria-expanded="false" aria-label="Open campus navigation menu">☰</div>
+
+    <nav id="sideMenu" class="side-menu" aria-hidden="true">
+        <button class="menu-close" aria-label="Close menu">☰</button>
+        <div class="menu-header">
+            <img src="img/logomap.jpg" alt="BCP MV GO" class="menu-logo">
+            <div class="menu-title"><h2>BCP MV GO</h2></div>
+        </div>
+        <hr class="menu-sep">
+        <ul class="menu-list">
+            <li><a href="landing.html">Home</a></li>
+            <li><a href="floorloc.html">Campus Map</a></li>
+            <li><a href="#buildings">Buildings</a></li>
+            <li><a href="#shuttle">Shuttle Routes</a></li>
+            <li><a href="#directions">Directions</a></li>
+        </ul>
+
+        <div class="menu-footer">
+            <div class="dark-mode-toggle" role="button" aria-pressed="false" aria-label="Toggle dark mode">
+                <span class="dark-mode-icon">🌙</span>
+            </div>
+            
+            <a class="social-link" href="https://www.facebook.com/bcpofficialpage" target="_blank" rel="noopener" aria-label="Open Facebook page">
+                <svg class="social-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">
+                    <path fill="#1877F2" d="M24 12.073C24 5.405 18.627 0 12 .0S0 5.405 0 12.073C0 18.093 4.388 23.092 10.125 24v-8.485H7.078v-3.442h3.047V9.412c0-3.017 1.792-4.677 4.533-4.677 1.312 0 2.686.235 2.686.235v2.953h-1.513c-1.491 0-1.953.928-1.953 1.878v2.254h3.328l-.532 3.442h-2.796V24C19.612 23.092 24 18.093 24 12.073z"/>
+                    <path class="facebook-white-path" fill="#fff" d="M16.671 15.515l.532-3.442h-3.328v-2.254c0-.95.462-1.878 1.953-1.878h1.513V5.988s-1.374-.235-2.686-.235c-2.74 0-4.533 1.66-4.533 4.677v2.143H7.078v3.442h3.047V24h3.041v-8.485h2.505z"/>
+                </svg>
+                bcpofficialpage
+            </a>
+
+            <a class="social-link" href="https://bcp.edu.ph/" target="_blank" rel="noopener" aria-label="Open website">
+                <span style="font-size: 1.1em; margin-right: 2px;">🌐</span>
+                Website
+            </a>
+        </div>
+    </nav>
+
+    <div class="menu-backdrop" hidden></div>
+
+    <a href="landing.html" class="brand-top-right" aria-label="Go to homepage" title="Go to homepage">
+        <img src="img/bcp.png" alt="BCP" class="brand-img" width="84">
+    </a>
+
+    <main class="floor-wrap">
+        <div class="floor-card">
+            <a href="landing.html" class="back-button" aria-label="Go back to Home">
+                &larr; Home
+            </a>
+            <h1 style="margin-top:0;">SELECT FLOOR</h1>
+            <p style="opacity:0.9">Choose your floor to locate where you are.</p>
+
+            <form class="floor-search" role="search" aria-label="Search floors">
+                <label class="sr-only" for="floor-search-input">Search floors</label>
+                <input id="floor-search-input" type="search" placeholder="Search for a facilities or room..." aria-label="Search floors">
+                <button type="submit" aria-label="Search">🔍</button>
+            </form>
+
+            <div class="top-row">
+                <figure>
+                    <a class="floor-link" href="gfloor.html" data-src="img3/GroundFloor.png" role="button" aria-pressed="false" data-floor="Ground Floor">
+                        <img src="img3/GroundFloor.png" alt="Ground Floor map" loading="lazy">
+                    </a>
+                    <figcaption>Ground Floor</figcaption>
+                </figure>
+                <figure>
+                    <a class="floor-link" href="2floor.html" data-src="img3/2ndFloor.png" role="button" aria-pressed="false" data-floor="2nd Floor">
+                        <img src="img3/2ndFloor.png" alt="2nd Floor map" loading="lazy">
+                    </a>
+                    <figcaption>2nd Floor</figcaption>
+                </figure>
+                <figure>
+                    <a class="floor-link" href="3floor.html" data-src="img3/3rdFloor.png" role="button" aria-pressed="false" data-floor="3rd Floor">
+                        <img src="img3/3rdFloor.png" alt="3rd Floor map" loading="lazy">
+                    </a>
+                    <figcaption>3rd Floor</figcaption>
+                </figure>
+            </div>
+
+            <div class="bottom-row">
+                <figure>
+                    <a class="floor-link" href="4floor.html" data-src="img3/4thFloor.png" role="button" aria-pressed="false" data-floor="4th Floor">
+                        <img src="img3/4thFloor.png" alt="4th Floor map" loading="lazy">
+                    </a>
+                    <figcaption>4th Floor</figcaption>
+                </figure>
+                <figure>
+                    <a class="floor-link" href="5floor.html" data-src="img3/5thFloor.png" role="button" aria-pressed="false" data-floor="5th Floor">
+                        <img src="img3/5thFloor.png" alt="5th Floor map" loading="lazy">
+                    </a>
+                    <figcaption>5th Floor</figcaption>
+                </figure>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        (function(){
+            const toggle = document.querySelector('.menu-toggle');
+            const menu = document.getElementById('sideMenu');
+            const closeBtn = document.querySelector('.menu-close');
+            const backdrop = document.querySelector('.menu-backdrop');
+            const floorLinks = document.querySelectorAll('.floor-link');
+            const floorWrap = document.querySelector('.floor-wrap');
+            const brand = document.querySelector('.brand-top-right'); 
+            const darkModeToggle = document.querySelector('.dark-mode-toggle');
+            const body = document.body;
+
+            function applyDarkModePreference() {
+                const prefersDarkMode = localStorage.getItem('dark-mode') === 'true';
+                if (prefersDarkMode) {
+                    body.classList.add('dark-mode');
+                    darkModeToggle.setAttribute('aria-pressed', 'true');
+                    darkModeToggle.querySelector('.dark-mode-icon').textContent = '☀️';
+                }
+            }
+
+            function toggleDarkMode() {
+                const isDarkMode = body.classList.toggle('dark-mode');
+                localStorage.setItem('dark-mode', isDarkMode);
+                darkModeToggle.setAttribute('aria-pressed', String(isDarkMode));
+                darkModeToggle.querySelector('.dark-mode-icon').textContent = isDarkMode ? '☀️' : '🌙';
+            }
+
+            applyDarkModePreference();
+            darkModeToggle.addEventListener('click', toggleDarkMode);
+
+            function toggleMenu(){
+                const isOpen = menu.classList.toggle('open');
+                toggle.classList.toggle('open', isOpen);
+                menu.setAttribute('aria-hidden', String(!isOpen));
+                toggle.setAttribute('aria-expanded', String(isOpen));
+                if(isOpen){ backdrop.hidden = false; backdrop.style.opacity = '1'; closeBtn.focus(); }
+                else { backdrop.style.opacity = '0'; setTimeout(()=>backdrop.hidden = true, 250); toggle.focus(); }
+            }
+
+            toggle.addEventListener('click', toggleMenu);
+            closeBtn.addEventListener('click', toggleMenu);
+            backdrop.addEventListener('click', toggleMenu);
+            document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape' && menu.classList.contains('open')) toggleMenu(); });
+
+            if(brand){ 
+                setTimeout(()=>brand.classList.add('visible'), 350); 
+                brand.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    brand.classList.add('zooming');
+                    setTimeout(() => {
+                        window.location.href = brand.href;
+                    }, 600);
+                });
+            }
+
+            floorLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    link.setAttribute('aria-pressed', 'true');
+                    floorWrap.classList.add('zooming');
+
+                    setTimeout(() => {
+                        const floorName = link.getAttribute('data-floor');
+                        let targetUrl = 'search.html'; 
+                        
+                        if (floorName) {
+                            switch (floorName.toLowerCase()) {
+                                case 'ground floor': targetUrl = 'gfloor.html'; break;
+                                case '2nd floor': targetUrl = '2floor.html'; break;
+                                case '3rd floor': targetUrl = '3floor.html'; break;
+                                case '4th floor': targetUrl = '4floor.html'; break;
+                                case '5th floor': targetUrl = '5floor.html'; break;
+                            }
+                        }
+                        
+                        window.location.href = targetUrl;
+                    }, 580);
+                });
+            });
+        })();
+    </script>
+</body>
+</html>

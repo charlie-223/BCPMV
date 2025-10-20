@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BCP MV GO - Second Floor Map</title>
+    <style>
+        :root{ 
+            --ease: cubic-bezier(.2,.9,.2,1); 
+            --bg-color: #f0f0f0;
+            --text-color: #ffffff;
+            --menu-bg: #ffffff;
+            --menu-shadow: 0 10px 30px rgba(0,0,0,0.15), -6px 0 24px rgba(0,0,0,0.1); 
+            --menu-title-color: #073763;
+            --menu-sep-color: linear-gradient(90deg, rgba(10,30,60,0.08), rgba(10,30,60,0.02));
+            --menu-link-color: #0a65a1;
+            --menu-link-hover-bg: rgba(91,192,222,0.1);
+            --menu-link-hover-color: #033f72;
+            --menu-footer-border: 1px solid rgba(10,30,60,0.06);
+            --social-link-color: #0a65a1;
+            --toggle-bg: rgba(255,255,255,0.95); 
+            --toggle-shadow: 0 6px 16px rgba(0,0,0,0.1); 
+            --card-bg: rgba(255,255,255,0.1); 
+            --card-shadow: 0 12px 24px rgba(0,0,0,0.25); 
+            --search-bg: rgba(255,255,255,0.95); 
+            --search-border: rgba(10,30,60,0.15);
+            --search-text: #000;
+            --search-placeholder: #666; 
+            --back-btn-bg: #fff; 
+            --back-btn-text: #073763;
+            --back-btn-hover-bg: #e0f7ff; 
+            --back-btn-hover-text: #033f72;
+            --toggle-icon-color: #000; 
+            --map-text-color: #000;
+            --map-border: #ddd; 
+        }
+
+        body.dark-mode {
+            --bg-color: #1a1a2e;
+            --text-color: #E0FFFF; 
+            --menu-bg: #22253c;
+            --menu-shadow: 0 10px 30px rgba(0,0,0,0.8), -6px 0 24px rgba(0,0,0,0.5); 
+            --menu-title-color: #E0FFFF; 
+            --menu-sep-color: linear-gradient(90deg, rgba(255,255,255,0.1), rgba(255,255,255,0.03));
+            --menu-link-color: #E0FFFF; 
+            --menu-link-hover-bg: rgba(91,192,222,0.08);
+            --menu-link-hover-color: #E0FFFF; 
+            --menu-footer-border: 1px solid rgba(255,255,255,0.1);
+            --social-link-color: #E0FFFF; 
+            --toggle-bg: rgba(0,0,0,0.85);
+            --toggle-shadow: 0 6px 16px rgba(0,0,0,0.5);
+            --card-bg: rgba(0,0,0,0.4);
+            --card-shadow: 0 12px 24px rgba(0,0,0,0.5);
+            --search-bg: rgba(255,255,255,0.1);
+            --search-border: rgba(255,255,255,0.1);
+            --search-text: #fff;
+            --search-placeholder: rgba(255,255,255,0.5);
+            --back-btn-bg: rgba(255,255,255,0.15);
+            --back-btn-text: #fff;
+            --back-btn-hover-bg: rgba(255,255,255,0.25);
+            --back-btn-hover-text: #E0FFFF;
+            --toggle-icon-color: #E0FFFF; 
+            --map-text-color: #E0FFFF; 
+            --map-border: #333;
+        }
+
+        body{ 
+            margin:0; padding:0; min-height:100vh; width:100vw; height:100vh; font-family: Arial, sans-serif; 
+            position:relative; overflow:hidden; display:flex; align-items:flex-start; 
+            color: var(--text-color); 
+            transition: background-color 0.5s ease; 
+        }
+        body::before{ 
+            content:''; position:absolute; inset:0; background-image: url('img/bgmv.jpg'); background-size:cover; 
+            background-position:center; transform:scale(1.03); filter: blur(6px) brightness(0.55); 
+            z-index:0; 
+            transition: filter 0.8s ease-in-out; 
+        }
+        body.dark-mode::before {
+            filter: blur(6px) brightness(0.3); 
+        }
+        body::after{ content:''; position:absolute; inset:0; background: linear-gradient(to top, rgba(0,0,0,0.6), rgba(0,0,0,0) 60%); z-index:1; transition: background 260ms var(--ease), opacity 260ms var(--ease); }
+        
+        .page-wrap{ position:relative; z-index:2; width:100%; padding:28px; box-sizing:border-box; color:var(--text-color); overflow-y: auto; height: 100vh;}
+        .content-card{ 
+            max-width:1024px; 
+            margin:32px auto; 
+            background: var(--card-bg); 
+            padding:30px; 
+            border-radius: 12px; 
+            backdrop-filter: blur(8px); 
+            box-shadow: var(--card-shadow); 
+            position:relative; 
+            transition: background 0.4s ease, box-shadow 0.4s ease, transform 0.2s ease-out; 
+        }
+        @media (hover: hover) and (pointer: fine){ 
+            .content-card:hover{
+                transform: translateY(-2px); 
+                box-shadow: 0 16px 30px rgba(0,0,0,0.35); 
+            }
+        }
+        .content-card h1, .content-card p { 
+            color: var(--text-color); 
+            transition: color 0.3s ease;
+        }
+
+        .map-container {
+            margin-top: 30px;
+            padding: 25px; 
+            background: var(--menu-bg); 
+            border-radius: 10px; 
+            box-shadow: 0 6px 18px rgba(0,0,0,0.15); 
+            text-align: left; 
+            max-width: 100%; 
+            height: auto;
+            overflow: hidden; 
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .controls input, .controls button {
+            padding: 12px; 
+            border-radius: 6px; 
+            border: 1px solid var(--search-border);
+            font-size: 1rem;
+            flex-grow: 1;
+            background-color: var(--search-bg);
+            color: var(--search-text);
+            transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.2s ease; 
+        }
+        body:not(.dark-mode) .controls input {
+            color: #000; 
+        }
+        .controls input::placeholder {
+            color: var(--search-placeholder);
+        }
+        body:not(.dark-mode) .controls input::placeholder {
+            color: #666; 
+        }
+        .controls input:focus {
+            border-color: var(--menu-link-color);
+            box-shadow: 0 0 0 3px rgba(10, 101, 161, 0.2); 
+            outline: none;
+        }
+        .controls button {
+            flex-grow: 0;
+            background-color: #0a65a1; 
+            color: white;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15); 
+            transition: background-color 0.2s, transform 0.1s ease, box-shadow 0.2s; 
+        }
+        .controls button:hover {
+            background-color: #033f72; 
+            box-shadow: 0 6px 10px rgba(0,0,0,0.2);
+        }
+        .controls button:active {
+            transform: scale(0.98);
+        }
+        #map {
+            height: 600px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            box-shadow: inset 0 0 8px rgba(0,0,0,0.1); 
+        }
+        .directions-panel {
+            padding: 15px; 
+            border: 1px solid var(--map-border);
+            border-radius: 6px; 
+            background-color: var(--search-bg);
+            max-height: 200px;
+            overflow-y: auto;
+            color: var(--map-text-color); 
+        }
+
+        .menu-toggle{ 
+            position:fixed; top:18px; left:18px; z-index:120; 
+            background: var(--toggle-bg); padding:8px 12px; border-radius:6px; 
+            box-shadow:var(--toggle-shadow); cursor:pointer; font-size:1.2rem; 
+            color: var(--toggle-icon-color); 
+            transition: background 0.3s ease, box-shadow 0.3s ease, color 0.3s ease, transform 0.2s ease; 
+        }
+        .menu-toggle:hover {
+            transform: scale(1.05); 
+        }
+        
+        .side-menu{ 
+            position:fixed; inset:0 auto 0 0; width:320px; max-width:80vw; height:100vh; 
+            background:var(--menu-bg); box-shadow:var(--menu-shadow); 
+            transform:translateX(-110%); transition: transform 380ms var(--ease), background 0.3s ease, box-shadow 0.3s ease; 
+            z-index:130; padding:20px 30px 20px 20px; overflow-y:auto; display:flex; flex-direction:column; justify-content:space-between; 
+            border-top-right-radius: 12px;
+            border-bottom-right-radius: 12px;
+        }
+        .side-menu.open{ transform:translateX(0); animation: menuSlideIn 420ms cubic-bezier(.2,.9,.2,1) both; }
+        .side-menu.closing{ animation: menuSlideOut 320ms var(--ease) both; }
+        @keyframes menuSlideIn{ 0%{ transform:translateX(-110%);}70%{ transform:translateX(5%);}100%{ transform:translateX(0);} }
+        @keyframes menuSlideOut{ 0%{ transform:translateX(0);}100%{ transform:translateX(-110%);} }
+        
+        .menu-header{ display:flex; gap:12px; align-items:center; margin-bottom:8px; }
+        .menu-logo{ width:72px; height:72px; border-radius:50%; object-fit:cover; border:4px solid #ADD8E6; box-shadow:0 4px 12px rgba(0,0,0,0.1); }
+        .menu-title h2{ margin:0; font-size:1.4rem; color:var(--menu-title-color); font-weight:800; transition: color 0.3s ease; }
+        .menu-sep{ border:none; height:1px; background:var(--menu-sep-color); margin:12px 0; transition: background 0.3s ease; }
+        
+        .menu-list{ list-style:none; padding:0; margin:18px 0 0 0; flex-grow: 1; }
+        .menu-list li{ margin:14px 0; }
+        .menu-list a{ 
+            color:var(--menu-link-color); text-decoration:none; font-weight:700; display:block; 
+            padding:12px 14px; border-radius:10px; font-size:1.05rem; 
+            transition: transform 220ms var(--ease), background 220ms var(--ease), box-shadow 220ms var(--ease), color 160ms linear; 
+        }
+        @media (hover: hover) and (pointer: fine){ 
+            .menu-list a:hover, .menu-list a:focus{ 
+                background: var(--menu-link-hover-bg); 
+                color:var(--menu-link-hover-color); 
+                transform:translateX(4px) scale(1.01); 
+                box-shadow:0 6px 16px rgba(3,63,114,0.06); 
+                outline:none; 
+            } 
+        }
+        .menu-list a:focus-visible{ outline:2px solid rgba(0,0,0,0.12); outline-offset:3px; }
+        
+        .menu-close{ 
+            background:transparent; border:none; font-size:1.6rem; position:absolute; top:12px; right:12px; 
+            cursor:pointer; color: var(--text-color); transition: color 0.3s ease; 
+        }
+        body:not(.dark-mode) .menu-close {
+            color: #000; 
+        }
+        
+        .menu-backdrop{ position:fixed; inset:0; background: rgba(0,0,0,0.35); z-index:125; transition: opacity 220ms ease; }
+        
+        .menu-footer{ 
+            margin-top:18px; padding-top:10px; border-top:var(--menu-footer-border); 
+            display:flex; flex-direction:column; gap:10px; transition: border-top 0.3s ease;
+        }
+
+        .dark-mode-toggle {
+            display: inline-flex; 
+            align-items: center; 
+            justify-content: center; 
+            width: 48px; 
+            height: 48px;
+            padding: 0; 
+            background: var(--back-btn-bg); 
+            border-radius: 50%; 
+            font-weight: 700; 
+            color: var(--menu-link-color); 
+            cursor: pointer;
+            transition: background 0.3s ease, color 0.3s ease, transform 0.2s ease;
+            user-select: none;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
+        }
+        .dark-mode-toggle:hover {
+            transform: scale(1.1); 
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+        .dark-mode-icon { 
+            font-size: 1.5em; 
+            margin: 0; 
+        }
+
+        .sr-only-text {
+            position:absolute; 
+            left:-10000px; 
+            top:auto; 
+            width:1px; 
+            height:1px; 
+            overflow:hidden;
+        }
+
+        .social-link{ 
+            display:inline-flex; align-items:center; gap:8px; text-decoration:none; 
+            color:var(--social-link-color); font-weight:700; transition: color 0.3s ease;
+        }
+        .social-link svg {
+            transition: fill 0.3s ease;
+        }
+
+        .brand-top-right{ position:fixed; top:12px; right:12px; z-index:140; opacity:0; transform:translateY(-6px); transition: opacity 480ms var(--ease), transform 480ms var(--ease); text-decoration: none; display: inline-block; }
+        .brand-top-right.visible{ opacity:1; transform:translateY(0); }
+        .brand-top-right:focus-visible { outline: 3px solid rgba(255,255,255,0.18); outline-offset: 4px; }
+        .brand-img{ display:block; height:auto; width:84px; }
+        @keyframes brandZoomOut {
+            0% { transform: scale(1) translateZ(0); opacity: 1; }
+            60% { transform: scale(1.18) translateZ(0); opacity: 0.96; }
+            100% { transform: scale(1.6) translateZ(0); opacity: 0; }
+        }
+        .brand-top-right.zooming { animation: brandZoomOut 600ms cubic-bezier(.45, 0, .55, 1) both; }
+
+        .back-btn {
+            position: absolute; top: 35px; left: 35px; z-index: 10;
+            background: var(--back-btn-bg); 
+            color: var(--back-btn-text); 
+            border: none; border-radius: 20px; 
+            font-size: 1.05rem; font-weight: 700; padding: 10px 20px 10px 42px; cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.12); transition: all 280ms cubic-bezier(.4, 0, .2, 1); outline: none;
+            display: flex; align-items: center; 
+        }
+        .back-btn:before {
+            content: "←"; display: inline-block; margin-right: 8px; font-size: 1.2rem;
+            position: absolute; left: 18px; top: 50%; transform: translateY(-50%); 
+        }
+        .back-btn:hover, .back-btn:focus {
+            background: var(--back-btn-hover-bg); 
+            color: var(--back-btn-hover-text); 
+            box-shadow: 0 6px 18px rgba(3,63,114,0.15); transform: translateY(-1px);
+        }
+        .back-btn:active { background: #cceeff; transform: scale(0.99); }
+        .back-btn:focus-visible { outline: 2px solid #0a65a1; outline-offset: 3px; }
+        
+        @media (max-width:700px){ .back-btn{ font-size:0.97rem; padding:8px 12px 8px 32px; left:10px; top:10px; } }
+        @media (prefers-reduced-motion: reduce){ *{ transition:none !important; animation:none !important; } }
+    </style>
+</head>
+<body class="light-mode">
+    <div class="menu-toggle" aria-controls="sideMenu" aria-expanded="false" aria-label="Open campus navigation menu">☰</div>
+    <nav id="sideMenu" class="side-menu" aria-hidden="true">
+        <button class="menu-close" aria-label="Close menu">☰</button>
+        <div class="menu-header">
+            <img src="img/logomap.jpg" alt="BCP MV GO" class="menu-logo">
+            <div class="menu-title"><h2>BCP MV GO</h2></div>
+        </div>
+        <hr class="menu-sep">
+        <ul class="menu-list">
+            <li><a href="landing.html">Home</a></li>
+            <li><a href="floorloc.html">Campus Map</a></li>
+            <li><a href="#buildings">Buildings</a></li>
+            <li><a href="#directions">Directions</a></li>
+        </ul>
+        <div class="menu-footer">
+            <div class="dark-mode-toggle" role="button" aria-pressed="false" aria-label="Toggle dark mode">
+                <span class="dark-mode-icon">🌙</span>
+                <span class="sr-only-text dark-mode-text">Dark Mode</span>
+            </div>
+            
+            <a class="social-link" href="https://www.facebook.com/bcpofficialpage" target="_blank" rel="noopener" aria-label="Open Facebook page">
+                <svg class="social-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">
+                    <path fill="#1877F2" d="M24 12.073C24 5.405 18.627 0 12 .0S0 5.405 0 12.073C0 18.093 4.388 23.092 10.125 24v-8.485H7.078v-3.442h3.047V9.412c0-3.017 1.792-4.677 4.533-4.677 1.312 0 2.686.235 2.686.235v2.953h-1.513c-1.491 0-1.953.928-1.953 1.878v2.254h3.328l-.532 3.442h-2.796V24C19.612 23.092 24 18.093 24 12.073z"/>
+                    <path class="facebook-white-path" fill="#fff" d="M16.671 15.515l.532-3.442h-3.328v-2.254c0-.95.462-1.878 1.953-1.878h1.513V5.988s-1.374-.235-2.686-.235c-2.74 0-4.533 1.66-4.533 4.677v2.143H7.078v3.442h3.047V24h3.041v-8.485h2.505z"/>
+                </svg>
+                <span class="social-text">bcpofficialpage</span>
+            </a>
+
+            <a class="social-link" href="https://bcp.edu.ph/" target="_blank" rel="noopener" aria-label="Open website">
+                <svg class="social-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">
+                    <path fill="#6b6b6b" d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm6.93 6h-2.02a15.08 15.08 0 0 0-1.24-3.06A8.03 8.03 0 0 1 18.93 8zM12 4c.74 0 2.02 3.22 2.63 6H9.37C9.98 7.22 11.26 4 12 4zM4.07 8a8.03 8.03 0 0 1 3.29-3.06C7.09 6.78 6.39 8.26 6.07 10H4.07zM4 12c0-.91.12-1.79.34-2.62A13.02 13.02 0 0 0 8 12H4zm0 2h4a13.02 13.02 0 0 0-3.66 2.62A7.96 7.96 0 0 1 4 14zm8 6c-.74 0-2.02-3.22-2.63-6h5.26C14.02 16.78 12.74 20 12 20c-.74 0-1.98-3.22-2.63-6zM14.63 12c.13-.9.3-1.86.53-2.86.23 1 .4 1.96.53 2.86h-1.06zM16 18.62c.22-.83.34-1.71.34-2.62h4c0 1.46-.39 2.86-1.07 4.06A7.96 7.96 0 0 1 16 18.62zM9.37 14h5.26C13.98 16.78 12.74 20 12 20c-.74 0-1.98-3.22-2.63-6z"/>
+                </svg>
+                <span class="social-text">bcp.edu.ph</span>
+            </a>
+        </div>
+    </nav>
+    <div class="menu-backdrop" hidden></div>
+
+    <a href="landing.html" class="brand-top-right" aria-label="Go to homepage" title="Go to homepage">
+        <img src="img/bcp.png" alt="BCP" class="brand-img" width="84">
+    </a>
+
+    <main class="page-wrap">
+        <div class="content-card">
+            <button type="button" class="back-btn" onclick="goBack()" aria-label="Go back to floor selection">
+                Back to Floor Select
+            </button>
+            <h1 style="margin-top:48px">BCP MV GO - Second Floor Map</h1>
+            <p style="opacity:0.9">Use the interactive map below to locate rooms and facilities on the Second Floor.</p>
+            
+            <div class="map-container">
+                <p style="color:var(--map-text-color); font-weight:bold;">Second Floor Layout (Interactive Map)</p>
+                
+                <div class="controls">
+                    <input type="text" id="start" placeholder="Starting Point (e.g., Stairway South)" aria-label="Starting point">
+                    <input type="text" id="end" placeholder="Destination (e.g., Library)" aria-label="Destination">
+                    <button onclick="calculateAndDisplayRoute()">Get Directions</button>
+                </div>
+
+                <div id="map"></div> 
+    </main>
+
+    <script>
+        function goBack() {
+            window.location.href = "floorloc.html";
+        }
+
+        (function(){
+            const toggle = document.querySelector('.menu-toggle');
+            const menu = document.getElementById('sideMenu');
+            const closeBtn = document.querySelector('.menu-close');
+            const backdrop = document.querySelector('.menu-backdrop');
+            const brand = document.querySelector('.brand-top-right');
+            const darkModeToggle = document.querySelector('.dark-mode-toggle');
+            const body = document.body;
+
+            function applyDarkModePreference() {
+                const prefersDarkMode = localStorage.getItem('dark-mode') === 'true';
+                if (prefersDarkMode) {
+                    body.classList.add('dark-mode');
+                    darkModeToggle.setAttribute('aria-pressed', 'true');
+                    darkModeToggle.querySelector('.dark-mode-icon').textContent = '☀️';
+                }
+            }
+
+            function toggleDarkMode() {
+                const isDarkMode = body.classList.toggle('dark-mode');
+                localStorage.setItem('dark-mode', isDarkMode); 
+                darkModeToggle.setAttribute('aria-pressed', String(isDarkMode));
+                darkModeToggle.setAttribute('aria-label', isDarkMode ? 'Toggle light mode' : 'Toggle dark mode');
+                darkModeToggle.querySelector('.dark-mode-icon').textContent = isDarkMode ? '☀️' : '🌙';
+                const screenReaderText = darkModeToggle.querySelector('.dark-mode-text');
+                screenReaderText.textContent = isDarkMode ? 'Light Mode' : 'Dark Mode';
+            }
+
+            applyDarkModePreference();
+            const initialIsDark = body.classList.contains('dark-mode');
+            darkModeToggle.setAttribute('aria-label', initialIsDark ? 'Toggle light mode' : 'Toggle dark mode');
+            darkModeToggle.querySelector('.dark-mode-text').textContent = initialIsDark ? 'Light Mode' : 'Dark Mode';
+
+            darkModeToggle.addEventListener('click', toggleDarkMode);
+
+            function toggleMenu(){
+                const isOpen = menu.classList.toggle('open');
+                toggle.classList.toggle('open', isOpen);
+                menu.setAttribute('aria-hidden', String(!isOpen));
+                toggle.setAttribute('aria-expanded', String(isOpen));
+                if(isOpen){
+                    backdrop.hidden = false; backdrop.style.opacity = '1'; closeBtn.focus();
+                } else {
+                    backdrop.style.opacity = '0'; setTimeout(()=>backdrop.hidden = true, 250); toggle.focus();
+                }
+            }
+
+            toggle.addEventListener('click', toggleMenu);
+            closeBtn.addEventListener('click', toggleMenu);
+            backdrop.addEventListener('click', toggleMenu);
+            document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape' && menu.classList.contains('open')) toggleMenu(); });
+
+            if(brand){
+                setTimeout(()=>brand.classList.add('visible'), 350);
+                brand.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    brand.classList.add('zooming');
+                    setTimeout(() => {
+                        window.location.href = brand.href;
+                    }, 600);
+                });
+            }
+        })();
+
+
+        const API_KEY = "YOUR_API_KEY"; 
+        
+        let map;
+        let infoWindow;
+        let markers = [];
+        let routeMarkers = [];
+
+        // Note: Using the same coordinates as a placeholder since actual Second Floor coordinates are unknown.
+        const BCP_MV_GO_COORDS = { lat: 14.5995, lng: 120.9842 }; 
+
+        // Renamed/modified facilities list for Second Floor as a placeholder
+        const secondFloorFacilities = [
+            { name: "Stairway South", type: "Access Point", lat: 14.59965, lng: 120.98415 },
+            { name: "Library", type: "Facility", lat: 14.59955, lng: 120.98435 },
+            { name: "Faculty Office", type: "Office", lat: 14.59950, lng: 120.98438 },
+            { name: "Room 201", type: "Classroom", lat: 14.59945, lng: 120.98405 },
+            { name: "Room 202", type: "Classroom", lat: 14.59940, lng: 120.98425 },
+            { name: "Computer Lab", type: "Laboratory", lat: 14.59960, lng: 120.98420 },
+            { name: "Comfort Room", type: "Facility", lat: 14.59963, lng: 120.98408 },
+            { name: "Room 203", type: "Classroom", lat: 14.59935, lng: 120.98415 },
+            { name: "Room 204", type: "Classroom", lat: 14.59930, lng: 120.98430 }
+        ];
+
+        function addFacilityMarkers() {
+            infoWindow = new google.maps.InfoWindow();
+            
+            secondFloorFacilities.forEach((facility) => {
+                const marker = new google.maps.Marker({
+                    position: { lat: facility.lat, lng: facility.lng },
+                    map: map,
+                    title: facility.name,
+                    icon: {
+                        url: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath fill='%231B5E20' d='M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z'/%3E%3C/svg%3E",
+                        scaledSize: new google.maps.Size(30, 30)
+                    }
+                });
+                
+                markers.push(marker);
+
+                marker.addListener("click", () => {
+                    infoWindow.setContent(`
+                        <div style="color: black;">
+                            <strong>${facility.name}</strong><br>
+                            Type: ${facility.type}
+                        </div>
+                    `);
+                    infoWindow.open(map, marker);
+                });
+            });
+        }
+        
+        function clearRouteMarkers() {
+            routeMarkers.forEach(marker => marker.setMap(null));
+            routeMarkers = [];
+        }
+
+        function initMap() {
+            map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 19,
+                center: BCP_MV_GO_COORDS,
+                mapTypeId: 'satellite', 
+                streetViewControl: false,
+                tilt: 0
+            });
+
+            const imageBounds = {
+                north: 14.5997, 
+                south: 14.5993, 
+                east: 120.9844,
+                west: 120.9840,
+            };
+            
+            // Assuming a SecondFloor.png exists or using this name to reflect the floor.
+            const groundOverlay = new google.maps.GroundOverlay(
+                'SecondFloor.png', 
+                imageBounds
+            );
+            
+            groundOverlay.setMap(map);
+
+            addFacilityMarkers();
+        }
+
+        function calculateAndDisplayRoute() {
+            clearRouteMarkers();
+            const panel = document.querySelector('.directions-panel');
+            const startInput = document.getElementById('start').value.trim();
+            const endInput = document.getElementById('end').value.trim();
+
+            const startFacility = secondFloorFacilities.find(f => f.name.toLowerCase() === startInput.toLowerCase());
+            const endFacility = secondFloorFacilities.find(f => f.name.toLowerCase() === endInput.toLowerCase());
+
+            if (startInput && !endInput) {
+                if (startFacility) {
+                    const marker = new google.maps.Marker({
+                        position: { lat: startFacility.lat, lng: startFacility.lng },
+                        map: map,
+                        title: startFacility.name,
+                        label: 'A',
+                    });
+                    routeMarkers.push(marker);
+                    map.panTo(marker.getPosition());
+
+                    panel.innerHTML = `
+                        <p style="color:var(--map-text-color);">
+                            <strong>Location Found: ${startFacility.name}</strong> (${startFacility.type}). 
+                            A marker has been placed on the map to show its location on the Second Floor plan.
+                        </p>`;
+                } else {
+                    panel.innerHTML = `
+                        <p style="color:var(--map-text-color);">
+                            **Error:** Facility named "${startInput}" not found on the Second Floor list. Please check the spelling.
+                        </p>`;
+                }
+                return;
+            }
+
+            if (startFacility && endFacility) {
+                const startMarker = new google.maps.Marker({
+                    position: { lat: startFacility.lat, lng: startFacility.lng },
+                    map: map,
+                    label: 'S',
+                    title: `Start: ${startFacility.name}`,
+                    icon: {
+                        path: google.maps.SymbolPath.CIRCLE,
+                        fillColor: 'blue',
+                        fillOpacity: 0.9,
+                        strokeWeight: 0,
+                        scale: 10
+                    }
+                });
+                routeMarkers.push(startMarker);
+
+                const endMarker = new google.maps.Marker({
+                    position: { lat: endFacility.lat, lng: endFacility.lng },
+                    map: map,
+                    label: 'E',
+                    title: `End: ${endFacility.name}`,
+                    icon: {
+                        path: google.maps.SymbolPath.CIRCLE,
+                        fillColor: 'red',
+                        fillOpacity: 0.9,
+                        strokeWeight: 0,
+                        scale: 10
+                    }
+                });
+                routeMarkers.push(endMarker);
+
+                const bounds = new google.maps.LatLngBounds();
+                bounds.extend(startMarker.getPosition());
+                bounds.extend(endMarker.getPosition());
+                map.fitBounds(bounds);
+
+
+                panel.innerHTML = `
+                    <p style="color:var(--map-text-color);">
+                        **Route Guidance:** From **${startFacility.name}** to **${endFacility.name}**.
+                    </p>
+                    <p style="color:var(--map-text-color);">
+                        **Guidance:** Markers labeled 'S' (Start) and 'E' (End) have been placed on the map. 
+                        Please follow the pathways on the **Second Floor map overlay** to move between the pins.
+                    </p>`;
+
+            } else {
+                let errorMessage = "";
+                if (!startInput || !endInput) {
+                    errorMessage = "Please enter both a starting point and a destination.";
+                } else {
+                    errorMessage = `One or both facilities were not found in the Second Floor list. 
+                                    (Start: ${startInput}, End: ${endInput}). 
+                                    Check the list of available facilities for correct spelling.`;
+                }
+                
+                panel.innerHTML = `<p style="color:var(--map-text-color);">**Error:** ${errorMessage}</p>`;
+            }
+        }
+    </script>
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap">
+        </script>
+</body>
+</html>
