@@ -1,360 +1,1910 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>BCP MV GO</title>
     <style>
-        :root{ 
-            --ease: cubic-bezier(.2,.9,.2,1); 
-            --bg-color: #f0f0f0;
-            --text-color: #ffffff;
-            --menu-bg: #ffffff;
-            --menu-shadow: -6px 0 24px rgba(0,0,0,0.2);
-            --menu-title-color: #073763;
-            --menu-sep-color: linear-gradient(90deg, rgba(10,30,60,0.06), rgba(10,30,60,0.02));
-            --menu-link-color: #0a65a1;
-            --menu-link-hover-bg: rgba(91,192,222,0.16);
-            --menu-link-hover-color: #033f72;
-            --menu-footer-border: 1px solid rgba(10,30,60,0.04);
-            --social-link-color: #0a65a1;
-            --toggle-bg: rgba(255,255,255,0.9);
-            --toggle-shadow: 0 4px 10px rgba(0,0,0,0.15);
-            --card-bg: rgba(255,255,255,0.06);
-            --search-bg: rgba(255,255,255,0.6);
-            --search-border: rgba(255,255,255,0.12);
-            --search-text: #000;
-            --search-placeholder: rgba(255,255,255,0.6);
-            --back-btn-bg: rgba(255,255,255,0.87);
-            --back-btn-text: #073763;
-            --back-btn-hover-bg: #b2e6ff;
-            --back-btn-hover-text: #033f72;
-            --toggle-icon-color: #000; 
-        }
+      :root {
+        --ease: cubic-bezier(0.2, 0.9, 0.2, 1);
+        --bg-color: #f0f0f0;
+        --text-color: #ffffff;
+        --menu-bg: #ffffff;
+        --menu-shadow: -6px 0 24px rgba(0, 0, 0, 0.2);
+        --menu-title-color: #073763;
+        --menu-sep-color: linear-gradient(
+          90deg,
+          rgba(10, 30, 60, 0.06),
+          rgba(10, 30, 60, 0.02)
+        );
+        --menu-link-color: #0a65a1;
+        --menu-link-hover-bg: rgba(91, 192, 222, 0.16);
+        --menu-link-hover-color: #033f72;
+        --menu-footer-border: 1px solid rgba(10, 30, 60, 0.04);
+        --social-link-color: #0a65a1;
+        --toggle-bg: rgba(255, 255, 255, 0.9);
+        --toggle-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        --card-bg: rgba(255, 255, 255, 0.06);
+        --search-bg: rgba(255, 255, 255, 0.6);
+        --search-border: rgba(255, 255, 255, 0.12);
+        --search-text: #000;
+        --search-placeholder: rgba(255, 255, 255, 0.6);
+        --back-btn-bg: rgba(255, 255, 255, 0.87);
+        --back-btn-text: #073763;
+        --back-btn-hover-bg: #b2e6ff;
+        --back-btn-hover-text: #033f72;
+        --toggle-icon-color: #000;
+      }
 
-        body.dark-mode {
-            --bg-color: #1a1a2e;
-            --text-color: #8ed0e2;
-            --menu-bg: #22253c;
-            --menu-shadow: -6px 0 24px rgba(0,0,0,0.5);
-            --menu-title-color: #8ed0e2;
-            --menu-sep-color: linear-gradient(90deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
-            --menu-link-color: #8ed0e2;
-            --menu-link-hover-bg: rgba(91,192,222,0.1);
-            --menu-link-hover-color: #8ed0e2;
-            --menu-footer-border: 1px solid rgba(255,255,255,0.08);
-            --social-link-color: #8ed0e2;
-            --toggle-bg: rgba(0,0,0,0.8);
-            --toggle-shadow: 0 4px 10px rgba(255,255,255,0.1);
-            --card-bg: rgba(0,0,0,0.3);
-            --search-bg: rgba(255,255,255,0.15);
-            --search-border: rgba(255,255,255,0.1);
-            --search-text: #fff;
-            --search-placeholder: rgba(255,255,255,0.6);
-            --back-btn-bg: rgba(255,255,255,0.1);
-            --back-btn-text: #fff;
-            --back-btn-hover-bg: rgba(255,255,255,0.2);
-            --back-btn-hover-text: #8ed0e2;
-            --toggle-icon-color: #8ed0e2; 
-        }
+      body.dark-mode {
+        --bg-color: #1a1a2e;
+        --text-color: #8ed0e2;
+        --menu-bg: #22253c;
+        --menu-shadow: -6px 0 24px rgba(0, 0, 0, 0.5);
+        --menu-title-color: #8ed0e2;
+        --menu-sep-color: linear-gradient(
+          90deg,
+          rgba(255, 255, 255, 0.06),
+          rgba(255, 255, 255, 0.02)
+        );
+        --menu-link-color: #8ed0e2;
+        --menu-link-hover-bg: rgba(91, 192, 222, 0.1);
+        --menu-link-hover-color: #8ed0e2;
+        --menu-footer-border: 1px solid rgba(255, 255, 255, 0.08);
+        --social-link-color: #8ed0e2;
+        --toggle-bg: rgba(0, 0, 0, 0.8);
+        --toggle-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
+        --card-bg: rgba(0, 0, 0, 0.3);
+        --search-bg: rgba(255, 255, 255, 0.15);
+        --search-border: rgba(255, 255, 255, 0.1);
+        --search-text: #fff;
+        --search-placeholder: rgba(255, 255, 255, 0.6);
+        --back-btn-bg: rgba(255, 255, 255, 0.1);
+        --back-btn-text: #fff;
+        --back-btn-hover-bg: rgba(255, 255, 255, 0.2);
+        --back-btn-hover-text: #8ed0e2;
+        --toggle-icon-color: #8ed0e2;
+      }
 
-        body{ 
-            margin:0; padding:0; min-height:100vh; width:100vw; height:100vh; font-family: Arial, sans-serif; 
-            position:relative; overflow:hidden; display:flex; align-items:flex-start; 
-            color: var(--text-color); 
-        }
-        body::before{ 
-            content:''; position:absolute; inset:0; background-image: url('img/bgmv.jpg'); background-size:cover; 
-            background-position:center; transform:scale(1.03); filter: blur(6px) brightness(0.55); 
-            z-index:0; 
-            transition: filter 0.5s ease; 
-        }
-        body.dark-mode::before {
-            filter: blur(6px) brightness(0.3); 
-        }
-        body::after{ content:''; position:absolute; inset:0; background: linear-gradient(to top, rgba(0,0,0,0.6), rgba(0,0,0,0) 60%); z-index:1; transition: background 260ms var(--ease), opacity 260ms var(--ease); }
-        
-        .page-wrap{ position:relative; z-index:2; width:100%; padding:28px; box-sizing:border-box; color:var(--text-color); }
-        .content-card{ 
-            max-width:980px; margin:32px auto; background: var(--card-bg); 
-            padding:22px; border-radius:10px; backdrop-filter: blur(4px); position:relative; 
-            transition: background 0.3s ease; 
-        }
-        .content-card h1, .content-card p { 
-            color: var(--text-color); 
-            transition: color 0.3s ease;
-        }
+      body {
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+        width: 100vw;
+        font-family: Arial, sans-serif;
+        position: relative;
+        overflow-x: hidden;
+        display: flex;
+        align-items: flex-start;
+        color: var(--text-color);
+      }
+      body::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image: url("img/bgmv.jpg");
+        background-size: cover;
+        background-position: center;
+        transform: scale(1.03);
+        filter: blur(6px) brightness(0.55);
+        z-index: 0;
+        transition: filter 0.5s ease;
+      }
+      body.dark-mode::before {
+        filter: blur(6px) brightness(0.3);
+      }
+      body::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          to top,
+          rgba(0, 0, 0, 0.6),
+          rgba(0, 0, 0, 0) 60%
+        );
+        z-index: 1;
+        transition: background 260ms var(--ease), opacity 260ms var(--ease);
+      }
 
-        .menu-toggle{ 
-            position:fixed; top:18px; left:18px; z-index:120; 
-            background: var(--toggle-bg); padding:8px 12px; border-radius:6px; 
-            box-shadow:var(--toggle-shadow); cursor:pointer; font-size:1.2rem; 
-            color: var(--toggle-icon-color); 
-            transition: background 0.3s ease, box-shadow 0.3s ease, color 0.3s ease; 
-        }
-        
-        .side-menu{ 
-            position:fixed; inset:0 auto 0 0; width:320px; max-width:80vw; height:100vh; 
-            background:var(--menu-bg); box-shadow:var(--menu-shadow); 
-            transform:translateX(-110%); transition: transform 320ms cubic-bezier(.2,.9,.2,1), background 0.3s ease, box-shadow 0.3s ease; 
-            z-index:130; padding:20px; overflow-y:auto; display:flex; flex-direction:column; justify-content:space-between; 
-        }
-        .side-menu.open{ transform:translateX(0); animation: menuSlideIn 420ms cubic-bezier(.2,.9,.2,1) both; }
-        .side-menu.closing{ animation: menuSlideOut 320ms var(--ease) both; }
-        @keyframes menuSlideIn{ 0%{ transform:translateX(-110%);}70%{ transform:translateX(10%);}100%{ transform:translateX(0);} }
-        @keyframes menuSlideOut{ 0%{ transform:translateX(0);}100%{ transform:translateX(-110%);} }
-        
-        .menu-header{ display:flex; gap:12px; align-items:center; margin-bottom:8px; }
-        .menu-logo{ width:72px; height:72px; border-radius:50%; object-fit:cover; border:4px solid #ADD8E6; box-shadow:0 8px 20px rgba(0,0,0,0.2); }
-        .menu-title h2{ margin:0; font-size:1.4rem; color:var(--menu-title-color); font-weight:800; transition: color 0.3s ease; }
-        .menu-sep{ border:none; height:1px; background:var(--menu-sep-color); margin:12px 0; transition: background 0.3s ease; }
-        
-        .menu-list{ list-style:none; padding:0; margin:18px 0 0 0; flex-grow: 1; }
-        .menu-list li{ margin:14px 0; }
-        .menu-list a{ 
-            color:var(--menu-link-color); text-decoration:none; font-weight:700; display:block; 
-            padding:14px 12px; border-radius:10px; font-size:1.05rem; 
-            transition: transform 220ms var(--ease), background 220ms var(--ease), box-shadow 220ms var(--ease), color 160ms linear; 
-        }
-        @media (hover: hover) and (pointer: fine){ 
-            .menu-list a:hover, .menu-list a:focus{ 
-                background: var(--menu-link-hover-bg); 
-                color:var(--menu-link-hover-color); 
-                transform:translateX(8px) scale(1.01); 
-                box-shadow:0 10px 24px rgba(3,63,114,0.08); outline:none; 
-            } 
-        }
-        .menu-list a:focus-visible{ outline:2px solid rgba(0,0,0,0.12); outline-offset:3px; }
-        
-        .menu-close{ 
-            background:transparent; border:none; font-size:1.6rem; position:absolute; top:12px; right:12px; 
-            cursor:pointer; color: var(--text-color); transition: color 0.3s ease; 
-        }
-        .menu-backdrop{ position:fixed; inset:0; background: rgba(0,0,0,0.35); z-index:125; transition: opacity 220ms ease; }
-        
-        .menu-footer{ 
-            margin-top:18px; padding-top:10px; border-top:var(--menu-footer-border); 
-            display:flex; flex-direction:column; gap:10px; transition: border-top 0.3s ease;
-        }
+      .page-wrap {
+        position: relative;
+        z-index: 2;
+        width: 100%;
+        padding: 28px;
+        box-sizing: border-box;
+        color: var(--text-color);
+      }
+      .content-card {
+        max-width: 980px;
+        margin: 32px auto;
+        background: var(--card-bg);
+        padding: 22px;
+        border-radius: 10px;
+        backdrop-filter: blur(4px);
+        position: relative;
+        transition: background 0.3s ease;
+      }
+      .content-card h1,
+      .content-card p {
+        color: var(--text-color);
+        transition: color 0.3s ease;
+      }
 
-        .dark-mode-toggle {
-            display: inline-flex; 
-            align-items: center; 
-            justify-content: center; 
-            width: 50px; 
-            height: 50px;
-            padding: 0; 
-            background: var(--menu-link-hover-bg); 
-            border-radius: 50%; 
-            font-weight: 700; 
-            color: var(--menu-link-color); 
-            cursor: pointer;
-            transition: background 0.3s ease, color 0.3s ease, transform 0.2s ease;
-            user-select: none;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
-        }
-        .dark-mode-toggle:hover {
-            transform: scale(1.05); 
-        }
-        .dark-mode-icon { 
-            font-size: 1.4em; 
-            margin: 0; 
-        }
+      .menu-toggle {
+        position: fixed;
+        top: 18px;
+        left: 18px;
+        z-index: 120;
+        background: var(--toggle-bg);
+        padding: 8px 12px;
+        border-radius: 6px;
+        box-shadow: var(--toggle-shadow);
+        cursor: pointer;
+        font-size: 1.2rem;
+        color: var(--toggle-icon-color);
+        transition: background 0.3s ease, box-shadow 0.3s ease, color 0.3s ease;
+      }
 
-        .sr-only-text {
-            position:absolute; 
-            left:-10000px; 
-            top:auto; 
-            width:1px; 
-            height:1px; 
-            overflow:hidden;
+      .side-menu {
+        position: fixed;
+        inset: 0 auto 0 0;
+        width: 320px;
+        max-width: 80vw;
+        height: 100vh;
+        background: var(--menu-bg);
+        box-shadow: var(--menu-shadow);
+        transform: translateX(-110%);
+        transition: transform 320ms cubic-bezier(0.2, 0.9, 0.2, 1),
+          background 0.3s ease, box-shadow 0.3s ease;
+        z-index: 130;
+        padding: 20px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+      .side-menu.open {
+        transform: translateX(0);
+        animation: menuSlideIn 420ms cubic-bezier(0.2, 0.9, 0.2, 1) both;
+      }
+      .side-menu.closing {
+        animation: menuSlideOut 320ms var(--ease) both;
+      }
+      @keyframes menuSlideIn {
+        0% {
+          transform: translateX(-110%);
         }
+        70% {
+          transform: translateX(10%);
+        }
+        100% {
+          transform: translateX(0);
+        }
+      }
+      @keyframes menuSlideOut {
+        0% {
+          transform: translateX(0);
+        }
+        100% {
+          transform: translateX(-110%);
+        }
+      }
 
-        .social-link{ 
-            display:inline-flex; align-items:center; gap:8px; text-decoration:none; 
-            color:var(--social-link-color); font-weight:700; transition: color 0.3s ease;
-        }
-        .social-link svg {
-            transition: fill 0.3s ease;
-        }
+      .menu-header {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        margin-bottom: 8px;
+      }
+      .menu-logo {
+        width: 72px;
+        height: 72px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 4px solid #add8e6;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      }
+      .menu-title h2 {
+        margin: 0;
+        font-size: 1.4rem;
+        color: var(--menu-title-color);
+        font-weight: 800;
+        transition: color 0.3s ease;
+      }
+      .menu-sep {
+        border: none;
+        height: 1px;
+        background: var(--menu-sep-color);
+        margin: 12px 0;
+        transition: background 0.3s ease;
+      }
 
-        .search-form { position: relative; display: flex; gap: 8px; align-items: center; margin-top: 18px; margin-bottom: 0; z-index: 4; }
-        .search-form .sr-only { position:absolute; left:-10000px; top:auto; width:1px; height:1px; overflow:hidden; }
-        .search-form input[type="search"] { 
-            width:260px; max-width:calc(100% - 36px); padding:8px 12px; border-radius:20px; 
-            border:1px solid var(--search-border); background: var(--search-bg); 
-            color: var(--search-text); box-shadow: 0 2px 8px rgba(0,0,0,0.18); 
-            transition: box-shadow 180ms var(--ease), transform 180ms var(--ease), background 0.3s ease, color 0.3s ease; 
+      .menu-list {
+        list-style: none;
+        padding: 0;
+        margin: 18px 0 0 0;
+        flex-grow: 1;
+      }
+      .menu-list li {
+        margin: 14px 0;
+      }
+      .menu-list a {
+        color: var(--menu-link-color);
+        text-decoration: none;
+        font-weight: 700;
+        display: block;
+        padding: 14px 12px;
+        border-radius: 10px;
+        font-size: 1.05rem;
+        transition: transform 220ms var(--ease), background 220ms var(--ease),
+          box-shadow 220ms var(--ease), color 160ms linear;
+      }
+      @media (hover: hover) and (pointer: fine) {
+        .menu-list a:hover,
+        .menu-list a:focus {
+          background: var(--menu-link-hover-bg);
+          color: var(--menu-link-hover-color);
+          transform: translateX(8px) scale(1.01);
+          box-shadow: 0 10px 24px rgba(3, 63, 114, 0.08);
+          outline: none;
         }
-        .search-form input::placeholder { color: var(--search-placeholder); }
-        .search-form button { 
-            border:none; background: var(--toggle-bg); color: var(--text-color); 
-            padding:8px 10px; border-radius:12px; cursor:pointer; 
-            box-shadow: 0 2px 8px rgba(0,0,0,0.12); transition: background 0.3s ease, color 0.3s ease;
-        }
-        @media (max-width:700px){ .search-form input[type="search"]{ width:160px; } }
+      }
+      .menu-list a:focus-visible {
+        outline: 2px solid rgba(0, 0, 0, 0.12);
+        outline-offset: 3px;
+      }
 
-        .brand-top-right{ position:fixed; top:12px; right:12px; z-index:140; opacity:0; transform:translateY(-6px); transition: opacity 480ms var(--ease), transform 480ms var(--ease); text-decoration: none; display: inline-block; }
-        .brand-top-right.visible{ opacity:1; transform:translateY(0); }
-        .brand-top-right:focus-visible { outline: 3px solid rgba(255,255,255,0.18); outline-offset: 4px; }
-        .brand-img{ display:block; height:auto; width:84px; }
-        @keyframes brandZoomOut {
-            0% { transform: scale(1) translateZ(0); opacity: 1; }
-            60% { transform: scale(1.18) translateZ(0); opacity: 0.96; }
-            100% { transform: scale(1.6) translateZ(0); opacity: 0; }
-        }
-        .brand-top-right.zooming { animation: brandZoomOut 600ms cubic-bezier(.45, 0, .55, 1) both; }
+      .menu-close {
+        background: transparent;
+        border: none;
+        font-size: 1.6rem;
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        cursor: pointer;
+        color: var(--text-color);
+        transition: color 0.3s ease;
+      }
+      .menu-backdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.35);
+        z-index: 125;
+        transition: opacity 220ms ease;
+      }
 
+      .menu-footer {
+        margin-top: 18px;
+        padding-top: 10px;
+        border-top: var(--menu-footer-border);
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        transition: border-top 0.3s ease;
+      }
+
+      .dark-mode-toggle {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 50px;
+        height: 50px;
+        padding: 0;
+        background: var(--menu-link-hover-bg);
+        border-radius: 50%;
+        font-weight: 700;
+        color: var(--menu-link-color);
+        cursor: pointer;
+        transition: background 0.3s ease, color 0.3s ease, transform 0.2s ease;
+        user-select: none;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+      .dark-mode-toggle:hover {
+        transform: scale(1.05);
+      }
+      .dark-mode-icon {
+        font-size: 1.4em;
+        margin: 0;
+      }
+
+      .sr-only-text {
+        position: absolute;
+        left: -10000px;
+        top: auto;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+      }
+
+      .social-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        text-decoration: none;
+        color: var(--social-link-color);
+        font-weight: 700;
+        transition: color 0.3s ease;
+      }
+      .social-link svg {
+        transition: fill 0.3s ease;
+      }
+
+      .search-form {
+        position: relative;
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        margin-top: 18px;
+        margin-bottom: 0;
+        z-index: 4;
+      }
+      .search-form .sr-only {
+        position: absolute;
+        left: -10000px;
+        top: auto;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+      }
+      .search-form input[type="search"] {
+        width: 260px;
+        max-width: calc(100% - 36px);
+        padding: 8px 12px;
+        border-radius: 20px;
+        border: 1px solid var(--search-border);
+        background: var(--search-bg);
+        color: var(--search-text);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+        transition: box-shadow 180ms var(--ease), transform 180ms var(--ease),
+          background 0.3s ease, color 0.3s ease;
+      }
+      .search-form input::placeholder {
+        color: var(--search-placeholder);
+      }
+      .search-form button {
+        border: none;
+        background: var(--toggle-bg);
+        color: var(--text-color);
+        padding: 8px 10px;
+        border-radius: 12px;
+        cursor: pointer;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+        transition: background 0.3s ease, color 0.3s ease;
+      }
+      @media (max-width: 700px) {
+        .search-form input[type="search"] {
+          width: 160px;
+        }
+      }
+
+      .brand-top-right {
+        position: fixed;
+        top: 12px;
+        right: 12px;
+        z-index: 140;
+        opacity: 0;
+        transform: translateY(-6px);
+        transition: opacity 480ms var(--ease), transform 480ms var(--ease);
+        text-decoration: none;
+        display: inline-block;
+      }
+      .brand-top-right.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      .brand-top-right:focus-visible {
+        outline: 3px solid rgba(255, 255, 255, 0.18);
+        outline-offset: 4px;
+      }
+      .brand-img {
+        display: block;
+        height: auto;
+        width: 84px;
+      }
+      @keyframes brandZoomOut {
+        0% {
+          transform: scale(1) translateZ(0);
+          opacity: 1;
+        }
+        60% {
+          transform: scale(1.18) translateZ(0);
+          opacity: 0.96;
+        }
+        100% {
+          transform: scale(1.6) translateZ(0);
+          opacity: 0;
+        }
+      }
+      .brand-top-right.zooming {
+        animation: brandZoomOut 600ms cubic-bezier(0.45, 0, 0.55, 1) both;
+      }
+
+      .back-btn {
+        position: absolute;
+        top: 22px;
+        left: 22px;
+        z-index: 10;
+        background: var(--back-btn-bg);
+        color: var(--back-btn-text);
+        border: none;
+        border-radius: 8px;
+        font-size: 1.05rem;
+        font-weight: 700;
+        padding: 8px 18px 8px 38px;
+        cursor: pointer;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        transition: all 220ms var(--ease);
+        outline: none;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .back-btn:before {
+        content: "←";
+        display: inline-block;
+        margin-right: 8px;
+        font-size: 1.2rem;
+      }
+      .back-btn:hover,
+      .back-btn:focus {
+        background: var(--back-btn-hover-bg);
+        color: var(--back-btn-hover-text);
+        box-shadow: 0 8px 24px rgba(3, 63, 114, 0.1);
+        transform: translateY(-2px) scale(1.02);
+      }
+      .back-btn:active {
+        background: #91d7fa;
+        transform: scale(0.99);
+      }
+      .back-btn:focus-visible {
+        outline: 2px solid #0a65a1;
+        outline-offset: 3px;
+      }
+
+      @media (max-width: 700px) {
         .back-btn {
-            position: absolute; top: 22px; left: 22px; z-index: 10;
-            background: var(--back-btn-bg); 
-            color: var(--back-btn-text); 
-            border: none; border-radius: 8px;
-            font-size: 1.05rem; font-weight: 700; padding: 8px 18px 8px 38px; cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.10); transition: all 220ms var(--ease); outline: none;
-            display: flex; align-items: center; gap: 8px;
+          font-size: 0.97rem;
+          padding: 8px 12px 8px 32px;
+          left: 10px;
+          top: 10px;
         }
-        .back-btn:before {
-            content: "←"; display: inline-block; margin-right: 8px; font-size: 1.2rem;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          transition: none !important;
+          animation: none !important;
         }
-        .back-btn:hover, .back-btn:focus {
-            background: var(--back-btn-hover-bg); 
-            color: var(--back-btn-hover-text); 
-            box-shadow: 0 8px 24px rgba(3,63,114,0.10); transform: translateY(-2px) scale(1.02);
-        }
-        .back-btn:active { background: #91d7fa; transform: scale(0.99); }
-        .back-btn:focus-visible { outline: 2px solid #0a65a1; outline-offset: 3px; }
-        
-        @media (max-width:700px){ .back-btn{ font-size:0.97rem; padding:8px 12px 8px 32px; left:10px; top:10px; } }
-        @media (prefers-reduced-motion: reduce){ *{ transition:none !important; animation:none !important; } }
+      }
     </style>
-</head>
-<body class="light-mode">
-    <div class="menu-toggle" aria-controls="sideMenu" aria-expanded="false" aria-label="Open campus navigation menu">☰</div>
+  </head>
+  <body class="light-mode">
+    <div
+      class="menu-toggle"
+      aria-controls="sideMenu"
+      aria-expanded="false"
+      aria-label="Open campus navigation menu"
+    >
+      ☰
+    </div>
     <nav id="sideMenu" class="side-menu" aria-hidden="true">
-        <button class="menu-close" aria-label="Close menu">☰</button>
-        <div class="menu-header">
-            <img src="img/logomap.jpg" alt="BCP MV GO" class="menu-logo">
-            <div class="menu-title"><h2>BCP MV GO</h2></div>
+      <button class="menu-close" aria-label="Close menu">☰</button>
+      <div class="menu-header">
+        <img src="img/logomap.jpg" alt="BCP MV GO" class="menu-logo" />
+        <div class="menu-title"><h2>BCP MV GO</h2></div>
+      </div>
+      <hr class="menu-sep" />
+      <ul class="menu-list">
+        <li><a href="landing.html">Home</a></li>
+        <li><a href="floorloc.html">Campus Map</a></li>
+        <li><a href="#buildings">Buildings</a></li>
+        <li><a href="#directions">Directions</a></li>
+      </ul>
+      <div class="menu-footer">
+        <div
+          class="dark-mode-toggle"
+          role="button"
+          aria-pressed="false"
+          aria-label="Toggle dark mode"
+        >
+          <span class="dark-mode-icon">🌙</span>
+          <span class="sr-only-text dark-mode-text">Dark Mode</span>
         </div>
-        <hr class="menu-sep">
-        <ul class="menu-list">
-            <li><a href="landing.html">Home</a></li>
-            <li><a href="floorloc.html">Campus Map</a></li>
-            <li><a href="#buildings">Buildings</a></li>
-            <li><a href="#directions">Directions</a></li>
-        </ul>
-        <div class="menu-footer">
-            <div class="dark-mode-toggle" role="button" aria-pressed="false" aria-label="Toggle dark mode">
-                <span class="dark-mode-icon">🌙</span>
-                <span class="sr-only-text dark-mode-text">Dark Mode</span>
-            </div>
-            
-            <a class="social-link" href="https://www.facebook.com/bcpofficialpage" target="_blank" rel="noopener" aria-label="Open Facebook page">
-                <svg class="social-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">
-                    <path fill="#1877F2" d="M24 12.073C24 5.405 18.627 0 12 .0S0 5.405 0 12.073C0 18.093 4.388 23.092 10.125 24v-8.485H7.078v-3.442h3.047V9.412c0-3.017 1.792-4.677 4.533-4.677 1.312 0 2.686.235 2.686.235v2.953h-1.513c-1.491 0-1.953.928-1.953 1.878v2.254h3.328l-.532 3.442h-2.796V24C19.612 23.092 24 18.093 24 12.073z"/>
-                    <path class="facebook-white-path" fill="#fff" d="M16.671 15.515l.532-3.442h-3.328v-2.254c0-.95.462-1.878 1.953-1.878h1.513V5.988s-1.374-.235-2.686-.235c-2.74 0-4.533 1.66-4.533 4.677v2.143H7.078v3.442h3.047V24h3.041v-8.485h2.505z"/>
-                </svg>
-                <span class="social-text">bcpofficialpage</span>
-            </a>
 
-            <a class="social-link" href="https://bcp.edu.ph/" target="_blank" rel="noopener" aria-label="Open website">
-                <svg class="social-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">
-                    <path fill="#6b6b6b" d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm6.93 6h-2.02a15.08 15.08 0 0 0-1.24-3.06A8.03 8.03 0 0 1 18.93 8zM12 4c.74 0 2.02 3.22 2.63 6H9.37C9.98 7.22 11.26 4 12 4zM4.07 8a8.03 8.03 0 0 1 3.29-3.06C7.09 6.78 6.39 8.26 6.07 10H4.07zM4 12c0-.91.12-1.79.34-2.62A13.02 13.02 0 0 0 8 12H4zm0 2h4a13.02 13.02 0 0 0-3.66 2.62A7.96 7.96 0 0 1 4 14zm8 6c-.74 0-2.02-3.22-2.63-6h5.26C14.02 16.78 12.74 20 12 20c-.74 0-1.98-3.22-2.63-6zM14.63 12c.13-.9.3-1.86.53-2.86.23 1 .4 1.96.53 2.86h-1.06zM16 18.62c.22-.83.34-1.71.34-2.62h4c0 1.46-.39 2.86-1.07 4.06A7.96 7.96 0 0 1 16 18.62zM9.37 14h5.26C13.98 16.78 12.74 20 12 20c-.74 0-1.98-3.22-2.63-6z"/>
-                </svg>
-                <span class="social-text">bcp.edu.ph</span>
-            </a>
-        </div>
+        <a
+          class="social-link"
+          href="https://www.facebook.com/bcpofficialpage"
+          target="_blank"
+          rel="noopener"
+          aria-label="Open Facebook page"
+        >
+          <svg
+            class="social-icon"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            width="18"
+            height="18"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <path
+              fill="#1877F2"
+              d="M24 12.073C24 5.405 18.627 0 12 .0S0 5.405 0 12.073C0 18.093 4.388 23.092 10.125 24v-8.485H7.078v-3.442h3.047V9.412c0-3.017 1.792-4.677 4.533-4.677 1.312 0 2.686.235 2.686.235v2.953h-1.513c-1.491 0-1.953.928-1.953 1.878v2.254h3.328l-.532 3.442h-2.796V24C19.612 23.092 24 18.093 24 12.073z"
+            />
+            <path
+              class="facebook-white-path"
+              fill="#fff"
+              d="M16.671 15.515l.532-3.442h-3.328v-2.254c0-.95.462-1.878 1.953-1.878h1.513V5.988s-1.374-.235-2.686-.235c-2.74 0-4.533 1.66-4.533 4.677v2.143H7.078v3.442h3.047V24h3.041v-8.485h2.505z"
+            />
+          </svg>
+          <span class="social-text">bcpofficialpage</span>
+        </a>
+
+        <a
+          class="social-link"
+          href="https://bcp.edu.ph/"
+          target="_blank"
+          rel="noopener"
+          aria-label="Open website"
+        >
+          <svg
+            class="social-icon"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            width="18"
+            height="18"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <path
+              fill="#6b6b6b"
+              d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm6.93 6h-2.02a15.08 15.08 0 0 0-1.24-3.06A8.03 8.03 0 0 1 18.93 8zM12 4c.74 0 2.02 3.22 2.63 6H9.37C9.98 7.22 11.26 4 12 4zM4.07 8a8.03 8.03 0 0 1 3.29-3.06C7.09 6.78 6.39 8.26 6.07 10H4.07zM4 12c0-.91.12-1.79.34-2.62A13.02 13.02 0 0 0 8 12H4zm0 2h4a13.02 13.02 0 0 0-3.66 2.62A7.96 7.96 0 0 1 4 14zm8 6c-.74 0-2.02-3.22-2.63-6h5.26C14.02 16.78 12.74 20 12 20c-.74 0-1.98-3.22-2.63-6zM14.63 12c.13-.9.3-1.86.53-2.86.23 1 .4 1.96.53 2.86h-1.06zM16 18.62c.22-.83.34-1.71.34-2.62h4c0 1.46-.39 2.86-1.07 4.06A7.96 7.96 0 0 1 16 18.62zM9.37 14h5.26C13.98 16.78 12.74 20 12 20c-.74 0-1.98-3.22-2.63-6z"
+            />
+          </svg>
+          <span class="social-text">bcp.edu.ph</span>
+        </a>
+      </div>
     </nav>
     <div class="menu-backdrop" hidden></div>
 
-    <a href="landing.html" class="brand-top-right" aria-label="Go to homepage" title="Go to homepage">
-        <img src="img/bcp.png" alt="BCP" class="brand-img" width="84">
+    <a
+      href="landing.html"
+      class="brand-top-right"
+      aria-label="Go to homepage"
+      title="Go to homepage"
+    >
+      <img src="img/bcp.png" alt="BCP" class="brand-img" width="84" />
     </a>
 
     <main class="page-wrap">
-        <div class="content-card">
-            <button type="button" class="back-btn" onclick="goBack()" aria-label="Go back to floor selection">
-                Back to Floor Select
-            </button>
-            <h1 style="margin-top:48px">Welcome to Third Floor</h1>
-            <p style="opacity:0.9">You can use the search box below to find room and facilities.</p>
-            <form class="search-form" role="search" aria-label="Search facilities">
-                <label class="sr-only" for="search-input">Search facilities</label>
-                <input id="search-input" type="search" placeholder="Search for a building or place..." aria-label="Search facilities" />
-                <button type="submit" aria-label="Search">🔍</button>
-            </form>
+      <div class="content-card">
+        <button
+          type="button"
+          class="back-btn"
+          onclick="goBack()"
+          aria-label="Go back to floor selection"
+        >
+          Back to Floor Select
+        </button>
+        <h1 style="margin-top: 48px">Welcome to Third Floor</h1>
+        <p style="opacity: 0.9">
+          Use the interactive map below to locate rooms and facilities on the
+          Third Floor.
+        </p>
+          <!-- Interactive map starting point and destination controls -->
+        <div class="controls">
+            <input type="text" id="start" placeholder="Starting Point (e.g., Stairway South)" aria-label="Starting point">
+            <input type="text" id="end" placeholder="Destination (e.g., Library)" aria-label="Destination">
+            <button onclick="calculateAndDisplayRoute()">Get Directions</button>
         </div>
+    <!-- Interactive map or content for the fifth floor goes here -->
+    <div class="interactive-map" id="interactiveMap" style="position: relative;">
+      <img
+        id="floorImg"
+        src="img3/THIRDFLOOR.jpg"
+        alt="Third Floor Plan"
+        style="width: 100%; border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); display: block;"
+      />
+
+      <!-- SVG overlay for lines -->
+      <svg id="mapSvg" style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; pointer-events: none;" xmlns="http://www.w3.org/2000/svg"></svg>
+
+      <!-- Controls -->
+      <div id="mapControls" style="position: absolute; right: 12px; bottom: 12px; z-index: 20; display: flex; gap: 8px;">
+        <button id="addEndpointBtn" type="button" style="padding: 8px 10px; border-radius: 8px; font-weight:700; cursor:pointer;">Add Endpoint</button>
+        <button id="addWaypointBtn" type="button" style="padding: 8px 10px; border-radius: 8px; font-weight:700; cursor:pointer; background:#76c893;">Add Waypoint</button>
+        <button id="clearSelectionBtn" type="button" style="padding: 8px 10px; border-radius: 8px; font-weight:700; cursor:pointer;">Clear</button>
+      </div>
+
+      <!-- Endpoints container -->
+      <div id="endpointsContainer" aria-live="polite" style="position: absolute; left: 12px; bottom: 12px; z-index: 20; max-height: 220px; overflow:auto; min-width:160px; background: rgba(255,255,255,0.06); padding:8px; border-radius:8px;">
+        <strong style="display:block; margin-bottom:6px;">Endpoints</strong>
+        <ul id="endpointsList" style="list-style:none; margin:0; padding:0; font-size:0.95rem;"></ul>
+        <hr style="opacity:0.08; margin:8px 0; border:none; height:1px; background:rgba(255,255,255,0.06);">
+        <strong style="display:block; margin-bottom:6px;">Waypoints</strong>
+        <ul id="waypointsList" style="list-style:none; margin:0; padding:0; font-size:0.95rem;"></ul>
+      </div>
+    </div>
     </main>
 
     <script>
-        function goBack() {
-            window.location.href = "floorloc.html";
+      function goBack() {
+        window.location.href = "floorloc.html";
+      }
+
+      (function () {
+        const toggle = document.querySelector(".menu-toggle");
+        const menu = document.getElementById("sideMenu");
+        const closeBtn = document.querySelector(".menu-close");
+        const backdrop = document.querySelector(".menu-backdrop");
+        const brand = document.querySelector(".brand-top-right");
+        const darkModeToggle = document.querySelector(".dark-mode-toggle");
+        const body = document.body;
+
+        function applyDarkModePreference() {
+          const prefersDarkMode = localStorage.getItem("dark-mode") === "true";
+          if (prefersDarkMode) {
+            body.classList.add("dark-mode");
+            darkModeToggle.setAttribute("aria-pressed", "true");
+            darkModeToggle.querySelector(".dark-mode-icon").textContent = "☀️";
+          }
         }
 
-        (function(){
-            const toggle = document.querySelector('.menu-toggle');
-            const menu = document.getElementById('sideMenu');
-            const closeBtn = document.querySelector('.menu-close');
-            const backdrop = document.querySelector('.menu-backdrop');
-            const brand = document.querySelector('.brand-top-right');
-            const darkModeToggle = document.querySelector('.dark-mode-toggle');
-            const body = document.body;
+        function toggleDarkMode() {
+          const isDarkMode = body.classList.toggle("dark-mode");
+          localStorage.setItem("dark-mode", isDarkMode);
+          darkModeToggle.setAttribute("aria-pressed", String(isDarkMode));
+          darkModeToggle.setAttribute(
+            "aria-label",
+            isDarkMode ? "Toggle light mode" : "Toggle dark mode"
+          );
+          darkModeToggle.querySelector(".dark-mode-icon").textContent =
+            isDarkMode ? "☀️" : "🌙";
+          const screenReaderText =
+            darkModeToggle.querySelector(".dark-mode-text");
+          screenReaderText.textContent = isDarkMode
+            ? "Light Mode"
+            : "Dark Mode";
+        }
 
-            function applyDarkModePreference() {
-                const prefersDarkMode = localStorage.getItem('dark-mode') === 'true';
-                if (prefersDarkMode) {
-                    body.classList.add('dark-mode');
-                    darkModeToggle.setAttribute('aria-pressed', 'true');
-                    darkModeToggle.querySelector('.dark-mode-icon').textContent = '☀️';
+        applyDarkModePreference();
+        const initialIsDark = body.classList.contains("dark-mode");
+        darkModeToggle.setAttribute(
+          "aria-label",
+          initialIsDark ? "Toggle light mode" : "Toggle dark mode"
+        );
+        darkModeToggle.querySelector(".dark-mode-text").textContent =
+          initialIsDark ? "Light Mode" : "Dark Mode";
+
+        darkModeToggle.addEventListener("click", toggleDarkMode);
+
+        function toggleMenu() {
+          const isOpen = menu.classList.toggle("open");
+          toggle.classList.toggle("open", isOpen);
+          menu.setAttribute("aria-hidden", String(!isOpen));
+          toggle.setAttribute("aria-expanded", String(isOpen));
+          if (isOpen) {
+            backdrop.hidden = false;
+            backdrop.style.opacity = "1";
+            closeBtn.focus();
+          } else {
+            backdrop.style.opacity = "0";
+            setTimeout(() => (backdrop.hidden = true), 250);
+            toggle.focus();
+          }
+        }
+
+        toggle.addEventListener("click", toggleMenu);
+        closeBtn.addEventListener("click", toggleMenu);
+        backdrop.addEventListener("click", toggleMenu);
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "Escape" && menu.classList.contains("open"))
+            toggleMenu();
+        });
+
+        if (brand) {
+          setTimeout(() => brand.classList.add("visible"), 350);
+          brand.addEventListener("click", (e) => {
+            e.preventDefault();
+            brand.classList.add("zooming");
+            setTimeout(() => {
+              window.location.href = brand.href;
+            }, 600);
+          });
+        }
+      })();
+    
+      // Endpoint & drawing logic
+      (function () {
+        const interactiveMap = document.getElementById("interactiveMap");
+        const floorImg = document.getElementById("floorImg");
+        const svg = document.getElementById("mapSvg");
+        const addBtn = document.getElementById("addEndpointBtn");
+    const addWaypointBtn = document.getElementById("addWaypointBtn");
+        const clearBtn = document.getElementById("clearSelectionBtn");
+        const endpointsList = document.getElementById("endpointsList");
+    const waypointsList = document.getElementById("waypointsList");
+
+    let adding = false;
+    let addingWaypoint = false;
+    let endpoints = [
+    {
+    "id": "01o7ljq",
+    "name": "ROTC Office",
+    "xPct": 0.961735,
+    "yPct": 0.648019
+  },
+  {
+    "id": "s72epfa",
+    "name": "301",
+    "xPct": 0.8545919999999999,
+    "yPct": 0.715367
+  },
+  {
+    "id": "k3demmy",
+    "name": "302",
+    "xPct": 0.79949,
+    "yPct": 0.7327469999999999
+  },
+  {
+    "id": "s8gypsc",
+    "name": "303",
+    "xPct": 0.740306,
+    "yPct": 0.7523000000000001
+  },
+  {
+    "id": "8cvjhw8",
+    "name": "304",
+    "xPct": 0.6760200000000001,
+    "yPct": 0.7740250000000001
+  },
+  {
+    "id": "rhdl8m4",
+    "name": "305",
+    "xPct": 0.615816,
+    "yPct": 0.7903189999999999
+  },
+  {
+    "id": "8uoqzn0",
+    "name": "Phychology Laboratory",
+    "xPct": 0.556633,
+    "yPct": 0.8076990000000001
+  },
+  {
+    "id": "sxsb8vl",
+    "name": "306",
+    "xPct": 0.494388,
+    "yPct": 0.823993
+  },
+  {
+    "id": "uw61x3l",
+    "name": "307",
+    "xPct": 0.425,
+    "yPct": 0.850063
+  },
+  {
+    "id": "e5tci1c",
+    "name": "308",
+    "xPct": 0.358673,
+    "yPct": 0.869615
+  },
+  {
+    "id": "pje3pja",
+    "name": "309",
+    "xPct": 0.28214300000000003,
+    "yPct": 0.8902540000000001
+  },
+  {
+    "id": "ncsqb7s",
+    "name": "310",
+    "xPct": 0.217857,
+    "yPct": 0.910893
+  },
+  {
+    "id": "o9c04io",
+    "name": "311",
+    "xPct": 0.021939,
+    "yPct": 0.7903189999999999
+  },
+  {
+    "id": "7s8g2pg",
+    "name": "312",
+    "xPct": 0.020918000000000003,
+    "yPct": 0.731661
+  },
+  {
+    "id": "2v6q55v",
+    "name": "313",
+    "xPct": 0.019898,
+    "yPct": 0.6730029999999999
+  },
+  {
+    "id": "h9lhvjv",
+    "name": "314",
+    "xPct": 0.019898,
+    "yPct": 0.614345
+  },
+  {
+    "id": "qoc3dgw",
+    "name": "Staircase 1",
+    "xPct": 0.908673,
+    "yPct": 0.693642
+  },
+  {
+    "id": "svx70kf",
+    "name": "Staircase 2",
+    "xPct": 0.131122,
+    "yPct": 0.910893
+  },
+  {
+    "id": "ycpu6ja",
+    "name": "Restroom 1",
+    "xPct": 0.028061,
+    "yPct": 0.907634
+  },
+  {
+    "id": "3xfebmy",
+    "name": "Staircase 3",
+    "xPct": 0.047449000000000005,
+    "yPct": 0.561119
+  },
+  {
+    "id": "s6h2pt7",
+    "name": "Staircase 4",
+    "xPct": 0.05051,
+    "yPct": 0.14291
+  },
+  {
+    "id": "omwniiz",
+    "name": "Restroom 2",
+    "xPct": 0.084184,
+    "yPct": 0.024509
+  },
+  {
+    "id": "ckje4xu",
+    "name": "315",
+    "xPct": 0.020918000000000003,
+    "yPct": 0.498116
+  },
+  {
+    "id": "frbernk",
+    "name": "316",
+    "xPct": 0.018878,
+    "yPct": 0.43945799999999996
+  },
+  {
+    "id": "xqarxim",
+    "name": "317",
+    "xPct": 0.019898,
+    "yPct": 0.378628
+  },
+  {
+    "id": "u4zstou",
+    "name": "318",
+    "xPct": 0.015816,
+    "yPct": 0.322143
+  },
+  {
+    "id": "w7fiquf",
+    "name": "319",
+    "xPct": 0.016837,
+    "yPct": 0.264571
+  },
+  {
+    "id": "gdz1mxq",
+    "name": "320",
+    "xPct": 0.019898,
+    "yPct": 0.202655
+  },
+  {
+    "id": "fm5jbc9",
+    "name": "321",
+    "xPct": 0.198469,
+    "yPct": 0.02125
+  },
+  {
+    "id": "pwprayu",
+    "name": "322",
+    "xPct": 0.255613,
+    "yPct": 0.02125
+  },
+  {
+    "id": "66lcyv7",
+    "name": "323",
+    "xPct": 0.311735,
+    "yPct": 0.020164
+  },
+  {
+    "id": "cqt9tfi",
+    "name": "324",
+    "xPct": 0.36581600000000003,
+    "yPct": 0.020164
+  },
+  {
+    "id": "ccrg5h0",
+    "name": "325",
+    "xPct": 0.41989800000000005,
+    "yPct": 0.022336
+  },
+  {
+    "id": "4nr5n95",
+    "name": "326",
+    "xPct": 0.475,
+    "yPct": 0.02125
+  },
+  {
+    "id": "vv6y77y",
+    "name": "Staircase 5",
+    "xPct": 0.5331629999999999,
+    "yPct": 0.02125
+  },
+  {
+    "id": "wvm2r5i",
+    "name": "327",
+    "xPct": 0.695465,
+    "yPct": 0.023860000000000003
+  },
+  {
+    "id": "wq9e9x8",
+    "name": "328",
+    "xPct": 0.7522679999999999,
+    "yPct": 0.021324999999999997
+  },
+  {
+    "id": "jv1sbg2",
+    "name": "329",
+    "xPct": 0.805782,
+    "yPct": 0.020722
+  },
+  {
+    "id": "kn9e1e4",
+    "name": "330",
+    "xPct": 0.8580500000000001,
+    "yPct": 0.020842999999999997
+  },
+  {
+    "id": "yihl5wj",
+    "name": "331",
+    "xPct": 0.9149660000000001,
+    "yPct": 0.021686999999999998
+  },
+  {
+    "id": "nw4bf84",
+    "name": "332",
+    "xPct": 0.9699550000000001,
+    "yPct": 0.023014999999999997
+  },
+  {
+    "id": "osw7ydq",
+    "name": "Staircase 6",
+    "xPct": 0.973469,
+    "yPct": 0.123434
+  },
+  {
+    "id": "3i2up0a",
+    "name": "Alumni Org",
+    "xPct": 0.9741500000000001,
+    "yPct": 0.220473
+  },
+  {
+    "id": "wqai6xn",
+    "name": "SSD",
+    "xPct": 0.9765309999999999,
+    "yPct": 0.29602799999999996
+  },
+  {
+    "id": "4h5t5t3",
+    "name": "GAD",
+    "xPct": 0.972562,
+    "yPct": 0.366756
+  },
+  {
+    "id": "dirq8sc",
+    "name": "TANGINA",
+    "xPct": 0.613832,
+    "yPct": 0.027360000000000002
+  }
+
+    ]; // {id, name, xPct, yPct}
+  let selected = new Set();
+  let waypoints = [
+       {
+    "id": "bl5mti0",
+    "name": "WP 1",
+    "xPct": 0.913265,
+    "yPct": 0.5867840000000001,
+    "active": true
+  },
+  {
+    "id": "ymgcatp",
+    "name": "WP 2",
+    "xPct": 0.830159,
+    "yPct": 0.6088709999999999,
+    "active": true
+  },
+  {
+    "id": "99bperl",
+    "name": "WP 3",
+    "xPct": 0.714966,
+    "yPct": 0.6374759999999999,
+    "active": true
+  },
+  {
+    "id": "bzqpnzz",
+    "name": "WP 4",
+    "xPct": 0.588435,
+    "yPct": 0.674409,
+    "active": true
+  },
+  {
+    "id": "3f1n2hq",
+    "name": "WP 5",
+    "xPct": 0.46122399999999997,
+    "yPct": 0.7108589999999999,
+    "active": true
+  },
+  {
+    "id": "3bet7ub",
+    "name": "WP 6",
+    "xPct": 0.33095199999999997,
+    "yPct": 0.757085,
+    "active": true
+  },
+  {
+    "id": "zuh949p",
+    "name": "WP 7",
+    "xPct": 0.180612,
+    "yPct": 0.8015009999999999,
+    "active": true
+  },
+  {
+    "id": "exwtl01",
+    "name": "WP 8",
+    "xPct": 0.124263,
+    "yPct": 0.73536,
+    "active": true
+  },
+  {
+    "id": "n1gqamx",
+    "name": "WP 9",
+    "xPct": 0.129705,
+    "yPct": 0.606699,
+    "active": true
+  },
+  {
+    "id": "8l8e07g",
+    "name": "WP 10",
+    "xPct": 0.132087,
+    "yPct": 0.48612299999999997,
+    "active": true
+  },
+  {
+    "id": "9m1wltl",
+    "name": "WP 11",
+    "xPct": 0.130385,
+    "yPct": 0.363256,
+    "active": true
+  },
+  {
+    "id": "etk84v3",
+    "name": "WP 12",
+    "xPct": 0.131406,
+    "yPct": 0.238819,
+    "active": true
+  },
+  {
+    "id": "sc7kg5u",
+    "name": "WP 13",
+    "xPct": 0.134694,
+    "yPct": 0.13236499999999998,
+    "active": true
+  },
+  {
+    "id": "4wodyez",
+    "name": "WP 14",
+    "xPct": 0.226304,
+    "yPct": 0.12548600000000001,
+    "active": true
+  },
+  {
+    "id": "px6yjg2",
+    "name": "WP 15",
+    "xPct": 0.303288,
+    "yPct": 0.130072,
+    "active": true
+  },
+  {
+    "id": "ytuxhiw",
+    "name": "WP 16",
+    "xPct": 0.386054,
+    "yPct": 0.130193,
+    "active": true
+  },
+  {
+    "id": "oc45tj7",
+    "name": "WP 17",
+    "xPct": 0.45771,
+    "yPct": 0.128141,
+    "active": true
+  },
+  {
+    "id": "up5oxwi",
+    "name": "WP 18",
+    "xPct": 0.536054,
+    "yPct": 0.13067600000000001,
+    "active": true
+  },
+  {
+    "id": "co1dn0v",
+    "name": "WP 19",
+    "xPct": 0.703401,
+    "yPct": 0.13671,
+    "active": true
+  },
+  {
+    "id": "b447mh4",
+    "name": "WP 20",
+    "xPct": 0.813719,
+    "yPct": 0.132727,
+    "active": true
+  },
+  {
+    "id": "d2vvk9n",
+    "name": "WP 21",
+    "xPct": 0.9036279999999999,
+    "yPct": 0.134055,
+    "active": true
+  },
+  {
+    "id": "4d5v50z",
+    "name": "WP 22",
+    "xPct": 0.919841,
+    "yPct": 0.298563,
+    "active": true
+  }
+  ]; // {id, name, xPct, yPct, active}
+
+        function uid() {
+          return Math.random().toString(36).slice(2, 9);
+        }
+
+        function toPctCoords(clientX, clientY) {
+          const rect = floorImg.getBoundingClientRect();
+          const x = (clientX - rect.left) / rect.width;
+          const y = (clientY - rect.top) / rect.height;
+          return { x: Math.max(0, Math.min(1, x)), y: Math.max(0, Math.min(1, y)) };
+        }
+
+        function renderEndpoints() {
+          // clear existing markers
+          const existing = interactiveMap.querySelectorAll('.ep-marker');
+          existing.forEach(n => n.remove());
+
+          // update SVG size/coords
+          const rect = floorImg.getBoundingClientRect();
+          svg.setAttribute('width', rect.width);
+          svg.setAttribute('height', rect.height);
+
+          // render markers
+          endpoints.forEach(ep => {
+            const marker = document.createElement('button');
+            marker.className = 'ep-marker';
+            marker.setAttribute('data-id', ep.id);
+            marker.title = ep.name;
+            marker.style.position = 'absolute';
+            marker.style.left = `calc(${(ep.xPct * 100).toFixed(4)}% - 10px)`;
+            marker.style.top = `calc(${(ep.yPct * 100).toFixed(4)}% - 10px)`;
+            marker.style.width = '20px';
+            marker.style.height = '20px';
+            marker.style.borderRadius = '50%';
+            marker.style.border = '2px solid #ffffff';
+            marker.style.boxSizing = 'border-box';
+            marker.style.background = selected.has(ep.id) ? '#ffcc00' : '#0077cc';
+            marker.style.cursor = 'pointer';
+            marker.style.zIndex = 30;
+            marker.setAttribute('aria-label', `Endpoint ${ep.name}`);
+            // click toggles selection
+            marker.addEventListener('click', (ev) => {
+              ev.stopPropagation();
+              toggleSelect(ep.id);
+            });
+            marker.addEventListener('keydown', (ev) => {
+              if (ev.key === 'Enter' || ev.key === ' ') {
+                ev.preventDefault();
+                toggleSelect(ep.id);
+              }
+            });
+
+            // drag handling
+            let dragging = false;
+            let startPointer = null;
+            let startPos = null;
+
+            function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
+
+            marker.addEventListener('pointerdown', (ev) => {
+              // start dragging only with primary button
+              if (ev.button !== 0) return;
+              ev.preventDefault();
+              dragging = true;
+              marker.setPointerCapture(ev.pointerId);
+              startPointer = { x: ev.clientX, y: ev.clientY };
+              const rect = floorImg.getBoundingClientRect();
+              startPos = { left: rect.left + ep.xPct * rect.width, top: rect.top + ep.yPct * rect.height };
+              marker.style.transition = 'none';
+            });
+
+            marker.addEventListener('pointermove', (ev) => {
+              if (!dragging) return;
+              ev.preventDefault();
+              const dx = ev.clientX - startPointer.x;
+              const dy = ev.clientY - startPointer.y;
+              const rect = floorImg.getBoundingClientRect();
+              let newLeft = startPos.left + dx;
+              let newTop = startPos.top + dy;
+              // clamp inside image rect
+              newLeft = clamp(newLeft, rect.left, rect.right);
+              newTop = clamp(newTop, rect.top, rect.bottom);
+              const xPct = (newLeft - rect.left) / rect.width;
+              const yPct = (newTop - rect.top) / rect.height;
+              marker.style.left = `calc(${(xPct * 100).toFixed(4)}% - 10px)`;
+              marker.style.top = `calc(${(yPct * 100).toFixed(4)}% - 10px)`;
+              // update temporary ep coords for live line drawing
+              const idx = endpoints.findIndex(e => e.id === ep.id);
+              if (idx !== -1) {
+                endpoints[idx].xPct = xPct;
+                endpoints[idx].yPct = yPct;
+              }
+              drawLines();
+            });
+
+            marker.addEventListener('pointerup', (ev) => {
+              if (!dragging) return;
+              dragging = false;
+              marker.releasePointerCapture(ev.pointerId);
+              marker.style.transition = '';
+              // ensure final coords persisted
+              const rect = floorImg.getBoundingClientRect();
+              const leftStyle = marker.style.left;
+              const topStyle = marker.style.top;
+              // parse percent from calc(x% - 10px)
+              const pctMatchX = leftStyle.match(/([0-9.]+)%/);
+              const pctMatchY = topStyle.match(/([0-9.]+)%/);
+              if (pctMatchX && pctMatchY) {
+                const xPct = parseFloat(pctMatchX[1]) / 100;
+                const yPct = parseFloat(pctMatchY[1]) / 100;
+                const idx = endpoints.findIndex(e => e.id === ep.id);
+                if (idx !== -1) {
+                  endpoints[idx].xPct = clamp(xPct, 0, 1);
+                  endpoints[idx].yPct = clamp(yPct, 0, 1);
                 }
-            }
+                console.log('Endpoint moved. Updated endpoint:', endpoints.find(e => e.id === ep.id));
+                console.log('Full endpoints array (paste into code):');
+                console.log(JSON.stringify(endpoints, null, 2));
+              }
+              renderEndpoints();
+            });
+            interactiveMap.appendChild(marker);
+          });
 
-            function toggleDarkMode() {
-                const isDarkMode = body.classList.toggle('dark-mode');
-                localStorage.setItem('dark-mode', isDarkMode); 
-                darkModeToggle.setAttribute('aria-pressed', String(isDarkMode));
-                darkModeToggle.setAttribute('aria-label', isDarkMode ? 'Toggle light mode' : 'Toggle dark mode');
-                darkModeToggle.querySelector('.dark-mode-icon').textContent = isDarkMode ? '☀️' : '🌙';
-                const screenReaderText = darkModeToggle.querySelector('.dark-mode-text');
-                screenReaderText.textContent = isDarkMode ? 'Light Mode' : 'Dark Mode';
-            }
+            // render waypoints
+            waypoints.forEach(wp => {
+              const wmarker = document.createElement('button');
+              wmarker.className = 'wp-marker';
+              wmarker.setAttribute('data-id', wp.id);
+              wmarker.title = wp.name;
+              wmarker.style.position = 'absolute';
+              wmarker.style.left = `calc(${(wp.xPct * 100).toFixed(4)}% - 8px)`;
+              wmarker.style.top = `calc(${(wp.yPct * 100).toFixed(4)}% - 8px)`;
+              wmarker.style.width = '16px';
+              wmarker.style.height = '16px';
+              wmarker.style.borderRadius = '50%';
+              wmarker.style.border = '2px solid #fff';
+              wmarker.style.boxSizing = 'border-box';
+              wmarker.style.background = wp.active ? '#f39c12' : '#444';
+              wmarker.style.cursor = 'grab';
+              wmarker.style.zIndex = 28;
+              wmarker.setAttribute('aria-label', `Waypoint ${wp.name}`);
 
-            applyDarkModePreference();
-            const initialIsDark = body.classList.contains('dark-mode');
-            darkModeToggle.setAttribute('aria-label', initialIsDark ? 'Toggle light mode' : 'Toggle dark mode');
-            darkModeToggle.querySelector('.dark-mode-text').textContent = initialIsDark ? 'Light Mode' : 'Dark Mode';
-
-            darkModeToggle.addEventListener('click', toggleDarkMode);
-
-            function toggleMenu(){
-                const isOpen = menu.classList.toggle('open');
-                toggle.classList.toggle('open', isOpen);
-                menu.setAttribute('aria-hidden', String(!isOpen));
-                toggle.setAttribute('aria-expanded', String(isOpen));
-                if(isOpen){
-                    backdrop.hidden = false; backdrop.style.opacity = '1'; closeBtn.focus();
-                } else {
-                    backdrop.style.opacity = '0'; setTimeout(()=>backdrop.hidden = true, 250); toggle.focus();
+              // drag handling for waypoint (similar to endpoints)
+              let dragging = false;
+              let startPointer = null;
+              let startPos = null;
+              function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
+              wmarker.addEventListener('pointerdown', (ev) => {
+                if (ev.button !== 0) return;
+                ev.preventDefault();
+                dragging = true;
+                wmarker.setPointerCapture(ev.pointerId);
+                startPointer = { x: ev.clientX, y: ev.clientY };
+                const rect = floorImg.getBoundingClientRect();
+                startPos = { left: rect.left + wp.xPct * rect.width, top: rect.top + wp.yPct * rect.height };
+                wmarker.style.transition = 'none';
+              });
+              wmarker.addEventListener('pointermove', (ev) => {
+                if (!dragging) return;
+                ev.preventDefault();
+                const dx = ev.clientX - startPointer.x;
+                const dy = ev.clientY - startPointer.y;
+                const rect = floorImg.getBoundingClientRect();
+                let newLeft = startPos.left + dx;
+                let newTop = startPos.top + dy;
+                newLeft = clamp(newLeft, rect.left, rect.right);
+                newTop = clamp(newTop, rect.top, rect.bottom);
+                const xPct = (newLeft - rect.left) / rect.width;
+                const yPct = (newTop - rect.top) / rect.height;
+                wmarker.style.left = `calc(${(xPct * 100).toFixed(4)}% - 8px)`;
+                wmarker.style.top = `calc(${(yPct * 100).toFixed(4)}% - 8px)`;
+                const idx = waypoints.findIndex(e => e.id === wp.id);
+                if (idx !== -1) {
+                  waypoints[idx].xPct = xPct;
+                  waypoints[idx].yPct = yPct;
                 }
+                drawLines();
+              });
+              wmarker.addEventListener('pointerup', (ev) => {
+                if (!dragging) return;
+                dragging = false;
+                wmarker.releasePointerCapture(ev.pointerId);
+                wmarker.style.transition = '';
+                const leftStyle = wmarker.style.left;
+                const topStyle = wmarker.style.top;
+                const pctMatchX = leftStyle.match(/([0-9.]+)%/);
+                const pctMatchY = topStyle.match(/([0-9.]+)%/);
+                if (pctMatchX && pctMatchY) {
+                  const xPct = parseFloat(pctMatchX[1]) / 100;
+                  const yPct = parseFloat(pctMatchY[1]) / 100;
+                  const idx = waypoints.findIndex(e => e.id === wp.id);
+                  if (idx !== -1) {
+                    waypoints[idx].xPct = clamp(xPct, 0, 1);
+                    waypoints[idx].yPct = clamp(yPct, 0, 1);
+                  }
+                  console.log('Waypoint moved. Updated waypoint:', waypoints.find(e => e.id === wp.id));
+                  console.log('Full waypoints array:');
+                  console.log(JSON.stringify(waypoints, null, 2));
+                }
+                renderEndpoints();
+              });
+
+              interactiveMap.appendChild(wmarker);
+            });
+
+          // update endpoints list
+          endpointsList.innerHTML = '';
+          endpoints.forEach(ep => {
+            const li = document.createElement('li');
+            li.style.display = 'flex';
+            li.style.justifyContent = 'space-between';
+            li.style.alignItems = 'center';
+            li.style.marginBottom = '6px';
+            const left = document.createElement('div');
+            left.textContent = ep.name;
+            const right = document.createElement('div');
+            right.style.display = 'flex';
+            right.style.gap = '6px';
+            const selBtn = document.createElement('button');
+            selBtn.textContent = selected.has(ep.id) ? 'Selected' : 'Select';
+            selBtn.style.cursor = 'pointer';
+            selBtn.addEventListener('click', () => toggleSelect(ep.id));
+            const delBtn = document.createElement('button');
+            delBtn.textContent = 'Delete';
+            delBtn.style.cursor = 'pointer';
+            delBtn.addEventListener('click', () => { deleteEndpoint(ep.id); });
+            right.appendChild(selBtn);
+            right.appendChild(delBtn);
+            li.appendChild(left);
+            li.appendChild(right);
+            endpointsList.appendChild(li);
+          });
+
+          // update waypoint list UI
+          renderWaypointsList();
+          drawLines();
+        }
+
+        function toggleSelect(id) {
+          if (selected.has(id)) selected.delete(id);
+          else selected.add(id);
+
+          // limit to two selected
+          if (selected.size > 2) {
+            // remove oldest
+            const it = selected.values();
+            const first = it.next().value;
+            selected.delete(first);
+          }
+          renderEndpoints();
+        }
+
+        function deleteEndpoint(id) {
+          endpoints = endpoints.filter(e => e.id !== id);
+          selected.delete(id);
+          console.log('Endpoint deleted. Updated endpoints array:', JSON.stringify(endpoints, null, 2));
+          renderEndpoints();
+        }
+
+        function drawLines() {
+          // clear svg
+          while (svg.firstChild) svg.removeChild(svg.firstChild);
+          if (selected.size !== 2) return;
+          const ids = Array.from(selected);
+          const a = endpoints.find(e => e.id === ids[0]);
+          const b = endpoints.find(e => e.id === ids[1]);
+          if (!a || !b) return;
+
+          const rect = floorImg.getBoundingClientRect();
+
+          // Build list of points: start endpoint, active waypoints (in creation order), end endpoint
+          const pts = [];
+          pts.push({ x: a.xPct * rect.width, y: a.yPct * rect.height });
+          waypoints.filter(w => w.active).forEach(w => {
+            pts.push({ x: w.xPct * rect.width, y: w.yPct * rect.height });
+          });
+          pts.push({ x: b.xPct * rect.width, y: b.yPct * rect.height });
+
+          // draw polyline
+          const poly = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
+          const pointsAttr = pts.map(p => `${p.x},${p.y}`).join(' ');
+          poly.setAttribute('points', pointsAttr);
+          poly.setAttribute('fill', 'none');
+          poly.setAttribute('stroke', '#ffcc00');
+          poly.setAttribute('stroke-width', '4');
+          poly.setAttribute('stroke-linecap', 'round');
+          poly.setAttribute('stroke-linejoin', 'round');
+          poly.style.pointerEvents = 'none';
+          svg.appendChild(poly);
+        }
+
+        function logEndpointCode(ep) {
+          const single = `{ id: '${ep.id}', name: '${ep.name}', xPct: ${ep.xPct.toFixed(6)}, yPct: ${ep.yPct.toFixed(6)} }`;
+          console.log('New endpoint created (single):', single);
+          console.log('Full endpoints array (paste into code):');
+          console.log(JSON.stringify(endpoints, null, 2));
+        }
+
+          function logWaypointCode(wp) {
+            const single = `{ id: '${wp.id}', name: '${wp.name}', xPct: ${wp.xPct.toFixed(6)}, yPct: ${wp.yPct.toFixed(6)}, active: ${wp.active} }`;
+            console.log('New waypoint created (single):', single);
+            console.log('Full waypoints array (paste into code):');
+            console.log(JSON.stringify(waypoints, null, 2));
+          }
+
+          function toggleWaypointActive(id) {
+            const idx = waypoints.findIndex(w => w.id === id);
+            if (idx === -1) return;
+            waypoints[idx].active = !waypoints[idx].active;
+            console.log('Waypoint toggled. Updated waypoint:', waypoints[idx]);
+            console.log('Full waypoints array:');
+            console.log(JSON.stringify(waypoints, null, 2));
+            renderEndpoints();
+          }
+
+          function deleteWaypoint(id) {
+            waypoints = waypoints.filter(w => w.id !== id);
+            console.log('Waypoint deleted. Updated waypoints array:', JSON.stringify(waypoints, null, 2));
+            renderEndpoints();
+          }
+
+          function renderWaypointsList() {
+            if (!waypointsList) return;
+            waypointsList.innerHTML = '';
+            waypoints.forEach(wp => {
+              const li = document.createElement('li');
+              li.style.display = 'flex';
+              li.style.justifyContent = 'space-between';
+              li.style.alignItems = 'center';
+              li.style.marginBottom = '6px';
+              const left = document.createElement('div');
+              left.textContent = wp.name;
+              const right = document.createElement('div');
+              right.style.display = 'flex';
+              right.style.gap = '6px';
+              const useBtn = document.createElement('button');
+              useBtn.textContent = wp.active ? 'Using' : 'Use';
+              useBtn.style.cursor = 'pointer';
+              useBtn.addEventListener('click', () => toggleWaypointActive(wp.id));
+              const delBtn = document.createElement('button');
+              delBtn.textContent = 'Delete';
+              delBtn.style.cursor = 'pointer';
+              delBtn.addEventListener('click', () => deleteWaypoint(wp.id));
+              right.appendChild(useBtn);
+              right.appendChild(delBtn);
+              li.appendChild(left);
+              li.appendChild(right);
+              waypointsList.appendChild(li);
+            });
+          }
+
+          addBtn.addEventListener('click', () => {
+            adding = !adding;
+            // if switching to add endpoint, turn off waypoint mode
+            if (adding && addingWaypoint) {
+              addingWaypoint = false;
+              addWaypointBtn.textContent = 'Add Waypoint';
+              addWaypointBtn.style.background = '#76c893';
+            }
+            addBtn.textContent = adding ? 'Click on map...' : 'Add Endpoint';
+            addBtn.style.background = adding ? '#ffd54f' : '';
+          });
+
+          addWaypointBtn.addEventListener('click', () => {
+            addingWaypoint = !addingWaypoint;
+            // if switching to add waypoint, turn off endpoint mode
+            if (addingWaypoint && adding) {
+              adding = false;
+              addBtn.textContent = 'Add Endpoint';
+              addBtn.style.background = '';
+            }
+            addWaypointBtn.textContent = addingWaypoint ? 'Click on map...' : 'Add Waypoint';
+            addWaypointBtn.style.background = addingWaypoint ? '#ffd54f' : '#76c893';
+          });
+
+          clearBtn.addEventListener('click', () => {
+            selected.clear();
+            renderEndpoints();
+          });
+
+          interactiveMap.addEventListener('click', (ev) => {
+            // ensure click is inside image area
+            const rect = floorImg.getBoundingClientRect();
+            if (ev.clientX < rect.left || ev.clientX > rect.right || ev.clientY < rect.top || ev.clientY > rect.bottom) return;
+
+            const coords = toPctCoords(ev.clientX, ev.clientY);
+
+            if (addingWaypoint) {
+              let wname = prompt('Enter waypoint name (optional):', 'WP ' + (waypoints.length + 1));
+              if (wname === null) {
+                addingWaypoint = false;
+                addWaypointBtn.textContent = 'Add Waypoint';
+                addWaypointBtn.style.background = '#76c893';
+                return;
+              }
+              wname = wname.trim() || ('WP ' + (waypoints.length + 1));
+              const wp = { id: uid(), name: wname, xPct: coords.x, yPct: coords.y, active: true };
+              waypoints.push(wp);
+              logWaypointCode(wp);
+              addingWaypoint = false;
+              addWaypointBtn.textContent = 'Add Waypoint';
+              addWaypointBtn.style.background = '#76c893';
+              renderEndpoints();
+              return;
             }
 
-            toggle.addEventListener('click', toggleMenu);
-            closeBtn.addEventListener('click', toggleMenu);
-            backdrop.addEventListener('click', toggleMenu);
-            document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape' && menu.classList.contains('open')) toggleMenu(); });
+            if (!adding) return;
 
-            if(brand){
-                setTimeout(()=>brand.classList.add('visible'), 350);
-                brand.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    brand.classList.add('zooming');
-                    setTimeout(() => {
-                        window.location.href = brand.href;
-                    }, 600);
-                });
+            let name = prompt('Enter endpoint name (e.g., Room 501):', 'Endpoint ' + (endpoints.length + 1));
+            if (name === null) {
+              // cancelled
+              adding = false;
+              addBtn.textContent = 'Add Endpoint';
+              addBtn.style.background = '';
+              return;
             }
+            name = name.trim() || ('Endpoint ' + (endpoints.length + 1));
+            const ep = { id: uid(), name, xPct: coords.x, yPct: coords.y };
+            endpoints.push(ep);
+            // log code-ready snippet
+            logEndpointCode(ep);
+
+            adding = false;
+            addBtn.textContent = 'Add Endpoint';
+            addBtn.style.background = '';
+            renderEndpoints();
+          });
+
+        // redraw on resize to keep svg coords accurate
+        window.addEventListener('resize', () => {
+          renderEndpoints();
+        });
+
+        // UI: add controls for pathfinding k and show-graph toggle
+        (function attachPathControls(){
+          const controlsBar = document.querySelector('.controls');
+          if (!controlsBar) return;
+          const kLabel = document.createElement('label');
+          kLabel.style.marginLeft = '12px';
+          kLabel.style.fontSize = '13px';
+          kLabel.textContent = 'k:';
+          const kInput = document.createElement('input');
+          kInput.type = 'number';
+          kInput.min = '1';
+          kInput.max = '20';
+          kInput.value = '6';
+          kInput.style.width = '54px';
+          kInput.id = 'kNearestInput';
+          kInput.title = 'Number of nearest neighbors when building graph';
+          kLabel.appendChild(kInput);
+          controlsBar.appendChild(kLabel);
+
+          const showGraphBtn = document.createElement('button');
+          showGraphBtn.textContent = 'Show Graph';
+          showGraphBtn.style.marginLeft = '8px';
+          showGraphBtn.id = 'showGraphBtn';
+          showGraphBtn.dataset.on = '0';
+          showGraphBtn.addEventListener('click', () => {
+            const on = showGraphBtn.dataset.on === '1';
+            showGraphBtn.dataset.on = on ? '0' : '1';
+            showGraphBtn.textContent = on ? 'Show Graph' : 'Hide Graph';
+            renderGraphOverlay();
+          });
+          controlsBar.appendChild(showGraphBtn);
         })();
+
+        // Use the Start/End inputs to auto-select nearest waypoints and draw route
+        window.calculateAndDisplayRoute = function () {
+          const startInputEl = document.getElementById('start');
+          const destInputEl = document.getElementById('end');
+          if (!startInputEl || !destInputEl) {
+            console.warn('Start/Dest inputs not found');
+            return;
+          }
+          const startName = (startInputEl.value || '').trim();
+          const destName = (destInputEl.value || '').trim();
+          if (!startName || !destName) {
+            alert('Please enter both Starting Point and Destination names.');
+            return;
+          }
+
+          function findEndpointByName(name) {
+            if (!name) return null;
+            const n = name.toLowerCase();
+            // exact match first
+            let ep = endpoints.find(e => e.name.toLowerCase() === n);
+            if (ep) return ep;
+            // substring match
+            ep = endpoints.find(e => e.name.toLowerCase().includes(n));
+            if (ep) return ep;
+            // startsWith
+            ep = endpoints.find(e => e.name.toLowerCase().startsWith(n));
+            return ep || null;
+          }
+
+          const startEp = findEndpointByName(startName);
+          const destEp = findEndpointByName(destName);
+          if (!startEp || !destEp) {
+            alert('Could not find matching Start or Destination endpoints. Make sure names match an existing endpoint.');
+            console.warn('startEp,destEp', startEp, destEp);
+            return;
+          }
+
+          // Convert endpoint pct coords to pixel coordinates relative to image rect
+          const rect = floorImg.getBoundingClientRect();
+          const startPt = { x: startEp.xPct * rect.width, y: startEp.yPct * rect.height };
+          const destPt = { x: destEp.xPct * rect.width, y: destEp.yPct * rect.height };
+
+          // find nearest waypoint to a given point
+          function nearestWaypointIndexToPoint(pt) {
+            if (!waypoints || waypoints.length === 0) return -1;
+            let bestIdx = -1;
+            let bestDist = Infinity;
+            waypoints.forEach((w, idx) => {
+              const wx = w.xPct * rect.width;
+              const wy = w.yPct * rect.height;
+              const dx = wx - pt.x;
+              const dy = wy - pt.y;
+              const d2 = dx * dx + dy * dy;
+              if (d2 < bestDist) {
+                bestDist = d2;
+                bestIdx = idx;
+              }
+            });
+            return bestIdx;
+          }
+
+          const startWpIdx = nearestWaypointIndexToPoint(startPt);
+          const destWpIdx = nearestWaypointIndexToPoint(destPt);
+          if (startWpIdx === -1 || destWpIdx === -1) {
+            alert('No waypoints available to route through.');
+            return;
+          }
+
+          // Build adjacency graph between waypoints using k-nearest neighbors
+          function buildAdjacency(k = 6, maxDist = Infinity) {
+            const n = waypoints.length;
+            const pos = waypoints.map(w => ({ x: w.xPct * rect.width, y: w.yPct * rect.height }));
+            const adj = Array.from({ length: n }, () => []);
+            for (let i = 0; i < n; i++) {
+              const dists = [];
+              for (let j = 0; j < n; j++) {
+                if (i === j) continue;
+                const dx = pos[j].x - pos[i].x;
+                const dy = pos[j].y - pos[i].y;
+                const d = Math.hypot(dx, dy);
+                dists.push({ idx: j, d });
+              }
+              dists.sort((a, b) => a.d - b.d);
+              for (let m = 0; m < Math.min(k, dists.length); m++) {
+                const { idx, d } = dists[m];
+                if (d <= maxDist) {
+                  adj[i].push({ to: idx, weight: d });
+                }
+              }
+            }
+            // make graph symmetric (undirected)
+            for (let i = 0; i < n; i++) {
+              adj[i].forEach(edge => {
+                const { to, weight } = edge;
+                const exists = adj[to].some(e => e.to === i);
+                if (!exists) adj[to].push({ to: i, weight });
+              });
+            }
+            return { adj, pos };
+          }
+
+          // A* algorithm using Euclidean heuristic
+          function aStar(adj, pos, start, goal) {
+            const n = adj.length;
+            const open = new Set([start]);
+            const gScore = new Array(n).fill(Infinity);
+            const fScore = new Array(n).fill(Infinity);
+            const cameFrom = new Array(n).fill(null);
+            function heuristic(i, j) {
+              const dx = pos[i].x - pos[j].x;
+              const dy = pos[i].y - pos[j].y;
+              return Math.hypot(dx, dy);
+            }
+            gScore[start] = 0;
+            fScore[start] = heuristic(start, goal);
+
+            while (open.size > 0) {
+              // pick node in open with lowest fScore
+              let current = null;
+              let bestF = Infinity;
+              open.forEach(u => {
+                if (fScore[u] < bestF) { bestF = fScore[u]; current = u; }
+              });
+              if (current === null) break;
+              if (current === goal) break;
+              open.delete(current);
+              for (const { to, weight } of adj[current]) {
+                const tentativeG = gScore[current] + weight;
+                if (tentativeG < gScore[to]) {
+                  cameFrom[to] = current;
+                  gScore[to] = tentativeG;
+                  fScore[to] = tentativeG + heuristic(to, goal);
+                  if (!open.has(to)) open.add(to);
+                }
+              }
+            }
+            if (gScore[goal] === Infinity) return { path: [], cost: Infinity };
+            const path = [];
+            let cur = goal;
+            while (cur !== null) {
+              path.push(cur);
+              cur = cameFrom[cur];
+            }
+            path.reverse();
+            return { path, cost: gScore[goal] };
+          }
+
+          // determine k from UI
+          const kInput = document.getElementById('kNearestInput');
+          const k = (kInput && parseInt(kInput.value, 10)) || 6;
+
+          // build graph and compute shortest path using A*
+          const { adj, pos } = buildAdjacency(k, Infinity);
+          const { path, cost } = aStar(adj, pos, startWpIdx, destWpIdx);
+
+          if (!path || path.length === 0) {
+            console.warn('No path found between selected waypoints. Falling back to contiguous-range activation.');
+            // fallback: activate waypoints between indices
+            const a = Math.min(startWpIdx, destWpIdx);
+            const b = Math.max(startWpIdx, destWpIdx);
+            waypoints.forEach((w, i) => w.active = (i >= a && i <= b));
+            // select the endpoints
+            selected.clear();
+            selected.add(startEp.id);
+            selected.add(destEp.id);
+            startInputEl.value = startEp.name;
+            destInputEl.value = destEp.name;
+            console.log('Auto-selected start endpoint:', startEp);
+            console.log('Auto-selected dest endpoint:', destEp);
+            console.log('Activated waypoints indices (fallback):', a, 'to', b);
+            renderEndpoints();
+            return;
+          }
+
+          // activate only waypoints that are part of the computed shortest path
+          const pathSet = new Set(path);
+          waypoints.forEach((w, i) => w.active = pathSet.has(i));
+
+          // select the endpoints
+          selected.clear();
+          selected.add(startEp.id);
+          selected.add(destEp.id);
+
+          // update input display to canonical endpoint names
+          startInputEl.value = startEp.name;
+          destInputEl.value = destEp.name;
+
+          // Log chosen waypoints and path info
+          console.log('Auto-selected start endpoint:', startEp);
+          console.log('Auto-selected dest endpoint:', destEp);
+          console.log('Shortest path waypoint indices:', path);
+          console.log('Shortest path waypoints:', path.map(i => waypoints[i]));
+          console.log('Path cost (pixels):', cost);
+
+          // if graph visualization is on, render it
+          renderGraphOverlay();
+
+          renderEndpoints();
+        };
+
+        // Graph overlay drawing: draws adjacency edges when toggled
+        function renderGraphOverlay() {
+          // find showGraph state
+          const btn = document.getElementById('showGraphBtn');
+          const on = btn && btn.dataset.on === '1';
+          // remove any old overlay group
+          const existing = svg.querySelector('#graphEdgesGroup');
+          if (existing) existing.remove();
+          if (!on) return;
+          // build graph
+          const rect = floorImg.getBoundingClientRect();
+          const kInput = document.getElementById('kNearestInput');
+          const k = (kInput && parseInt(kInput.value, 10)) || 6;
+          const { adj, pos } = (function buildAdjacencyLocal(){
+            const n = waypoints.length;
+            const pos = waypoints.map(w => ({ x: w.xPct * rect.width, y: w.yPct * rect.height }));
+            const adj = Array.from({ length: n }, () => []);
+            for (let i = 0; i < n; i++) {
+              const dists = [];
+              for (let j = 0; j < n; j++) {
+                if (i === j) continue;
+                const dx = pos[j].x - pos[i].x;
+                const dy = pos[j].y - pos[i].y;
+                const d = Math.hypot(dx, dy);
+                dists.push({ idx: j, d });
+              }
+              dists.sort((a, b) => a.d - b.d);
+              for (let m = 0; m < Math.min(k, dists.length); m++) {
+                const { idx, d } = dists[m];
+                adj[i].push({ to: idx, weight: d });
+              }
+            }
+            for (let i = 0; i < n; i++) {
+              adj[i].forEach(edge => {
+                const { to, weight } = edge;
+                const exists = adj[to].some(e => e.to === i);
+                if (!exists) adj[to].push({ to: i, weight });
+              });
+            }
+            return { adj, pos };
+          })();
+
+          const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+          g.id = 'graphEdgesGroup';
+          g.style.pointerEvents = 'none';
+          adj.forEach((edges, i) => {
+            edges.forEach(e => {
+              if (e.to <= i) return; // draw each undirected edge only once
+              const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+              line.setAttribute('x1', pos[i].x);
+              line.setAttribute('y1', pos[i].y);
+              line.setAttribute('x2', pos[e.to].x);
+              line.setAttribute('y2', pos[e.to].y);
+              line.setAttribute('stroke', 'rgba(200,200,200,0.6)');
+              line.setAttribute('stroke-width', '1');
+              g.appendChild(line);
+            });
+          });
+          svg.appendChild(g);
+        }
+
+        // ensure overlay updates when resizing or moving markers
+        const origRenderEndpoints = renderEndpoints;
+        renderEndpoints = function() {
+          // call original implementation body by copying content
+          // (we'll call the function defined earlier by invoking origRenderEndpoints)
+          origRenderEndpoints();
+          // then render graph overlay if requested
+          renderGraphOverlay();
+        };
+
+        // initial render (if you want to programatically seed endpoints, set endpoints array here)
+        // Example seed (commented out):
+        // endpoints.push({id: 'a1', name: 'Seed A', xPct:0.3, yPct:0.4});
+        renderEndpoints();
+      })();
     </script>
-</body>
+  </body>
 </html>

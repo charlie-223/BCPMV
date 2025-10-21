@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BCP MV GO</title>
+    <style>
+        :root{ 
+            --ease: cubic-bezier(.2,.9,.2,1); 
+            --bg-color: #f0f0f0;
+            --text-color: #ffffff;
+            --menu-bg: #ffffff;
+            --menu-shadow: -6px 0 24px rgba(0,0,0,0.2);
+            --menu-title-color: #073763;
+            --menu-sep-color: linear-gradient(90deg, rgba(10,30,60,0.06), rgba(10,30,60,0.02));
+            --menu-link-color: #0a65a1;
+            --menu-link-hover-bg: rgba(91,192,222,0.16);
+            --menu-link-hover-color: #033f72;
+            --menu-footer-border: 1px solid rgba(10,30,60,0.04);
+            --social-link-color: #0a65a1;
+            --toggle-bg: rgba(255,255,255,0.9);
+            --toggle-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            --card-bg: rgba(255,255,255,0.06);
+            --search-bg: rgba(255,255,255,0.6);
+            --search-border: rgba(255,255,255,0.12);
+            --search-text: #000;
+            --search-placeholder: rgba(255,255,255,0.6);
+            --back-btn-bg: rgba(255,255,255,0.87);
+            --back-btn-text: #073763;
+            --back-btn-hover-bg: #b2e6ff;
+            --back-btn-hover-text: #033f72;
+            --toggle-icon-color: #000; 
+        }
+
+        body.dark-mode {
+            --bg-color: #1a1a2e;
+            --text-color: #8ed0e2;
+            --menu-bg: #22253c;
+            --menu-shadow: -6px 0 24px rgba(0,0,0,0.5);
+            --menu-title-color: #8ed0e2;
+            --menu-sep-color: linear-gradient(90deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+            --menu-link-color: #8ed0e2;
+            --menu-link-hover-bg: rgba(91,192,222,0.1);
+            --menu-link-hover-color: #8ed0e2;
+            --menu-footer-border: 1px solid rgba(255,255,255,0.08);
+            --social-link-color: #8ed0e2;
+            --toggle-bg: rgba(0,0,0,0.8);
+            --toggle-shadow: 0 4px 10px rgba(255,255,255,0.1);
+            --card-bg: rgba(0,0,0,0.3);
+            --search-bg: rgba(255,255,255,0.15);
+            --search-border: rgba(255,255,255,0.1);
+            --search-text: #fff;
+            --search-placeholder: rgba(255,255,255,0.6);
+            --back-btn-bg: rgba(255,255,255,0.1);
+            --back-btn-text: #fff;
+            --back-btn-hover-bg: rgba(255,255,255,0.2);
+            --back-btn-hover-text: #8ed0e2;
+            --toggle-icon-color: #8ed0e2; 
+        }
+
+        body{ 
+            margin:0; padding:0; min-height:100vh; width:100vw; height:100vh; font-family: Arial, sans-serif; 
+            position:relative; overflow:hidden; display:flex; align-items:flex-start; 
+            color: var(--text-color); 
+        }
+        body::before{ 
+            content:''; position:absolute; inset:0; background-image: url('img/bgmv.jpg'); background-size:cover; 
+            background-position:center; transform:scale(1.03); filter: blur(6px) brightness(0.55); 
+            z-index:0; 
+            transition: filter 0.5s ease; 
+        }
+        body.dark-mode::before {
+            filter: blur(6px) brightness(0.3); 
+        }
+        body::after{ content:''; position:absolute; inset:0; background: linear-gradient(to top, rgba(0,0,0,0.6), rgba(0,0,0,0) 60%); z-index:1; transition: background 260ms var(--ease), opacity 260ms var(--ease); }
+        
+        .page-wrap{ position:relative; z-index:2; width:100%; padding:28px; box-sizing:border-box; color:var(--text-color); }
+        .content-card{ 
+            max-width:980px; margin:32px auto; background: var(--card-bg); 
+            padding:22px; border-radius:10px; backdrop-filter: blur(4px); position:relative; 
+            transition: background 0.3s ease; 
+        }
+        .content-card h1, .content-card p { 
+            color: var(--text-color); 
+            transition: color 0.3s ease;
+        }
+
+        .menu-toggle{ 
+            position:fixed; top:18px; left:18px; z-index:120; 
+            background: var(--toggle-bg); padding:8px 12px; border-radius:6px; 
+            box-shadow:var(--toggle-shadow); cursor:pointer; font-size:1.2rem; 
+            color: var(--toggle-icon-color); 
+            transition: background 0.3s ease, box-shadow 0.3s ease, color 0.3s ease; 
+        }
+        
+        .side-menu{ 
+            position:fixed; inset:0 auto 0 0; width:320px; max-width:80vw; height:100vh; 
+            background:var(--menu-bg); box-shadow:var(--menu-shadow); 
+            transform:translateX(-110%); transition: transform 320ms cubic-bezier(.2,.9,.2,1), background 0.3s ease, box-shadow 0.3s ease; 
+            z-index:130; padding:20px; overflow-y:auto; display:flex; flex-direction:column; justify-content:space-between; 
+        }
+        .side-menu.open{ transform:translateX(0); animation: menuSlideIn 420ms cubic-bezier(.2,.9,.2,1) both; }
+        .side-menu.closing{ animation: menuSlideOut 320ms var(--ease) both; }
+        @keyframes menuSlideIn{ 0%{ transform:translateX(-110%);}70%{ transform:translateX(10%);}100%{ transform:translateX(0);} }
+        @keyframes menuSlideOut{ 0%{ transform:translateX(0);}100%{ transform:translateX(-110%);} }
+        
+        .menu-header{ display:flex; gap:12px; align-items:center; margin-bottom:8px; }
+        .menu-logo{ width:72px; height:72px; border-radius:50%; object-fit:cover; border:4px solid #ADD8E6; box-shadow:0 8px 20px rgba(0,0,0,0.2); }
+        .menu-title h2{ margin:0; font-size:1.4rem; color:var(--menu-title-color); font-weight:800; transition: color 0.3s ease; }
+        .menu-sep{ border:none; height:1px; background:var(--menu-sep-color); margin:12px 0; transition: background 0.3s ease; }
+        
+        .menu-list{ list-style:none; padding:0; margin:18px 0 0 0; flex-grow: 1; }
+        .menu-list li{ margin:14px 0; }
+        .menu-list a{ 
+            color:var(--menu-link-color); text-decoration:none; font-weight:700; display:block; 
+            padding:14px 12px; border-radius:10px; font-size:1.05rem; 
+            transition: transform 220ms var(--ease), background 220ms var(--ease), box-shadow 220ms var(--ease), color 160ms linear; 
+        }
+        @media (hover: hover) and (pointer: fine){ 
+            .menu-list a:hover, .menu-list a:focus{ 
+                background: var(--menu-link-hover-bg); 
+                color:var(--menu-link-hover-color); 
+                transform:translateX(8px) scale(1.01); 
+                box-shadow:0 10px 24px rgba(3,63,114,0.08); outline:none; 
+            } 
+        }
+        .menu-list a:focus-visible{ outline:2px solid rgba(0,0,0,0.12); outline-offset:3px; }
+        
+        .menu-close{ 
+            background:transparent; border:none; font-size:1.6rem; position:absolute; top:12px; right:12px; 
+            cursor:pointer; color: var(--text-color); transition: color 0.3s ease; 
+        }
+        .menu-backdrop{ position:fixed; inset:0; background: rgba(0,0,0,0.35); z-index:125; transition: opacity 220ms ease; }
+        
+        .menu-footer{ 
+            margin-top:18px; padding-top:10px; border-top:var(--menu-footer-border); 
+            display:flex; flex-direction:column; gap:10px; transition: border-top 0.3s ease;
+        }
+
+        .dark-mode-toggle {
+            display: inline-flex; 
+            align-items: center; 
+            justify-content: center; 
+            width: 50px; 
+            height: 50px;
+            padding: 0; 
+            background: var(--menu-link-hover-bg); 
+            border-radius: 50%; 
+            font-weight: 700; 
+            color: var(--menu-link-color); 
+            cursor: pointer;
+            transition: background 0.3s ease, color 0.3s ease, transform 0.2s ease;
+            user-select: none;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
+        }
+        .dark-mode-toggle:hover {
+            transform: scale(1.05); 
+        }
+        .dark-mode-icon { 
+            font-size: 1.4em; 
+            margin: 0; 
+        }
+
+        .sr-only-text {
+            position:absolute; 
+            left:-10000px; 
+            top:auto; 
+            width:1px; 
+            height:1px; 
+            overflow:hidden;
+        }
+
+        .social-link{ 
+            display:inline-flex; align-items:center; gap:8px; text-decoration:none; 
+            color:var(--social-link-color); font-weight:700; transition: color 0.3s ease;
+        }
+        .social-link svg {
+            transition: fill 0.3s ease;
+        }
+
+        .search-form { position: relative; display: flex; gap: 8px; align-items: center; margin-top: 18px; margin-bottom: 0; z-index: 4; }
+        .search-form .sr-only { position:absolute; left:-10000px; top:auto; width:1px; height:1px; overflow:hidden; }
+        .search-form input[type="search"] { 
+            width:260px; max-width:calc(100% - 36px); padding:8px 12px; border-radius:20px; 
+            border:1px solid var(--search-border); background: var(--search-bg); 
+            color: var(--search-text); box-shadow: 0 2px 8px rgba(0,0,0,0.18); 
+            transition: box-shadow 180ms var(--ease), transform 180ms var(--ease), background 0.3s ease, color 0.3s ease; 
+        }
+        .search-form input::placeholder { color: var(--search-placeholder); }
+        .search-form button { 
+            border:none; background: var(--toggle-bg); color: var(--text-color); 
+            padding:8px 10px; border-radius:12px; cursor:pointer; 
+            box-shadow: 0 2px 8px rgba(0,0,0,0.12); transition: background 0.3s ease, color 0.3s ease;
+        }
+        @media (max-width:700px){ .search-form input[type="search"]{ width:160px; } }
+
+        .brand-top-right{ position:fixed; top:12px; right:12px; z-index:140; opacity:0; transform:translateY(-6px); transition: opacity 480ms var(--ease), transform 480ms var(--ease); text-decoration: none; display: inline-block; }
+        .brand-top-right.visible{ opacity:1; transform:translateY(0); }
+        .brand-top-right:focus-visible { outline: 3px solid rgba(255,255,255,0.18); outline-offset: 4px; }
+        .brand-img{ display:block; height:auto; width:84px; }
+        @keyframes brandZoomOut {
+            0% { transform: scale(1) translateZ(0); opacity: 1; }
+            60% { transform: scale(1.18) translateZ(0); opacity: 0.96; }
+            100% { transform: scale(1.6) translateZ(0); opacity: 0; }
+        }
+        .brand-top-right.zooming { animation: brandZoomOut 600ms cubic-bezier(.45, 0, .55, 1) both; }
+
+        .back-btn {
+            position: absolute; top: 22px; left: 22px; z-index: 10;
+            background: var(--back-btn-bg); 
+            color: var(--back-btn-text); 
+            border: none; border-radius: 8px;
+            font-size: 1.05rem; font-weight: 700; padding: 8px 18px 8px 38px; cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.10); transition: all 220ms var(--ease); outline: none;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .back-btn:before {
+            content: "←"; display: inline-block; margin-right: 8px; font-size: 1.2rem;
+        }
+        .back-btn:hover, .back-btn:focus {
+            background: var(--back-btn-hover-bg); 
+            color: var(--back-btn-hover-text); 
+            box-shadow: 0 8px 24px rgba(3,63,114,0.10); transform: translateY(-2px) scale(1.02);
+        }
+        .back-btn:active { background: #91d7fa; transform: scale(0.99); }
+        .back-btn:focus-visible { outline: 2px solid #0a65a1; outline-offset: 3px; }
+        
+        @media (max-width:700px){ .back-btn{ font-size:0.97rem; padding:8px 12px 8px 32px; left:10px; top:10px; } }
+        @media (prefers-reduced-motion: reduce){ *{ transition:none !important; animation:none !important; } }
+    </style>
+</head>
+<body class="light-mode">
+    <div class="menu-toggle" aria-controls="sideMenu" aria-expanded="false" aria-label="Open campus navigation menu">☰</div>
+    <nav id="sideMenu" class="side-menu" aria-hidden="true">
+        <button class="menu-close" aria-label="Close menu">☰</button>
+        <div class="menu-header">
+            <img src="img/logomap.jpg" alt="BCP MV GO" class="menu-logo">
+            <div class="menu-title"><h2>BCP MV GO</h2></div>
+        </div>
+        <hr class="menu-sep">
+        <ul class="menu-list">
+            <li><a href="landing.html">Home</a></li>
+            <li><a href="floorloc.html">Campus Map</a></li>
+            <li><a href="#buildings">Buildings</a></li>
+            <li><a href="#directions">Directions</a></li>
+        </ul>
+        <div class="menu-footer">
+            <div class="dark-mode-toggle" role="button" aria-pressed="false" aria-label="Toggle dark mode">
+                <span class="dark-mode-icon">🌙</span>
+                <span class="sr-only-text dark-mode-text">Dark Mode</span>
+            </div>
+            
+            <a class="social-link" href="https://www.facebook.com/bcpofficialpage" target="_blank" rel="noopener" aria-label="Open Facebook page">
+                <svg class="social-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">
+                    <path fill="#1877F2" d="M24 12.073C24 5.405 18.627 0 12 .0S0 5.405 0 12.073C0 18.093 4.388 23.092 10.125 24v-8.485H7.078v-3.442h3.047V9.412c0-3.017 1.792-4.677 4.533-4.677 1.312 0 2.686.235 2.686.235v2.953h-1.513c-1.491 0-1.953.928-1.953 1.878v2.254h3.328l-.532 3.442h-2.796V24C19.612 23.092 24 18.093 24 12.073z"/>
+                    <path class="facebook-white-path" fill="#fff" d="M16.671 15.515l.532-3.442h-3.328v-2.254c0-.95.462-1.878 1.953-1.878h1.513V5.988s-1.374-.235-2.686-.235c-2.74 0-4.533 1.66-4.533 4.677v2.143H7.078v3.442h3.047V24h3.041v-8.485h2.505z"/>
+                </svg>
+                <span class="social-text">bcpofficialpage</span>
+            </a>
+
+            <a class="social-link" href="https://bcp.edu.ph/" target="_blank" rel="noopener" aria-label="Open website">
+                <svg class="social-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">
+                    <path fill="#6b6b6b" d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm6.93 6h-2.02a15.08 15.08 0 0 0-1.24-3.06A8.03 8.03 0 0 1 18.93 8zM12 4c.74 0 2.02 3.22 2.63 6H9.37C9.98 7.22 11.26 4 12 4zM4.07 8a8.03 8.03 0 0 1 3.29-3.06C7.09 6.78 6.39 8.26 6.07 10H4.07zM4 12c0-.91.12-1.79.34-2.62A13.02 13.02 0 0 0 8 12H4zm0 2h4a13.02 13.02 0 0 0-3.66 2.62A7.96 7.96 0 0 1 4 14zm8 6c-.74 0-2.02-3.22-2.63-6h5.26C14.02 16.78 12.74 20 12 20c-.74 0-1.98-3.22-2.63-6zM14.63 12c.13-.9.3-1.86.53-2.86.23 1 .4 1.96.53 2.86h-1.06zM16 18.62c.22-.83.34-1.71.34-2.62h4c0 1.46-.39 2.86-1.07 4.06A7.96 7.96 0 0 1 16 18.62zM9.37 14h5.26C13.98 16.78 12.74 20 12 20c-.74 0-1.98-3.22-2.63-6z"/>
+                </svg>
+                <span class="social-text">bcp.edu.ph</span>
+            </a>
+        </div>
+    </nav>
+    <div class="menu-backdrop" hidden></div>
+
+    <a href="landing.html" class="brand-top-right" aria-label="Go to homepage" title="Go to homepage">
+        <img src="img/bcp.png" alt="BCP" class="brand-img" width="84">
+    </a>
+
+    <main class="page-wrap">
+        <div class="content-card">
+            <button type="button" class="back-btn" onclick="goBack()" aria-label="Go back to floor selection">
+                Back to Floor Select
+            </button>
+            <h1 style="margin-top:48px">Welcome to Fourth Floor</h1>
+            <p style="opacity:0.9">You can use the search box below to find room and facilities.</p>
+            <form class="search-form" role="search" aria-label="Search facilities">
+                <label class="sr-only" for="search-input">Search facilities</label>
+                <input id="search-input" type="search" placeholder="Search for a building or place..." aria-label="Search facilities" />
+                <button type="submit" aria-label="Search">🔍</button>
+            </form>
+        </div>
+    </main>
+
+    <script>
+        function goBack() {
+            window.location.href = "floorloc.html";
+        }
+
+        (function(){
+            const toggle = document.querySelector('.menu-toggle');
+            const menu = document.getElementById('sideMenu');
+            const closeBtn = document.querySelector('.menu-close');
+            const backdrop = document.querySelector('.menu-backdrop');
+            const brand = document.querySelector('.brand-top-right');
+            const darkModeToggle = document.querySelector('.dark-mode-toggle');
+            const body = document.body;
+
+            function applyDarkModePreference() {
+                const prefersDarkMode = localStorage.getItem('dark-mode') === 'true';
+                if (prefersDarkMode) {
+                    body.classList.add('dark-mode');
+                    darkModeToggle.setAttribute('aria-pressed', 'true');
+                    darkModeToggle.querySelector('.dark-mode-icon').textContent = '☀️';
+                }
+            }
+
+            function toggleDarkMode() {
+                const isDarkMode = body.classList.toggle('dark-mode');
+                localStorage.setItem('dark-mode', isDarkMode); 
+                darkModeToggle.setAttribute('aria-pressed', String(isDarkMode));
+                darkModeToggle.setAttribute('aria-label', isDarkMode ? 'Toggle light mode' : 'Toggle dark mode');
+                darkModeToggle.querySelector('.dark-mode-icon').textContent = isDarkMode ? '☀️' : '🌙';
+                const screenReaderText = darkModeToggle.querySelector('.dark-mode-text');
+                screenReaderText.textContent = isDarkMode ? 'Light Mode' : 'Dark Mode';
+            }
+
+            applyDarkModePreference();
+            const initialIsDark = body.classList.contains('dark-mode');
+            darkModeToggle.setAttribute('aria-label', initialIsDark ? 'Toggle light mode' : 'Toggle dark mode');
+            darkModeToggle.querySelector('.dark-mode-text').textContent = initialIsDark ? 'Light Mode' : 'Dark Mode';
+
+            darkModeToggle.addEventListener('click', toggleDarkMode);
+
+            function toggleMenu(){
+                const isOpen = menu.classList.toggle('open');
+                toggle.classList.toggle('open', isOpen);
+                menu.setAttribute('aria-hidden', String(!isOpen));
+                toggle.setAttribute('aria-expanded', String(isOpen));
+                if(isOpen){
+                    backdrop.hidden = false; backdrop.style.opacity = '1'; closeBtn.focus();
+                } else {
+                    backdrop.style.opacity = '0'; setTimeout(()=>backdrop.hidden = true, 250); toggle.focus();
+                }
+            }
+
+            toggle.addEventListener('click', toggleMenu);
+            closeBtn.addEventListener('click', toggleMenu);
+            backdrop.addEventListener('click', toggleMenu);
+            document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape' && menu.classList.contains('open')) toggleMenu(); });
+
+            if(brand){
+                setTimeout(()=>brand.classList.add('visible'), 350);
+                brand.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    brand.classList.add('zooming');
+                    setTimeout(() => {
+                        window.location.href = brand.href;
+                    }, 600);
+                });
+            }
+        })();
+    </script>
+</body>
+</html>

@@ -71,10 +71,9 @@
         padding: 0;
         min-height: 100vh;
         width: 100vw;
-        height: 100vh;
         font-family: Arial, sans-serif;
         position: relative;
-        overflow: hidden;
+        overflow-x: hidden;
         display: flex;
         align-items: flex-start;
         color: var(--text-color);
@@ -591,7 +590,40 @@
           Use the interactive map below to locate rooms and facilities on the
           Fifth Floor.
         </p>
+          <!-- Interactive map starting point and destination controls -->
+        <div class="controls">
+            <input type="text" id="start" placeholder="Starting Point (e.g., Stairway South)" aria-label="Starting point">
+            <input type="text" id="end" placeholder="Destination (e.g., Library)" aria-label="Destination">
+            <button onclick="calculateAndDisplayRoute()">Get Directions</button>
+        </div>
+    <!-- Interactive map or content for the fifth floor goes here -->
+    <div class="interactive-map" id="interactiveMap" style="position: relative;">
+      <img
+        id="floorImg"
+        src="img3/FIFTHFLOOR.jpg"
+        alt="Fifth Floor Plan"
+        style="width: 100%; border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); display: block;"
+      />
+
+      <!-- SVG overlay for lines -->
+      <svg id="mapSvg" style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; pointer-events: none;" xmlns="http://www.w3.org/2000/svg"></svg>
+
+      <!-- Controls -->
+      <div id="mapControls" style="position: absolute; right: 12px; bottom: 12px; z-index: 20; display: flex; gap: 8px;">
+        <button hidden id="addEndpointBtn" type="button" style="padding: 8px 10px; border-radius: 8px; font-weight:700; cursor:pointer;">Add Endpoint</button>
+        <button hidden id="addWaypointBtn" type="button" style="padding: 8px 10px; border-radius: 8px; font-weight:700; cursor:pointer; background:#76c893;">Add Waypoint</button>
+        <button hidden id="clearSelectionBtn" type="button" style="padding: 8px 10px; border-radius: 8px; font-weight:700; cursor:pointer;">Clear</button>
       </div>
+
+      <!-- Endpoints container -->
+      <div hidden id="endpointsContainer" aria-live="polite" style="position: absolute; left: 12px; bottom: 12px; z-index: 20; max-height: 220px; overflow:auto; min-width:160px; background: rgba(255,255,255,0.06); padding:8px; border-radius:8px;">
+        <strong style="display:block; margin-bottom:6px;">Endpoints</strong>
+        <ul id="endpointsList" style="list-style:none; margin:0; padding:0; font-size:0.95rem;"></ul>
+        <hr style="opacity:0.08; margin:8px 0; border:none; height:1px; background:rgba(255,255,255,0.06);">
+        <strong style="display:block; margin-bottom:6px;">Waypoints</strong>
+        <ul id="waypointsList" style="list-style:none; margin:0; padding:0; font-size:0.95rem;"></ul>
+      </div>
+    </div>
     </main>
 
     <script>
@@ -679,6 +711,1280 @@
             }, 600);
           });
         }
+      })();
+    
+      // Endpoint & drawing logic
+      (function () {
+        const interactiveMap = document.getElementById("interactiveMap");
+        const floorImg = document.getElementById("floorImg");
+        const svg = document.getElementById("mapSvg");
+        const addBtn = document.getElementById("addEndpointBtn");
+    const addWaypointBtn = document.getElementById("addWaypointBtn");
+        const clearBtn = document.getElementById("clearSelectionBtn");
+        const endpointsList = document.getElementById("endpointsList");
+    const waypointsList = document.getElementById("waypointsList");
+
+    let adding = false;
+    let addingWaypoint = false;
+    let endpoints = [  {
+    "id": "p2il1jm",
+    "name": "Laboratory 7",
+    "xPct": 0.6952809999999999,
+    "yPct": 0.628531
+  },
+  {
+    "id": "51ivi0a",
+    "name": "Laboratory 8",
+    "xPct": 0.8207909999999999,
+    "yPct": 0.590784
+  },
+  {
+    "id": "altny16",
+    "name": "Laboratory 6",
+    "xPct": 0.361607,
+    "yPct": 0.726567
+  },
+  {
+    "id": "wlcil2w",
+    "name": "Laboratory 5",
+    "xPct": 0.262628,
+    "yPct": 0.754267
+  },
+  {
+    "id": "ftjjdlv",
+    "name": "Laboratory 4",
+    "xPct": 0.15676,
+    "yPct": 0.7192350000000001
+  },
+  {
+    "id": "g2qdpa6",
+    "name": "Laboratory 3",
+    "xPct": 0.15625,
+    "yPct": 0.498994
+  },
+  {
+    "id": "nw5iw5y",
+    "name": "Laboratory 2",
+    "xPct": 0.15676,
+    "yPct": 0.387652
+  },
+  {
+    "id": "ruyvplh",
+    "name": "Laboratory 1",
+    "xPct": 0.15676,
+    "yPct": 0.280655
+  },
+  {
+    "id": "rp977x9",
+    "name": "Criminology Department",
+    "xPct": 0.590434,
+    "yPct": 0.7971739999999999
+  },
+  {
+    "id": "can4cry",
+    "name": "Staircase 1",
+    "xPct": 0.9070149999999999,
+    "yPct": 0.67687
+  },
+  {
+    "id": "5u2s7zr",
+    "name": "Staircase 2",
+    "xPct": 0.053699000000000004,
+    "yPct": 0.5568379999999999
+  },
+  {
+    "id": "sox6l8w",
+    "name": "Staircase 3",
+    "xPct": 0.053954,
+    "yPct": 0.138354
+  },
+  {
+    "id": "56zih37",
+    "name": "Staircase 4",
+    "xPct": 0.529974,
+    "yPct": 0.048465999999999995
+  },
+  {
+    "id": "i60y3al",
+    "name": "Staircase 5",
+    "xPct": 0.9633929999999999,
+    "yPct": 0.12776300000000002
+  },
+  {
+    "id": "ky7v0k6",
+    "name": "501",
+    "xPct": 0.85574,
+    "yPct": 0.71679
+  },
+  {
+    "id": "x48nhho",
+    "name": "502",
+    "xPct": 0.8003830000000001,
+    "yPct": 0.733356
+  },
+  {
+    "id": "rwxv3fw",
+    "name": "503",
+    "xPct": 0.738393,
+    "yPct": 0.7529089999999999
+  },
+  {
+    "id": "bg8095q",
+    "name": "504",
+    "xPct": 0.6753830000000001,
+    "yPct": 0.771104
+  },
+  {
+    "id": "6elw8cw",
+    "name": "506",
+    "xPct": 0.489158,
+    "yPct": 0.8267749999999999
+  },
+  {
+    "id": "atlo4o7",
+    "name": "507",
+    "xPct": 0.42359699999999995,
+    "yPct": 0.845513
+  },
+  {
+    "id": "5czud2g",
+    "name": "508",
+    "xPct": 0.355995,
+    "yPct": 0.8713120000000001
+  },
+  {
+    "id": "l74mvtu",
+    "name": "509",
+    "xPct": 0.279209,
+    "yPct": 0.890593
+  },
+  {
+    "id": "u81xx3d",
+    "name": "510",
+    "xPct": 0.216199,
+    "yPct": 0.915305
+  },
+  {
+    "id": "jxvtb7x",
+    "name": "512",
+    "xPct": 0.046300999999999995,
+    "yPct": 0.748835
+  },
+  {
+    "id": "vwmlbrc",
+    "name": "513",
+    "xPct": 0.048597,
+    "yPct": 0.69072
+  },
+  {
+    "id": "awdnz9g",
+    "name": "514",
+    "xPct": 0.048597,
+    "yPct": 0.6339629999999999
+  },
+  {
+    "id": "8sc8psq",
+    "name": "515",
+    "xPct": 0.050128000000000006,
+    "yPct": 0.516103
+  },
+  {
+    "id": "uwq9n1d",
+    "name": "516",
+    "xPct": 0.047832,
+    "yPct": 0.45581499999999997
+  },
+  {
+    "id": "gwntmd4",
+    "name": "517",
+    "xPct": 0.046300999999999995,
+    "yPct": 0.39634199999999997
+  },
+  {
+    "id": "diz4s26",
+    "name": "518",
+    "xPct": 0.048597,
+    "yPct": 0.33686900000000003
+  },
+  {
+    "id": "65f3ami",
+    "name": "519",
+    "xPct": 0.047577,
+    "yPct": 0.282013
+  },
+  {
+    "id": "vnh9xyn",
+    "name": "520",
+    "xPct": 0.048342,
+    "yPct": 0.223626
+  },
+  {
+    "id": "bbjsuiv",
+    "name": "521",
+    "xPct": 0.200638,
+    "yPct": 0.021852999999999997
+  },
+  {
+    "id": "5lkhcty",
+    "name": "522",
+    "xPct": 0.254974,
+    "yPct": 0.018594
+  },
+  {
+    "id": "9cl3fsq",
+    "name": "523",
+    "xPct": 0.31160699999999997,
+    "yPct": 0.018594
+  },
+  {
+    "id": "mir3gd2",
+    "name": "524",
+    "xPct": 0.366709,
+    "yPct": 0.018865
+  },
+  {
+    "id": "1shk1sz",
+    "name": "525",
+    "xPct": 0.417219,
+    "yPct": 0.020495
+  },
+  {
+    "id": "6mqn9xy",
+    "name": "526",
+    "xPct": 0.47206600000000004,
+    "yPct": 0.01968
+  },
+  {
+    "id": "q2rocgi",
+    "name": "Engineering Faculty",
+    "xPct": 0.6508929999999999,
+    "yPct": 0.050366999999999995
+  },
+  {
+    "id": "fpt1nfh",
+    "name": "529",
+    "xPct": 0.699362,
+    "yPct": 0.021581000000000003
+  },
+  {
+    "id": "lldo6h5",
+    "name": "530",
+    "xPct": 0.754464,
+    "yPct": 0.021852999999999997
+  },
+  {
+    "id": "z78ar85",
+    "name": "531",
+    "xPct": 0.805995,
+    "yPct": 0.021309
+  },
+  {
+    "id": "kt39ydz",
+    "name": "532",
+    "xPct": 0.861097,
+    "yPct": 0.022667000000000003
+  },
+  {
+    "id": "69unzkm",
+    "name": "533",
+    "xPct": 0.914668,
+    "yPct": 0.025926
+  },
+  {
+    "id": "g9b14ae",
+    "name": "534",
+    "xPct": 0.9710460000000001,
+    "yPct": 0.022667000000000003
+  },
+  {
+    "id": "zuhpviq",
+    "name": "Staircase 6",
+    "xPct": 0.13022999999999998,
+    "yPct": 0.9085160000000001
+  }]; // {id, name, xPct, yPct}
+  let selected = new Set();
+  let waypoints = [
+      {
+    "id": "s1cn6et",
+    "name": "WP 1",
+    "xPct": 0.824107,
+    "yPct": 0.624729,
+    "active": true
+  },
+  {
+    "id": "j81carh",
+    "name": "WP 2",
+    "xPct": 0.771046,
+    "yPct": 0.6388510000000001,
+    "active": true
+  },
+  {
+    "id": "h4nxfsd",
+    "name": "WP 3",
+    "xPct": 0.7047190000000001,
+    "yPct": 0.6622060000000001,
+    "active": true
+  },
+  {
+    "id": "4kk0p7o",
+    "name": "WP 4",
+    "xPct": 0.6521680000000001,
+    "yPct": 0.6809439999999999,
+    "active": true
+  },
+  {
+    "id": "fgbw8tp",
+    "name": "WP 5",
+    "xPct": 0.555995,
+    "yPct": 0.706742,
+    "active": true
+  },
+  {
+    "id": "eggum7q",
+    "name": "WP 6",
+    "xPct": 0.46466799999999997,
+    "yPct": 0.7379730000000001,
+    "active": true
+  },
+  {
+    "id": "7snnahg",
+    "name": "WP 7",
+    "xPct": 0.39579099999999995,
+    "yPct": 0.758883,
+    "active": true
+  },
+  {
+    "id": "dckloeu",
+    "name": "WP 8",
+    "xPct": 0.331505,
+    "yPct": 0.77735,
+    "active": true
+  },
+  {
+    "id": "t0xe4qg",
+    "name": "WP 9",
+    "xPct": 0.251913,
+    "yPct": 0.801791,
+    "active": true
+  },
+  {
+    "id": "s446i9a",
+    "name": "WP 10",
+    "xPct": 0.173342,
+    "yPct": 0.828133,
+    "active": true
+  },
+  {
+    "id": "gzx0qty",
+    "name": "WP 11",
+    "xPct": 0.113393,
+    "yPct": 0.7273820000000001,
+    "active": true
+  },
+  {
+    "id": "yyi38ta",
+    "name": "WP 12",
+    "xPct": 0.115434,
+    "yPct": 0.674155,
+    "active": true
+  },
+  {
+    "id": "dclxw78",
+    "name": "WP 13",
+    "xPct": 0.113393,
+    "yPct": 0.613052,
+    "active": true
+  },
+  {
+    "id": "b4yvhml",
+    "name": "WP 14",
+    "xPct": 0.115434,
+    "yPct": 0.49682200000000004,
+    "active": true
+  },
+  {
+    "id": "7a1fggx",
+    "name": "WP 15",
+    "xPct": 0.11875,
+    "yPct": 0.435448,
+    "active": true
+  },
+  {
+    "id": "vpgw8om",
+    "name": "WP 16",
+    "xPct": 0.11466799999999999,
+    "yPct": 0.377604,
+    "active": true
+  },
+  {
+    "id": "txff41w",
+    "name": "WP 17",
+    "xPct": 0.11517899999999999,
+    "yPct": 0.31976099999999996,
+    "active": true
+  },
+  {
+    "id": "wuwe1st",
+    "name": "WP 18",
+    "xPct": 0.11415800000000001,
+    "yPct": 0.269793,
+    "active": true
+  },
+  {
+    "id": "xcb1ooa",
+    "name": "WP 19",
+    "xPct": 0.11415800000000001,
+    "yPct": 0.205703,
+    "active": true
+  },
+  {
+    "id": "t03fcaz",
+    "name": "WP 20",
+    "xPct": 0.194515,
+    "yPct": 0.136454,
+    "active": true
+  },
+  {
+    "id": "xwo9ghm",
+    "name": "WP 21",
+    "xPct": 0.251913,
+    "yPct": 0.130207,
+    "active": true
+  },
+  {
+    "id": "7h1yhpz",
+    "name": "WP 22",
+    "xPct": 0.308036,
+    "yPct": 0.129664,
+    "active": true
+  },
+  {
+    "id": "mfqecwf",
+    "name": "WP 23",
+    "xPct": 0.366709,
+    "yPct": 0.129664,
+    "active": true
+  },
+  {
+    "id": "4436t4f",
+    "name": "WP 24",
+    "xPct": 0.42079099999999997,
+    "yPct": 0.129664,
+    "active": true
+  },
+  {
+    "id": "ctxyt0v",
+    "name": "WP 25",
+    "xPct": 0.471811,
+    "yPct": 0.12776300000000002,
+    "active": true
+  },
+  {
+    "id": "xriuia2",
+    "name": "WP 26",
+    "xPct": 0.530485,
+    "yPct": 0.126949,
+    "active": true
+  },
+  {
+    "id": "g7rwhmn",
+    "name": "WP 27",
+    "xPct": 0.642985,
+    "yPct": 0.125048,
+    "active": true
+  },
+  {
+    "id": "vg5uzja",
+    "name": "WP 28",
+    "xPct": 0.701403,
+    "yPct": 0.131565,
+    "active": true
+  },
+  {
+    "id": "vmpejd2",
+    "name": "WP 29",
+    "xPct": 0.753699,
+    "yPct": 0.128578,
+    "active": true
+  },
+  {
+    "id": "hnot99e",
+    "name": "WP 30",
+    "xPct": 0.80676,
+    "yPct": 0.131022,
+    "active": true
+  },
+  {
+    "id": "nutbsme",
+    "name": "WP 31",
+    "xPct": 0.862628,
+    "yPct": 0.127492,
+    "active": true
+  },
+  {
+    "id": "kfsgkvw",
+    "name": "WP 32",
+    "xPct": 0.912117,
+    "yPct": 0.125048,
+    "active": true
+  },
+  {
+    "id": "uob86iu",
+    "name": "WP 33",
+    "xPct": 0.894515,
+    "yPct": 0.609522,
+    "active": true
+  },
+  {
+    "id": "dsm8yb4",
+    "name": "WP 34",
+    "xPct": 0.11747400000000001,
+    "yPct": 0.559554,
+    "active": true
+  }
+  ]; // {id, name, xPct, yPct, active}
+
+        function uid() {
+          return Math.random().toString(36).slice(2, 9);
+        }
+
+        function toPctCoords(clientX, clientY) {
+          const rect = floorImg.getBoundingClientRect();
+          const x = (clientX - rect.left) / rect.width;
+          const y = (clientY - rect.top) / rect.height;
+          return { x: Math.max(0, Math.min(1, x)), y: Math.max(0, Math.min(1, y)) };
+        }
+
+        function renderEndpoints() {
+          // clear existing markers
+          const existing = interactiveMap.querySelectorAll('.ep-marker');
+          existing.forEach(n => n.remove());
+
+          // update SVG size/coords
+          const rect = floorImg.getBoundingClientRect();
+          svg.setAttribute('width', rect.width);
+          svg.setAttribute('height', rect.height);
+
+          // render markers
+          endpoints.forEach(ep => {
+            const marker = document.createElement('button');
+            marker.className = 'ep-marker';
+            marker.setAttribute('data-id', ep.id);
+            marker.title = ep.name;
+            marker.style.position = 'absolute';
+            marker.style.left = `calc(${(ep.xPct * 100).toFixed(4)}% - 10px)`;
+            marker.style.top = `calc(${(ep.yPct * 100).toFixed(4)}% - 10px)`;
+            marker.style.width = '20px';
+            marker.style.height = '20px';
+            marker.style.borderRadius = '50%';
+            marker.style.border = '2px solid #ffffff';
+            marker.style.boxSizing = 'border-box';
+            marker.style.background = selected.has(ep.id) ? '#ffcc00' : '#0077cc';
+            marker.style.cursor = 'pointer';
+            marker.style.zIndex = 30;
+            marker.setAttribute('aria-label', `Endpoint ${ep.name}`);
+            // click toggles selection
+            marker.addEventListener('click', (ev) => {
+              ev.stopPropagation();
+              toggleSelect(ep.id);
+            });
+            marker.addEventListener('keydown', (ev) => {
+              if (ev.key === 'Enter' || ev.key === ' ') {
+                ev.preventDefault();
+                toggleSelect(ep.id);
+              }
+            });
+
+            // drag handling
+            let dragging = false;
+            let startPointer = null;
+            let startPos = null;
+
+            function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
+
+            marker.addEventListener('pointerdown', (ev) => {
+              // start dragging only with primary button
+              if (ev.button !== 0) return;
+              ev.preventDefault();
+              dragging = true;
+              marker.setPointerCapture(ev.pointerId);
+              startPointer = { x: ev.clientX, y: ev.clientY };
+              const rect = floorImg.getBoundingClientRect();
+              startPos = { left: rect.left + ep.xPct * rect.width, top: rect.top + ep.yPct * rect.height };
+              marker.style.transition = 'none';
+            });
+
+            marker.addEventListener('pointermove', (ev) => {
+              if (!dragging) return;
+              ev.preventDefault();
+              const dx = ev.clientX - startPointer.x;
+              const dy = ev.clientY - startPointer.y;
+              const rect = floorImg.getBoundingClientRect();
+              let newLeft = startPos.left + dx;
+              let newTop = startPos.top + dy;
+              // clamp inside image rect
+              newLeft = clamp(newLeft, rect.left, rect.right);
+              newTop = clamp(newTop, rect.top, rect.bottom);
+              const xPct = (newLeft - rect.left) / rect.width;
+              const yPct = (newTop - rect.top) / rect.height;
+              marker.style.left = `calc(${(xPct * 100).toFixed(4)}% - 10px)`;
+              marker.style.top = `calc(${(yPct * 100).toFixed(4)}% - 10px)`;
+              // update temporary ep coords for live line drawing
+              const idx = endpoints.findIndex(e => e.id === ep.id);
+              if (idx !== -1) {
+                endpoints[idx].xPct = xPct;
+                endpoints[idx].yPct = yPct;
+              }
+              drawLines();
+            });
+
+            marker.addEventListener('pointerup', (ev) => {
+              if (!dragging) return;
+              dragging = false;
+              marker.releasePointerCapture(ev.pointerId);
+              marker.style.transition = '';
+              // ensure final coords persisted
+              const rect = floorImg.getBoundingClientRect();
+              const leftStyle = marker.style.left;
+              const topStyle = marker.style.top;
+              // parse percent from calc(x% - 10px)
+              const pctMatchX = leftStyle.match(/([0-9.]+)%/);
+              const pctMatchY = topStyle.match(/([0-9.]+)%/);
+              if (pctMatchX && pctMatchY) {
+                const xPct = parseFloat(pctMatchX[1]) / 100;
+                const yPct = parseFloat(pctMatchY[1]) / 100;
+                const idx = endpoints.findIndex(e => e.id === ep.id);
+                if (idx !== -1) {
+                  endpoints[idx].xPct = clamp(xPct, 0, 1);
+                  endpoints[idx].yPct = clamp(yPct, 0, 1);
+                }
+                console.log('Endpoint moved. Updated endpoint:', endpoints.find(e => e.id === ep.id));
+                console.log('Full endpoints array (paste into code):');
+                console.log(JSON.stringify(endpoints, null, 2));
+              }
+              renderEndpoints();
+            });
+            interactiveMap.appendChild(marker);
+          });
+
+            // render waypoints
+            waypoints.forEach(wp => {
+              const wmarker = document.createElement('button');
+              wmarker.className = 'wp-marker';
+              wmarker.setAttribute('data-id', wp.id);
+              wmarker.title = wp.name;
+              wmarker.style.position = 'absolute';
+              wmarker.style.left = `calc(${(wp.xPct * 100).toFixed(4)}% - 8px)`;
+              wmarker.style.top = `calc(${(wp.yPct * 100).toFixed(4)}% - 8px)`;
+              wmarker.style.width = '16px';
+              wmarker.style.height = '16px';
+              wmarker.style.borderRadius = '50%';
+              wmarker.style.border = '2px solid #fff';
+              wmarker.style.boxSizing = 'border-box';
+              wmarker.style.background = wp.active ? '#f39c12' : '#444';
+              wmarker.style.cursor = 'grab';
+              wmarker.style.zIndex = 28;
+              wmarker.setAttribute('aria-label', `Waypoint ${wp.name}`);
+
+              // drag handling for waypoint (similar to endpoints)
+              let dragging = false;
+              let startPointer = null;
+              let startPos = null;
+              function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
+              wmarker.addEventListener('pointerdown', (ev) => {
+                if (ev.button !== 0) return;
+                ev.preventDefault();
+                dragging = true;
+                wmarker.setPointerCapture(ev.pointerId);
+                startPointer = { x: ev.clientX, y: ev.clientY };
+                const rect = floorImg.getBoundingClientRect();
+                startPos = { left: rect.left + wp.xPct * rect.width, top: rect.top + wp.yPct * rect.height };
+                wmarker.style.transition = 'none';
+              });
+              wmarker.addEventListener('pointermove', (ev) => {
+                if (!dragging) return;
+                ev.preventDefault();
+                const dx = ev.clientX - startPointer.x;
+                const dy = ev.clientY - startPointer.y;
+                const rect = floorImg.getBoundingClientRect();
+                let newLeft = startPos.left + dx;
+                let newTop = startPos.top + dy;
+                newLeft = clamp(newLeft, rect.left, rect.right);
+                newTop = clamp(newTop, rect.top, rect.bottom);
+                const xPct = (newLeft - rect.left) / rect.width;
+                const yPct = (newTop - rect.top) / rect.height;
+                wmarker.style.left = `calc(${(xPct * 100).toFixed(4)}% - 8px)`;
+                wmarker.style.top = `calc(${(yPct * 100).toFixed(4)}% - 8px)`;
+                const idx = waypoints.findIndex(e => e.id === wp.id);
+                if (idx !== -1) {
+                  waypoints[idx].xPct = xPct;
+                  waypoints[idx].yPct = yPct;
+                }
+                drawLines();
+              });
+              wmarker.addEventListener('pointerup', (ev) => {
+                if (!dragging) return;
+                dragging = false;
+                wmarker.releasePointerCapture(ev.pointerId);
+                wmarker.style.transition = '';
+                const leftStyle = wmarker.style.left;
+                const topStyle = wmarker.style.top;
+                const pctMatchX = leftStyle.match(/([0-9.]+)%/);
+                const pctMatchY = topStyle.match(/([0-9.]+)%/);
+                if (pctMatchX && pctMatchY) {
+                  const xPct = parseFloat(pctMatchX[1]) / 100;
+                  const yPct = parseFloat(pctMatchY[1]) / 100;
+                  const idx = waypoints.findIndex(e => e.id === wp.id);
+                  if (idx !== -1) {
+                    waypoints[idx].xPct = clamp(xPct, 0, 1);
+                    waypoints[idx].yPct = clamp(yPct, 0, 1);
+                  }
+                  console.log('Waypoint moved. Updated waypoint:', waypoints.find(e => e.id === wp.id));
+                  console.log('Full waypoints array:');
+                  console.log(JSON.stringify(waypoints, null, 2));
+                }
+                renderEndpoints();
+              });
+
+              interactiveMap.appendChild(wmarker);
+            });
+
+          // update endpoints list
+          endpointsList.innerHTML = '';
+          endpoints.forEach(ep => {
+            const li = document.createElement('li');
+            li.style.display = 'flex';
+            li.style.justifyContent = 'space-between';
+            li.style.alignItems = 'center';
+            li.style.marginBottom = '6px';
+            const left = document.createElement('div');
+            left.textContent = ep.name;
+            const right = document.createElement('div');
+            right.style.display = 'flex';
+            right.style.gap = '6px';
+            const selBtn = document.createElement('button');
+            selBtn.textContent = selected.has(ep.id) ? 'Selected' : 'Select';
+            selBtn.style.cursor = 'pointer';
+            selBtn.addEventListener('click', () => toggleSelect(ep.id));
+            const delBtn = document.createElement('button');
+            delBtn.textContent = 'Delete';
+            delBtn.style.cursor = 'pointer';
+            delBtn.addEventListener('click', () => { deleteEndpoint(ep.id); });
+            right.appendChild(selBtn);
+            right.appendChild(delBtn);
+            li.appendChild(left);
+            li.appendChild(right);
+            endpointsList.appendChild(li);
+          });
+
+          // update waypoint list UI
+          renderWaypointsList();
+          drawLines();
+        }
+
+        function toggleSelect(id) {
+          if (selected.has(id)) selected.delete(id);
+          else selected.add(id);
+
+          // limit to two selected
+          if (selected.size > 2) {
+            // remove oldest
+            const it = selected.values();
+            const first = it.next().value;
+            selected.delete(first);
+          }
+          renderEndpoints();
+        }
+
+        function deleteEndpoint(id) {
+          endpoints = endpoints.filter(e => e.id !== id);
+          selected.delete(id);
+          console.log('Endpoint deleted. Updated endpoints array:', JSON.stringify(endpoints, null, 2));
+          renderEndpoints();
+        }
+
+        function drawLines() {
+          // clear svg
+          while (svg.firstChild) svg.removeChild(svg.firstChild);
+          if (selected.size !== 2) return;
+          const ids = Array.from(selected);
+          const a = endpoints.find(e => e.id === ids[0]);
+          const b = endpoints.find(e => e.id === ids[1]);
+          if (!a || !b) return;
+
+          const rect = floorImg.getBoundingClientRect();
+
+          // Build list of points: start endpoint, active waypoints (in creation order), end endpoint
+          const pts = [];
+          pts.push({ x: a.xPct * rect.width, y: a.yPct * rect.height });
+          waypoints.filter(w => w.active).forEach(w => {
+            pts.push({ x: w.xPct * rect.width, y: w.yPct * rect.height });
+          });
+          pts.push({ x: b.xPct * rect.width, y: b.yPct * rect.height });
+
+          // draw polyline
+          const poly = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
+          const pointsAttr = pts.map(p => `${p.x},${p.y}`).join(' ');
+          poly.setAttribute('points', pointsAttr);
+          poly.setAttribute('fill', 'none');
+          poly.setAttribute('stroke', '#ffcc00');
+          poly.setAttribute('stroke-width', '4');
+          poly.setAttribute('stroke-linecap', 'round');
+          poly.setAttribute('stroke-linejoin', 'round');
+          poly.style.pointerEvents = 'none';
+          svg.appendChild(poly);
+        }
+
+        function logEndpointCode(ep) {
+          const single = `{ id: '${ep.id}', name: '${ep.name}', xPct: ${ep.xPct.toFixed(6)}, yPct: ${ep.yPct.toFixed(6)} }`;
+          console.log('New endpoint created (single):', single);
+          console.log('Full endpoints array (paste into code):');
+          console.log(JSON.stringify(endpoints, null, 2));
+        }
+
+          function logWaypointCode(wp) {
+            const single = `{ id: '${wp.id}', name: '${wp.name}', xPct: ${wp.xPct.toFixed(6)}, yPct: ${wp.yPct.toFixed(6)}, active: ${wp.active} }`;
+            console.log('New waypoint created (single):', single);
+            console.log('Full waypoints array (paste into code):');
+            console.log(JSON.stringify(waypoints, null, 2));
+          }
+
+          function toggleWaypointActive(id) {
+            const idx = waypoints.findIndex(w => w.id === id);
+            if (idx === -1) return;
+            waypoints[idx].active = !waypoints[idx].active;
+            console.log('Waypoint toggled. Updated waypoint:', waypoints[idx]);
+            console.log('Full waypoints array:');
+            console.log(JSON.stringify(waypoints, null, 2));
+            renderEndpoints();
+          }
+
+          function deleteWaypoint(id) {
+            waypoints = waypoints.filter(w => w.id !== id);
+            console.log('Waypoint deleted. Updated waypoints array:', JSON.stringify(waypoints, null, 2));
+            renderEndpoints();
+          }
+
+          function renderWaypointsList() {
+            if (!waypointsList) return;
+            waypointsList.innerHTML = '';
+            waypoints.forEach(wp => {
+              const li = document.createElement('li');
+              li.style.display = 'flex';
+              li.style.justifyContent = 'space-between';
+              li.style.alignItems = 'center';
+              li.style.marginBottom = '6px';
+              const left = document.createElement('div');
+              left.textContent = wp.name;
+              const right = document.createElement('div');
+              right.style.display = 'flex';
+              right.style.gap = '6px';
+              const useBtn = document.createElement('button');
+              useBtn.textContent = wp.active ? 'Using' : 'Use';
+              useBtn.style.cursor = 'pointer';
+              useBtn.addEventListener('click', () => toggleWaypointActive(wp.id));
+              const delBtn = document.createElement('button');
+              delBtn.textContent = 'Delete';
+              delBtn.style.cursor = 'pointer';
+              delBtn.addEventListener('click', () => deleteWaypoint(wp.id));
+              right.appendChild(useBtn);
+              right.appendChild(delBtn);
+              li.appendChild(left);
+              li.appendChild(right);
+              waypointsList.appendChild(li);
+            });
+          }
+
+          addBtn.addEventListener('click', () => {
+            adding = !adding;
+            // if switching to add endpoint, turn off waypoint mode
+            if (adding && addingWaypoint) {
+              addingWaypoint = false;
+              addWaypointBtn.textContent = 'Add Waypoint';
+              addWaypointBtn.style.background = '#76c893';
+            }
+            addBtn.textContent = adding ? 'Click on map...' : 'Add Endpoint';
+            addBtn.style.background = adding ? '#ffd54f' : '';
+          });
+
+          addWaypointBtn.addEventListener('click', () => {
+            addingWaypoint = !addingWaypoint;
+            // if switching to add waypoint, turn off endpoint mode
+            if (addingWaypoint && adding) {
+              adding = false;
+              addBtn.textContent = 'Add Endpoint';
+              addBtn.style.background = '';
+            }
+            addWaypointBtn.textContent = addingWaypoint ? 'Click on map...' : 'Add Waypoint';
+            addWaypointBtn.style.background = addingWaypoint ? '#ffd54f' : '#76c893';
+          });
+
+          clearBtn.addEventListener('click', () => {
+            selected.clear();
+            renderEndpoints();
+          });
+
+          interactiveMap.addEventListener('click', (ev) => {
+            // ensure click is inside image area
+            const rect = floorImg.getBoundingClientRect();
+            if (ev.clientX < rect.left || ev.clientX > rect.right || ev.clientY < rect.top || ev.clientY > rect.bottom) return;
+
+            const coords = toPctCoords(ev.clientX, ev.clientY);
+
+            if (addingWaypoint) {
+              let wname = prompt('Enter waypoint name (optional):', 'WP ' + (waypoints.length + 1));
+              if (wname === null) {
+                addingWaypoint = false;
+                addWaypointBtn.textContent = 'Add Waypoint';
+                addWaypointBtn.style.background = '#76c893';
+                return;
+              }
+              wname = wname.trim() || ('WP ' + (waypoints.length + 1));
+              const wp = { id: uid(), name: wname, xPct: coords.x, yPct: coords.y, active: true };
+              waypoints.push(wp);
+              logWaypointCode(wp);
+              addingWaypoint = false;
+              addWaypointBtn.textContent = 'Add Waypoint';
+              addWaypointBtn.style.background = '#76c893';
+              renderEndpoints();
+              return;
+            }
+
+            if (!adding) return;
+
+            let name = prompt('Enter endpoint name (e.g., Room 501):', 'Endpoint ' + (endpoints.length + 1));
+            if (name === null) {
+              // cancelled
+              adding = false;
+              addBtn.textContent = 'Add Endpoint';
+              addBtn.style.background = '';
+              return;
+            }
+            name = name.trim() || ('Endpoint ' + (endpoints.length + 1));
+            const ep = { id: uid(), name, xPct: coords.x, yPct: coords.y };
+            endpoints.push(ep);
+            // log code-ready snippet
+            logEndpointCode(ep);
+
+            adding = false;
+            addBtn.textContent = 'Add Endpoint';
+            addBtn.style.background = '';
+            renderEndpoints();
+          });
+
+        // redraw on resize to keep svg coords accurate
+        window.addEventListener('resize', () => {
+          renderEndpoints();
+        });
+
+        // UI: add controls for pathfinding k and show-graph toggle
+        (function attachPathControls(){
+          const controlsBar = document.querySelector('.controls');
+          if (!controlsBar) return;
+          const kLabel = document.createElement('label');
+          kLabel.style.marginLeft = '12px';
+          kLabel.style.fontSize = '13px';
+          kLabel.textContent = 'k:';
+          const kInput = document.createElement('input');
+          kInput.type = 'number';
+          kInput.min = '1';
+          kInput.max = '20';
+          kInput.value = '6';
+          kInput.style.width = '54px';
+          kInput.id = 'kNearestInput';
+          kInput.title = 'Number of nearest neighbors when building graph';
+          kLabel.appendChild(kInput);
+          controlsBar.appendChild(kLabel);
+
+          const showGraphBtn = document.createElement('button');
+          showGraphBtn.textContent = 'Show Graph';
+          showGraphBtn.style.marginLeft = '8px';
+          showGraphBtn.id = 'showGraphBtn';
+          showGraphBtn.dataset.on = '0';
+          showGraphBtn.addEventListener('click', () => {
+            const on = showGraphBtn.dataset.on === '1';
+            showGraphBtn.dataset.on = on ? '0' : '1';
+            showGraphBtn.textContent = on ? 'Show Graph' : 'Hide Graph';
+            renderGraphOverlay();
+          });
+          controlsBar.appendChild(showGraphBtn);
+        })();
+
+        // Use the Start/End inputs to auto-select nearest waypoints and draw route
+        window.calculateAndDisplayRoute = function () {
+          const startInputEl = document.getElementById('start');
+          const destInputEl = document.getElementById('end');
+          if (!startInputEl || !destInputEl) {
+            console.warn('Start/Dest inputs not found');
+            return;
+          }
+          const startName = (startInputEl.value || '').trim();
+          const destName = (destInputEl.value || '').trim();
+          if (!startName || !destName) {
+            alert('Please enter both Starting Point and Destination names.');
+            return;
+          }
+
+          function findEndpointByName(name) {
+            if (!name) return null;
+            const n = name.toLowerCase();
+            // exact match first
+            let ep = endpoints.find(e => e.name.toLowerCase() === n);
+            if (ep) return ep;
+            // substring match
+            ep = endpoints.find(e => e.name.toLowerCase().includes(n));
+            if (ep) return ep;
+            // startsWith
+            ep = endpoints.find(e => e.name.toLowerCase().startsWith(n));
+            return ep || null;
+          }
+
+          const startEp = findEndpointByName(startName);
+          const destEp = findEndpointByName(destName);
+          if (!startEp || !destEp) {
+            alert('Could not find matching Start or Destination endpoints. Make sure names match an existing endpoint.');
+            console.warn('startEp,destEp', startEp, destEp);
+            return;
+          }
+
+          // Convert endpoint pct coords to pixel coordinates relative to image rect
+          const rect = floorImg.getBoundingClientRect();
+          const startPt = { x: startEp.xPct * rect.width, y: startEp.yPct * rect.height };
+          const destPt = { x: destEp.xPct * rect.width, y: destEp.yPct * rect.height };
+
+          // find nearest waypoint to a given point
+          function nearestWaypointIndexToPoint(pt) {
+            if (!waypoints || waypoints.length === 0) return -1;
+            let bestIdx = -1;
+            let bestDist = Infinity;
+            waypoints.forEach((w, idx) => {
+              const wx = w.xPct * rect.width;
+              const wy = w.yPct * rect.height;
+              const dx = wx - pt.x;
+              const dy = wy - pt.y;
+              const d2 = dx * dx + dy * dy;
+              if (d2 < bestDist) {
+                bestDist = d2;
+                bestIdx = idx;
+              }
+            });
+            return bestIdx;
+          }
+
+          const startWpIdx = nearestWaypointIndexToPoint(startPt);
+          const destWpIdx = nearestWaypointIndexToPoint(destPt);
+          if (startWpIdx === -1 || destWpIdx === -1) {
+            alert('No waypoints available to route through.');
+            return;
+          }
+
+          // Build adjacency graph between waypoints using k-nearest neighbors
+          function buildAdjacency(k = 6, maxDist = Infinity) {
+            const n = waypoints.length;
+            const pos = waypoints.map(w => ({ x: w.xPct * rect.width, y: w.yPct * rect.height }));
+            const adj = Array.from({ length: n }, () => []);
+            for (let i = 0; i < n; i++) {
+              const dists = [];
+              for (let j = 0; j < n; j++) {
+                if (i === j) continue;
+                const dx = pos[j].x - pos[i].x;
+                const dy = pos[j].y - pos[i].y;
+                const d = Math.hypot(dx, dy);
+                dists.push({ idx: j, d });
+              }
+              dists.sort((a, b) => a.d - b.d);
+              for (let m = 0; m < Math.min(k, dists.length); m++) {
+                const { idx, d } = dists[m];
+                if (d <= maxDist) {
+                  adj[i].push({ to: idx, weight: d });
+                }
+              }
+            }
+            // make graph symmetric (undirected)
+            for (let i = 0; i < n; i++) {
+              adj[i].forEach(edge => {
+                const { to, weight } = edge;
+                const exists = adj[to].some(e => e.to === i);
+                if (!exists) adj[to].push({ to: i, weight });
+              });
+            }
+            return { adj, pos };
+          }
+
+          // A* algorithm using Euclidean heuristic
+          function aStar(adj, pos, start, goal) {
+            const n = adj.length;
+            const open = new Set([start]);
+            const gScore = new Array(n).fill(Infinity);
+            const fScore = new Array(n).fill(Infinity);
+            const cameFrom = new Array(n).fill(null);
+            function heuristic(i, j) {
+              const dx = pos[i].x - pos[j].x;
+              const dy = pos[i].y - pos[j].y;
+              return Math.hypot(dx, dy);
+            }
+            gScore[start] = 0;
+            fScore[start] = heuristic(start, goal);
+
+            while (open.size > 0) {
+              // pick node in open with lowest fScore
+              let current = null;
+              let bestF = Infinity;
+              open.forEach(u => {
+                if (fScore[u] < bestF) { bestF = fScore[u]; current = u; }
+              });
+              if (current === null) break;
+              if (current === goal) break;
+              open.delete(current);
+              for (const { to, weight } of adj[current]) {
+                const tentativeG = gScore[current] + weight;
+                if (tentativeG < gScore[to]) {
+                  cameFrom[to] = current;
+                  gScore[to] = tentativeG;
+                  fScore[to] = tentativeG + heuristic(to, goal);
+                  if (!open.has(to)) open.add(to);
+                }
+              }
+            }
+            if (gScore[goal] === Infinity) return { path: [], cost: Infinity };
+            const path = [];
+            let cur = goal;
+            while (cur !== null) {
+              path.push(cur);
+              cur = cameFrom[cur];
+            }
+            path.reverse();
+            return { path, cost: gScore[goal] };
+          }
+
+          // determine k from UI
+          const kInput = document.getElementById('kNearestInput');
+          const k = (kInput && parseInt(kInput.value, 10)) || 6;
+
+          // build graph and compute shortest path using A*
+          const { adj, pos } = buildAdjacency(k, Infinity);
+          const { path, cost } = aStar(adj, pos, startWpIdx, destWpIdx);
+
+          if (!path || path.length === 0) {
+            console.warn('No path found between selected waypoints. Falling back to contiguous-range activation.');
+            // fallback: activate waypoints between indices
+            const a = Math.min(startWpIdx, destWpIdx);
+            const b = Math.max(startWpIdx, destWpIdx);
+            waypoints.forEach((w, i) => w.active = (i >= a && i <= b));
+            // select the endpoints
+            selected.clear();
+            selected.add(startEp.id);
+            selected.add(destEp.id);
+            startInputEl.value = startEp.name;
+            destInputEl.value = destEp.name;
+            console.log('Auto-selected start endpoint:', startEp);
+            console.log('Auto-selected dest endpoint:', destEp);
+            console.log('Activated waypoints indices (fallback):', a, 'to', b);
+            renderEndpoints();
+            return;
+          }
+
+          // activate only waypoints that are part of the computed shortest path
+          const pathSet = new Set(path);
+          waypoints.forEach((w, i) => w.active = pathSet.has(i));
+
+          // select the endpoints
+          selected.clear();
+          selected.add(startEp.id);
+          selected.add(destEp.id);
+
+          // update input display to canonical endpoint names
+          startInputEl.value = startEp.name;
+          destInputEl.value = destEp.name;
+
+          // Log chosen waypoints and path info
+          console.log('Auto-selected start endpoint:', startEp);
+          console.log('Auto-selected dest endpoint:', destEp);
+          console.log('Shortest path waypoint indices:', path);
+          console.log('Shortest path waypoints:', path.map(i => waypoints[i]));
+          console.log('Path cost (pixels):', cost);
+
+          // if graph visualization is on, render it
+          renderGraphOverlay();
+
+          renderEndpoints();
+        };
+
+        // Graph overlay drawing: draws adjacency edges when toggled
+        function renderGraphOverlay() {
+          // find showGraph state
+          const btn = document.getElementById('showGraphBtn');
+          const on = btn && btn.dataset.on === '1';
+          // remove any old overlay group
+          const existing = svg.querySelector('#graphEdgesGroup');
+          if (existing) existing.remove();
+          if (!on) return;
+          // build graph
+          const rect = floorImg.getBoundingClientRect();
+          const kInput = document.getElementById('kNearestInput');
+          const k = (kInput && parseInt(kInput.value, 10)) || 6;
+          const { adj, pos } = (function buildAdjacencyLocal(){
+            const n = waypoints.length;
+            const pos = waypoints.map(w => ({ x: w.xPct * rect.width, y: w.yPct * rect.height }));
+            const adj = Array.from({ length: n }, () => []);
+            for (let i = 0; i < n; i++) {
+              const dists = [];
+              for (let j = 0; j < n; j++) {
+                if (i === j) continue;
+                const dx = pos[j].x - pos[i].x;
+                const dy = pos[j].y - pos[i].y;
+                const d = Math.hypot(dx, dy);
+                dists.push({ idx: j, d });
+              }
+              dists.sort((a, b) => a.d - b.d);
+              for (let m = 0; m < Math.min(k, dists.length); m++) {
+                const { idx, d } = dists[m];
+                adj[i].push({ to: idx, weight: d });
+              }
+            }
+            for (let i = 0; i < n; i++) {
+              adj[i].forEach(edge => {
+                const { to, weight } = edge;
+                const exists = adj[to].some(e => e.to === i);
+                if (!exists) adj[to].push({ to: i, weight });
+              });
+            }
+            return { adj, pos };
+          })();
+
+          const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+          g.id = 'graphEdgesGroup';
+          g.style.pointerEvents = 'none';
+          adj.forEach((edges, i) => {
+            edges.forEach(e => {
+              if (e.to <= i) return; // draw each undirected edge only once
+              const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+              line.setAttribute('x1', pos[i].x);
+              line.setAttribute('y1', pos[i].y);
+              line.setAttribute('x2', pos[e.to].x);
+              line.setAttribute('y2', pos[e.to].y);
+              line.setAttribute('stroke', 'rgba(200,200,200,0.6)');
+              line.setAttribute('stroke-width', '1');
+              g.appendChild(line);
+            });
+          });
+          svg.appendChild(g);
+        }
+
+        // ensure overlay updates when resizing or moving markers
+        const origRenderEndpoints = renderEndpoints;
+        renderEndpoints = function() {
+          // call original implementation body by copying content
+          // (we'll call the function defined earlier by invoking origRenderEndpoints)
+          origRenderEndpoints();
+          // then render graph overlay if requested
+          renderGraphOverlay();
+        };
+
+        // initial render (if you want to programatically seed endpoints, set endpoints array here)
+        // Example seed (commented out):
+        // endpoints.push({id: 'a1', name: 'Seed A', xPct:0.3, yPct:0.4});
+        renderEndpoints();
       })();
     </script>
   </body>

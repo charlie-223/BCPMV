@@ -1,633 +1,1776 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BCP MV GO - Ground Floor Map</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BCP MV GO</title>
     <style>
-        :root{ 
-            --ease: cubic-bezier(.2,.9,.2,1); 
-            --bg-color: #f0f0f0;
-            --text-color: #ffffff;
-            --menu-bg: #ffffff;
-            --menu-shadow: 0 10px 30px rgba(0,0,0,0.15), -6px 0 24px rgba(0,0,0,0.1); 
-            --menu-title-color: #073763;
-            --menu-sep-color: linear-gradient(90deg, rgba(10,30,60,0.08), rgba(10,30,60,0.02));
-            --menu-link-color: #0a65a1;
-            --menu-link-hover-bg: rgba(91,192,222,0.1);
-            --menu-link-hover-color: #033f72;
-            --menu-footer-border: 1px solid rgba(10,30,60,0.06);
-            --social-link-color: #0a65a1;
-            --toggle-bg: rgba(255,255,255,0.95); 
-            --toggle-shadow: 0 6px 16px rgba(0,0,0,0.1); 
-            --card-bg: rgba(255,255,255,0.1); 
-            --card-shadow: 0 12px 24px rgba(0,0,0,0.25); 
-            --search-bg: rgba(255,255,255,0.95); 
-            --search-border: rgba(10,30,60,0.15);
-            --search-text: #000;
-            --search-placeholder: #666; 
-            --back-btn-bg: #fff; 
-            --back-btn-text: #073763;
-            --back-btn-hover-bg: #e0f7ff; 
-            --back-btn-hover-text: #033f72;
-            --toggle-icon-color: #000; 
-            --map-text-color: #000;
-            --map-border: #ddd; 
-        }
+      :root {
+        --ease: cubic-bezier(0.2, 0.9, 0.2, 1);
+        --bg-color: #f0f0f0;
+        --text-color: #ffffff;
+        --menu-bg: #ffffff;
+        --menu-shadow: -6px 0 24px rgba(0, 0, 0, 0.2);
+        --menu-title-color: #073763;
+        --menu-sep-color: linear-gradient(
+          90deg,
+          rgba(10, 30, 60, 0.06),
+          rgba(10, 30, 60, 0.02)
+        );
+        --menu-link-color: #0a65a1;
+        --menu-link-hover-bg: rgba(91, 192, 222, 0.16);
+        --menu-link-hover-color: #033f72;
+        --menu-footer-border: 1px solid rgba(10, 30, 60, 0.04);
+        --social-link-color: #0a65a1;
+        --toggle-bg: rgba(255, 255, 255, 0.9);
+        --toggle-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        --card-bg: rgba(255, 255, 255, 0.06);
+        --search-bg: rgba(255, 255, 255, 0.6);
+        --search-border: rgba(255, 255, 255, 0.12);
+        --search-text: #000;
+        --search-placeholder: rgba(255, 255, 255, 0.6);
+        --back-btn-bg: rgba(255, 255, 255, 0.87);
+        --back-btn-text: #073763;
+        --back-btn-hover-bg: #b2e6ff;
+        --back-btn-hover-text: #033f72;
+        --toggle-icon-color: #000;
+      }
 
-        body.dark-mode {
-            --bg-color: #1a1a2e;
-            --text-color: #E0FFFF; 
-            --menu-bg: #22253c;
-            --menu-shadow: 0 10px 30px rgba(0,0,0,0.8), -6px 0 24px rgba(0,0,0,0.5); 
-            --menu-title-color: #E0FFFF; 
-            --menu-sep-color: linear-gradient(90deg, rgba(255,255,255,0.1), rgba(255,255,255,0.03));
-            --menu-link-color: #E0FFFF; 
-            --menu-link-hover-bg: rgba(91,192,222,0.08);
-            --menu-link-hover-color: #E0FFFF; 
-            --menu-footer-border: 1px solid rgba(255,255,255,0.1);
-            --social-link-color: #E0FFFF; 
-            --toggle-bg: rgba(0,0,0,0.85);
-            --toggle-shadow: 0 6px 16px rgba(0,0,0,0.5);
-            --card-bg: rgba(0,0,0,0.4);
-            --card-shadow: 0 12px 24px rgba(0,0,0,0.5);
-            --search-bg: rgba(255,255,255,0.1);
-            --search-border: rgba(255,255,255,0.1);
-            --search-text: #fff;
-            --search-placeholder: rgba(255,255,255,0.5);
-            --back-btn-bg: rgba(255,255,255,0.15);
-            --back-btn-text: #fff;
-            --back-btn-hover-bg: rgba(255,255,255,0.25);
-            --back-btn-hover-text: #E0FFFF;
-            --toggle-icon-color: #E0FFFF; 
-            --map-text-color: #E0FFFF; 
-            --map-border: #333;
-        }
+      body.dark-mode {
+        --bg-color: #1a1a2e;
+        --text-color: #8ed0e2;
+        --menu-bg: #22253c;
+        --menu-shadow: -6px 0 24px rgba(0, 0, 0, 0.5);
+        --menu-title-color: #8ed0e2;
+        --menu-sep-color: linear-gradient(
+          90deg,
+          rgba(255, 255, 255, 0.06),
+          rgba(255, 255, 255, 0.02)
+        );
+        --menu-link-color: #8ed0e2;
+        --menu-link-hover-bg: rgba(91, 192, 222, 0.1);
+        --menu-link-hover-color: #8ed0e2;
+        --menu-footer-border: 1px solid rgba(255, 255, 255, 0.08);
+        --social-link-color: #8ed0e2;
+        --toggle-bg: rgba(0, 0, 0, 0.8);
+        --toggle-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
+        --card-bg: rgba(0, 0, 0, 0.3);
+        --search-bg: rgba(255, 255, 255, 0.15);
+        --search-border: rgba(255, 255, 255, 0.1);
+        --search-text: #fff;
+        --search-placeholder: rgba(255, 255, 255, 0.6);
+        --back-btn-bg: rgba(255, 255, 255, 0.1);
+        --back-btn-text: #fff;
+        --back-btn-hover-bg: rgba(255, 255, 255, 0.2);
+        --back-btn-hover-text: #8ed0e2;
+        --toggle-icon-color: #8ed0e2;
+      }
 
-        body{ 
-            margin:0; padding:0; min-height:100vh; width:100vw; height:100vh; font-family: Arial, sans-serif; 
-            position:relative; overflow:hidden; display:flex; align-items:flex-start; 
-            color: var(--text-color); 
-            transition: background-color 0.5s ease; 
-        }
-        body::before{ 
-            content:''; position:absolute; inset:0; background-image: url('img/bgmv.jpg'); background-size:cover; 
-            background-position:center; transform:scale(1.03); filter: blur(6px) brightness(0.55); 
-            z-index:0; 
-            transition: filter 0.8s ease-in-out; 
-        }
-        body.dark-mode::before {
-            filter: blur(6px) brightness(0.3); 
-        }
-        body::after{ content:''; position:absolute; inset:0; background: linear-gradient(to top, rgba(0,0,0,0.6), rgba(0,0,0,0) 60%); z-index:1; transition: background 260ms var(--ease), opacity 260ms var(--ease); }
-        
-        .page-wrap{ position:relative; z-index:2; width:100%; padding:28px; box-sizing:border-box; color:var(--text-color); overflow-y: auto; height: 100vh;}
-        .content-card{ 
-            max-width:1024px; 
-            margin:32px auto; 
-            background: var(--card-bg); 
-            padding:30px; 
-            border-radius: 12px; 
-            backdrop-filter: blur(8px); 
-            box-shadow: var(--card-shadow); 
-            position:relative; 
-            transition: background 0.4s ease, box-shadow 0.4s ease, transform 0.2s ease-out; 
-        }
-        @media (hover: hover) and (pointer: fine){ 
-            .content-card:hover{
-                transform: translateY(-2px); 
-                box-shadow: 0 16px 30px rgba(0,0,0,0.35); 
-            }
-        }
-        .content-card h1, .content-card p { 
-            color: var(--text-color); 
-            transition: color 0.3s ease;
-        }
+      body {
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+        width: 100vw;
+        font-family: Arial, sans-serif;
+        position: relative;
+        overflow-x: hidden;
+        display: flex;
+        align-items: flex-start;
+        color: var(--text-color);
+      }
+      body::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image: url("img/bgmv.jpg");
+        background-size: cover;
+        background-position: center;
+        transform: scale(1.03);
+        filter: blur(6px) brightness(0.55);
+        z-index: 0;
+        transition: filter 0.5s ease;
+      }
+      body.dark-mode::before {
+        filter: blur(6px) brightness(0.3);
+      }
+      body::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          to top,
+          rgba(0, 0, 0, 0.6),
+          rgba(0, 0, 0, 0) 60%
+        );
+        z-index: 1;
+        transition: background 260ms var(--ease), opacity 260ms var(--ease);
+      }
 
-        .map-container {
-            margin-top: 30px;
-            padding: 25px; 
-            background: var(--menu-bg); 
-            border-radius: 10px; 
-            box-shadow: 0 6px 18px rgba(0,0,0,0.15); 
-            text-align: left; 
-            max-width: 100%; 
-            height: auto;
-            overflow: hidden; 
-        }
+      .page-wrap {
+        position: relative;
+        z-index: 2;
+        width: 100%;
+        padding: 28px;
+        box-sizing: border-box;
+        color: var(--text-color);
+      }
+      .content-card {
+        max-width: 980px;
+        margin: 32px auto;
+        background: var(--card-bg);
+        padding: 22px;
+        border-radius: 10px;
+        backdrop-filter: blur(4px);
+        position: relative;
+        transition: background 0.3s ease;
+      }
+      .content-card h1,
+      .content-card p {
+        color: var(--text-color);
+        transition: color 0.3s ease;
+      }
 
-        .controls {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-        .controls input, .controls button {
-            padding: 12px; 
-            border-radius: 6px; 
-            border: 1px solid var(--search-border);
-            font-size: 1rem;
-            flex-grow: 1;
-            background-color: var(--search-bg);
-            color: var(--search-text);
-            transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.2s ease; 
-        }
-        body:not(.dark-mode) .controls input {
-            color: #000; 
-        }
-        .controls input::placeholder {
-            color: var(--search-placeholder);
-        }
-        body:not(.dark-mode) .controls input::placeholder {
-            color: #666; 
-        }
-        .controls input:focus {
-            border-color: var(--menu-link-color);
-            box-shadow: 0 0 0 3px rgba(10, 101, 161, 0.2); 
-            outline: none;
-        }
-        .controls button {
-            flex-grow: 0;
-            background-color: #0a65a1; 
-            color: white;
-            cursor: pointer;
-            border: none;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.15); 
-            transition: background-color 0.2s, transform 0.1s ease, box-shadow 0.2s; 
-        }
-        .controls button:hover {
-            background-color: #033f72; 
-            box-shadow: 0 6px 10px rgba(0,0,0,0.2);
-        }
-        .controls button:active {
-            transform: scale(0.98);
-        }
-        #map {
-            height: 600px;
-            border-radius: 6px;
-            margin-bottom: 15px;
-            box-shadow: inset 0 0 8px rgba(0,0,0,0.1); 
-        }
-        .directions-panel {
-            padding: 15px; 
-            border: 1px solid var(--map-border);
-            border-radius: 6px; 
-            background-color: var(--search-bg);
-            max-height: 200px;
-            overflow-y: auto;
-            color: var(--map-text-color); 
-        }
+      .menu-toggle {
+        position: fixed;
+        top: 18px;
+        left: 18px;
+        z-index: 120;
+        background: var(--toggle-bg);
+        padding: 8px 12px;
+        border-radius: 6px;
+        box-shadow: var(--toggle-shadow);
+        cursor: pointer;
+        font-size: 1.2rem;
+        color: var(--toggle-icon-color);
+        transition: background 0.3s ease, box-shadow 0.3s ease, color 0.3s ease;
+      }
 
-        .menu-toggle{ 
-            position:fixed; top:18px; left:18px; z-index:120; 
-            background: var(--toggle-bg); padding:8px 12px; border-radius:6px; 
-            box-shadow:var(--toggle-shadow); cursor:pointer; font-size:1.2rem; 
-            color: var(--toggle-icon-color); 
-            transition: background 0.3s ease, box-shadow 0.3s ease, color 0.3s ease, transform 0.2s ease; 
+      .side-menu {
+        position: fixed;
+        inset: 0 auto 0 0;
+        width: 320px;
+        max-width: 80vw;
+        height: 100vh;
+        background: var(--menu-bg);
+        box-shadow: var(--menu-shadow);
+        transform: translateX(-110%);
+        transition: transform 320ms cubic-bezier(0.2, 0.9, 0.2, 1),
+          background 0.3s ease, box-shadow 0.3s ease;
+        z-index: 130;
+        padding: 20px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+      .side-menu.open {
+        transform: translateX(0);
+        animation: menuSlideIn 420ms cubic-bezier(0.2, 0.9, 0.2, 1) both;
+      }
+      .side-menu.closing {
+        animation: menuSlideOut 320ms var(--ease) both;
+      }
+      @keyframes menuSlideIn {
+        0% {
+          transform: translateX(-110%);
         }
-        .menu-toggle:hover {
-            transform: scale(1.05); 
+        70% {
+          transform: translateX(10%);
         }
-        
-        .side-menu{ 
-            position:fixed; inset:0 auto 0 0; width:320px; max-width:80vw; height:100vh; 
-            background:var(--menu-bg); box-shadow:var(--menu-shadow); 
-            transform:translateX(-110%); transition: transform 380ms var(--ease), background 0.3s ease, box-shadow 0.3s ease; 
-            z-index:130; padding:20px 30px 20px 20px; overflow-y:auto; display:flex; flex-direction:column; justify-content:space-between; 
-            border-top-right-radius: 12px;
-            border-bottom-right-radius: 12px;
+        100% {
+          transform: translateX(0);
         }
-        .side-menu.open{ transform:translateX(0); animation: menuSlideIn 420ms cubic-bezier(.2,.9,.2,1) both; }
-        .side-menu.closing{ animation: menuSlideOut 320ms var(--ease) both; }
-        @keyframes menuSlideIn{ 0%{ transform:translateX(-110%);}70%{ transform:translateX(5%);}100%{ transform:translateX(0);} }
-        @keyframes menuSlideOut{ 0%{ transform:translateX(0);}100%{ transform:translateX(-110%);} }
-        
-        .menu-header{ display:flex; gap:12px; align-items:center; margin-bottom:8px; }
-        .menu-logo{ width:72px; height:72px; border-radius:50%; object-fit:cover; border:4px solid #ADD8E6; box-shadow:0 4px 12px rgba(0,0,0,0.1); }
-        .menu-title h2{ margin:0; font-size:1.4rem; color:var(--menu-title-color); font-weight:800; transition: color 0.3s ease; }
-        .menu-sep{ border:none; height:1px; background:var(--menu-sep-color); margin:12px 0; transition: background 0.3s ease; }
-        
-        .menu-list{ list-style:none; padding:0; margin:18px 0 0 0; flex-grow: 1; }
-        .menu-list li{ margin:14px 0; }
-        .menu-list a{ 
-            color:var(--menu-link-color); text-decoration:none; font-weight:700; display:block; 
-            padding:12px 14px; border-radius:10px; font-size:1.05rem; 
-            transition: transform 220ms var(--ease), background 220ms var(--ease), box-shadow 220ms var(--ease), color 160ms linear; 
+      }
+      @keyframes menuSlideOut {
+        0% {
+          transform: translateX(0);
         }
-        @media (hover: hover) and (pointer: fine){ 
-            .menu-list a:hover, .menu-list a:focus{ 
-                background: var(--menu-link-hover-bg); 
-                color:var(--menu-link-hover-color); 
-                transform:translateX(4px) scale(1.01); 
-                box-shadow:0 6px 16px rgba(3,63,114,0.06); 
-                outline:none; 
-            } 
+        100% {
+          transform: translateX(-110%);
         }
-        .menu-list a:focus-visible{ outline:2px solid rgba(0,0,0,0.12); outline-offset:3px; }
-        
-        .menu-close{ 
-            background:transparent; border:none; font-size:1.6rem; position:absolute; top:12px; right:12px; 
-            cursor:pointer; color: var(--text-color); transition: color 0.3s ease; 
-        }
-        body:not(.dark-mode) .menu-close {
-            color: #000; 
-        }
-        
-        .menu-backdrop{ position:fixed; inset:0; background: rgba(0,0,0,0.35); z-index:125; transition: opacity 220ms ease; }
-        
-        .menu-footer{ 
-            margin-top:18px; padding-top:10px; border-top:var(--menu-footer-border); 
-            display:flex; flex-direction:column; gap:10px; transition: border-top 0.3s ease;
-        }
+      }
 
-        .dark-mode-toggle {
-            display: inline-flex; 
-            align-items: center; 
-            justify-content: center; 
-            width: 48px; 
-            height: 48px;
-            padding: 0; 
-            background: var(--back-btn-bg); 
-            border-radius: 50%; 
-            font-weight: 700; 
-            color: var(--menu-link-color); 
-            cursor: pointer;
-            transition: background 0.3s ease, color 0.3s ease, transform 0.2s ease;
-            user-select: none;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
-        }
-        .dark-mode-toggle:hover {
-            transform: scale(1.1); 
-            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
-        }
-        .dark-mode-icon { 
-            font-size: 1.5em; 
-            margin: 0; 
-        }
+      .menu-header {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        margin-bottom: 8px;
+      }
+      .menu-logo {
+        width: 72px;
+        height: 72px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 4px solid #add8e6;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      }
+      .menu-title h2 {
+        margin: 0;
+        font-size: 1.4rem;
+        color: var(--menu-title-color);
+        font-weight: 800;
+        transition: color 0.3s ease;
+      }
+      .menu-sep {
+        border: none;
+        height: 1px;
+        background: var(--menu-sep-color);
+        margin: 12px 0;
+        transition: background 0.3s ease;
+      }
 
-        .sr-only-text {
-            position:absolute; 
-            left:-10000px; 
-            top:auto; 
-            width:1px; 
-            height:1px; 
-            overflow:hidden;
+      .menu-list {
+        list-style: none;
+        padding: 0;
+        margin: 18px 0 0 0;
+        flex-grow: 1;
+      }
+      .menu-list li {
+        margin: 14px 0;
+      }
+      .menu-list a {
+        color: var(--menu-link-color);
+        text-decoration: none;
+        font-weight: 700;
+        display: block;
+        padding: 14px 12px;
+        border-radius: 10px;
+        font-size: 1.05rem;
+        transition: transform 220ms var(--ease), background 220ms var(--ease),
+          box-shadow 220ms var(--ease), color 160ms linear;
+      }
+      @media (hover: hover) and (pointer: fine) {
+        .menu-list a:hover,
+        .menu-list a:focus {
+          background: var(--menu-link-hover-bg);
+          color: var(--menu-link-hover-color);
+          transform: translateX(8px) scale(1.01);
+          box-shadow: 0 10px 24px rgba(3, 63, 114, 0.08);
+          outline: none;
         }
+      }
+      .menu-list a:focus-visible {
+        outline: 2px solid rgba(0, 0, 0, 0.12);
+        outline-offset: 3px;
+      }
 
-        .social-link{ 
-            display:inline-flex; align-items:center; gap:8px; text-decoration:none; 
-            color:var(--social-link-color); font-weight:700; transition: color 0.3s ease;
-        }
-        .social-link svg {
-            transition: fill 0.3s ease;
-        }
+      .menu-close {
+        background: transparent;
+        border: none;
+        font-size: 1.6rem;
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        cursor: pointer;
+        color: var(--text-color);
+        transition: color 0.3s ease;
+      }
+      .menu-backdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.35);
+        z-index: 125;
+        transition: opacity 220ms ease;
+      }
 
-        .brand-top-right{ position:fixed; top:12px; right:12px; z-index:140; opacity:0; transform:translateY(-6px); transition: opacity 480ms var(--ease), transform 480ms var(--ease); text-decoration: none; display: inline-block; }
-        .brand-top-right.visible{ opacity:1; transform:translateY(0); }
-        .brand-top-right:focus-visible { outline: 3px solid rgba(255,255,255,0.18); outline-offset: 4px; }
-        .brand-img{ display:block; height:auto; width:84px; }
-        @keyframes brandZoomOut {
-            0% { transform: scale(1) translateZ(0); opacity: 1; }
-            60% { transform: scale(1.18) translateZ(0); opacity: 0.96; }
-            100% { transform: scale(1.6) translateZ(0); opacity: 0; }
-        }
-        .brand-top-right.zooming { animation: brandZoomOut 600ms cubic-bezier(.45, 0, .55, 1) both; }
+      .menu-footer {
+        margin-top: 18px;
+        padding-top: 10px;
+        border-top: var(--menu-footer-border);
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        transition: border-top 0.3s ease;
+      }
 
+      .dark-mode-toggle {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 50px;
+        height: 50px;
+        padding: 0;
+        background: var(--menu-link-hover-bg);
+        border-radius: 50%;
+        font-weight: 700;
+        color: var(--menu-link-color);
+        cursor: pointer;
+        transition: background 0.3s ease, color 0.3s ease, transform 0.2s ease;
+        user-select: none;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+      .dark-mode-toggle:hover {
+        transform: scale(1.05);
+      }
+      .dark-mode-icon {
+        font-size: 1.4em;
+        margin: 0;
+      }
+
+      .sr-only-text {
+        position: absolute;
+        left: -10000px;
+        top: auto;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+      }
+
+      .social-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        text-decoration: none;
+        color: var(--social-link-color);
+        font-weight: 700;
+        transition: color 0.3s ease;
+      }
+      .social-link svg {
+        transition: fill 0.3s ease;
+      }
+
+      .search-form {
+        position: relative;
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        margin-top: 18px;
+        margin-bottom: 0;
+        z-index: 4;
+      }
+      .search-form .sr-only {
+        position: absolute;
+        left: -10000px;
+        top: auto;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+      }
+      .search-form input[type="search"] {
+        width: 260px;
+        max-width: calc(100% - 36px);
+        padding: 8px 12px;
+        border-radius: 20px;
+        border: 1px solid var(--search-border);
+        background: var(--search-bg);
+        color: var(--search-text);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+        transition: box-shadow 180ms var(--ease), transform 180ms var(--ease),
+          background 0.3s ease, color 0.3s ease;
+      }
+      .search-form input::placeholder {
+        color: var(--search-placeholder);
+      }
+      .search-form button {
+        border: none;
+        background: var(--toggle-bg);
+        color: var(--text-color);
+        padding: 8px 10px;
+        border-radius: 12px;
+        cursor: pointer;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+        transition: background 0.3s ease, color 0.3s ease;
+      }
+      @media (max-width: 700px) {
+        .search-form input[type="search"] {
+          width: 160px;
+        }
+      }
+
+      .brand-top-right {
+        position: fixed;
+        top: 12px;
+        right: 12px;
+        z-index: 140;
+        opacity: 0;
+        transform: translateY(-6px);
+        transition: opacity 480ms var(--ease), transform 480ms var(--ease);
+        text-decoration: none;
+        display: inline-block;
+      }
+      .brand-top-right.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      .brand-top-right:focus-visible {
+        outline: 3px solid rgba(255, 255, 255, 0.18);
+        outline-offset: 4px;
+      }
+      .brand-img {
+        display: block;
+        height: auto;
+        width: 84px;
+      }
+      @keyframes brandZoomOut {
+        0% {
+          transform: scale(1) translateZ(0);
+          opacity: 1;
+        }
+        60% {
+          transform: scale(1.18) translateZ(0);
+          opacity: 0.96;
+        }
+        100% {
+          transform: scale(1.6) translateZ(0);
+          opacity: 0;
+        }
+      }
+      .brand-top-right.zooming {
+        animation: brandZoomOut 600ms cubic-bezier(0.45, 0, 0.55, 1) both;
+      }
+
+      .back-btn {
+        position: absolute;
+        top: 22px;
+        left: 22px;
+        z-index: 10;
+        background: var(--back-btn-bg);
+        color: var(--back-btn-text);
+        border: none;
+        border-radius: 8px;
+        font-size: 1.05rem;
+        font-weight: 700;
+        padding: 8px 18px 8px 38px;
+        cursor: pointer;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        transition: all 220ms var(--ease);
+        outline: none;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .back-btn:before {
+        content: "←";
+        display: inline-block;
+        margin-right: 8px;
+        font-size: 1.2rem;
+      }
+      .back-btn:hover,
+      .back-btn:focus {
+        background: var(--back-btn-hover-bg);
+        color: var(--back-btn-hover-text);
+        box-shadow: 0 8px 24px rgba(3, 63, 114, 0.1);
+        transform: translateY(-2px) scale(1.02);
+      }
+      .back-btn:active {
+        background: #91d7fa;
+        transform: scale(0.99);
+      }
+      .back-btn:focus-visible {
+        outline: 2px solid #0a65a1;
+        outline-offset: 3px;
+      }
+
+      @media (max-width: 700px) {
         .back-btn {
-            position: absolute; top: 35px; left: 35px; z-index: 10;
-            background: var(--back-btn-bg); 
-            color: var(--back-btn-text); 
-            border: none; border-radius: 20px; 
-            font-size: 1.05rem; font-weight: 700; padding: 10px 20px 10px 42px; cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.12); transition: all 280ms cubic-bezier(.4, 0, .2, 1); outline: none;
-            display: flex; align-items: center; 
+          font-size: 0.97rem;
+          padding: 8px 12px 8px 32px;
+          left: 10px;
+          top: 10px;
         }
-        .back-btn:before {
-            content: "←"; display: inline-block; margin-right: 8px; font-size: 1.2rem;
-            position: absolute; left: 18px; top: 50%; transform: translateY(-50%); 
+      }
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          transition: none !important;
+          animation: none !important;
         }
-        .back-btn:hover, .back-btn:focus {
-            background: var(--back-btn-hover-bg); 
-            color: var(--back-btn-hover-text); 
-            box-shadow: 0 6px 18px rgba(3,63,114,0.15); transform: translateY(-1px);
-        }
-        .back-btn:active { background: #cceeff; transform: scale(0.99); }
-        .back-btn:focus-visible { outline: 2px solid #0a65a1; outline-offset: 3px; }
-        
-        @media (max-width:700px){ .back-btn{ font-size:0.97rem; padding:8px 12px 8px 32px; left:10px; top:10px; } }
-        @media (prefers-reduced-motion: reduce){ *{ transition:none !important; animation:none !important; } }
+      }
     </style>
-</head>
-<body class="light-mode">
-    <div class="menu-toggle" aria-controls="sideMenu" aria-expanded="false" aria-label="Open campus navigation menu">☰</div>
+  </head>
+  <body class="light-mode">
+    <div
+      class="menu-toggle"
+      aria-controls="sideMenu"
+      aria-expanded="false"
+      aria-label="Open campus navigation menu"
+    >
+      ☰
+    </div>
     <nav id="sideMenu" class="side-menu" aria-hidden="true">
-        <button class="menu-close" aria-label="Close menu">☰</button>
-        <div class="menu-header">
-            <img src="img/logomap.jpg" alt="BCP MV GO" class="menu-logo">
-            <div class="menu-title"><h2>BCP MV GO</h2></div>
+      <button class="menu-close" aria-label="Close menu">☰</button>
+      <div class="menu-header">
+        <img src="img/logomap.jpg" alt="BCP MV GO" class="menu-logo" />
+        <div class="menu-title"><h2>BCP MV GO</h2></div>
+      </div>
+      <hr class="menu-sep" />
+      <ul class="menu-list">
+        <li><a href="landing.html">Home</a></li>
+        <li><a href="floorloc.html">Campus Map</a></li>
+        <li><a href="#buildings">Buildings</a></li>
+        <li><a href="#directions">Directions</a></li>
+      </ul>
+      <div class="menu-footer">
+        <div
+          class="dark-mode-toggle"
+          role="button"
+          aria-pressed="false"
+          aria-label="Toggle dark mode"
+        >
+          <span class="dark-mode-icon">🌙</span>
+          <span class="sr-only-text dark-mode-text">Dark Mode</span>
         </div>
-        <hr class="menu-sep">
-        <ul class="menu-list">
-            <li><a href="landing.html">Home</a></li>
-            <li><a href="floorloc.html">Campus Map</a></li>
-            <li><a href="#buildings">Buildings</a></li>
-            <li><a href="#directions">Directions</a></li>
-        </ul>
-        <div class="menu-footer">
-            <div class="dark-mode-toggle" role="button" aria-pressed="false" aria-label="Toggle dark mode">
-                <span class="dark-mode-icon">🌙</span>
-                <span class="sr-only-text dark-mode-text">Dark Mode</span>
-            </div>
-            
-            <a class="social-link" href="https://www.facebook.com/bcpofficialpage" target="_blank" rel="noopener" aria-label="Open Facebook page">
-                <svg class="social-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">
-                    <path fill="#1877F2" d="M24 12.073C24 5.405 18.627 0 12 .0S0 5.405 0 12.073C0 18.093 4.388 23.092 10.125 24v-8.485H7.078v-3.442h3.047V9.412c0-3.017 1.792-4.677 4.533-4.677 1.312 0 2.686.235 2.686.235v2.953h-1.513c-1.491 0-1.953.928-1.953 1.878v2.254h3.328l-.532 3.442h-2.796V24C19.612 23.092 24 18.093 24 12.073z"/>
-                    <path class="facebook-white-path" fill="#fff" d="M16.671 15.515l.532-3.442h-3.328v-2.254c0-.95.462-1.878 1.953-1.878h1.513V5.988s-1.374-.235-2.686-.235c-2.74 0-4.533 1.66-4.533 4.677v2.143H7.078v3.442h3.047V24h3.041v-8.485h2.505z"/>
-                </svg>
-                <span class="social-text">bcpofficialpage</span>
-            </a>
 
-            <a class="social-link" href="https://bcp.edu.ph/" target="_blank" rel="noopener" aria-label="Open website">
-                <svg class="social-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">
-                    <path fill="#6b6b6b" d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm6.93 6h-2.02a15.08 15.08 0 0 0-1.24-3.06A8.03 8.03 0 0 1 18.93 8zM12 4c.74 0 2.02 3.22 2.63 6H9.37C9.98 7.22 11.26 4 12 4zM4.07 8a8.03 8.03 0 0 1 3.29-3.06C7.09 6.78 6.39 8.26 6.07 10H4.07zM4 12c0-.91.12-1.79.34-2.62A13.02 13.02 0 0 0 8 12H4zm0 2h4a13.02 13.02 0 0 0-3.66 2.62A7.96 7.96 0 0 1 4 14zm8 6c-.74 0-2.02-3.22-2.63-6h5.26C14.02 16.78 12.74 20 12 20c-.74 0-1.98-3.22-2.63-6zM14.63 12c.13-.9.3-1.86.53-2.86.23 1 .4 1.96.53 2.86h-1.06zM16 18.62c.22-.83.34-1.71.34-2.62h4c0 1.46-.39 2.86-1.07 4.06A7.96 7.96 0 0 1 16 18.62zM9.37 14h5.26C13.98 16.78 12.74 20 12 20c-.74 0-1.98-3.22-2.63-6z"/>
-                </svg>
-                <span class="social-text">bcp.edu.ph</span>
-            </a>
-        </div>
+        <a
+          class="social-link"
+          href="https://www.facebook.com/bcpofficialpage"
+          target="_blank"
+          rel="noopener"
+          aria-label="Open Facebook page"
+        >
+          <svg
+            class="social-icon"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            width="18"
+            height="18"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <path
+              fill="#1877F2"
+              d="M24 12.073C24 5.405 18.627 0 12 .0S0 5.405 0 12.073C0 18.093 4.388 23.092 10.125 24v-8.485H7.078v-3.442h3.047V9.412c0-3.017 1.792-4.677 4.533-4.677 1.312 0 2.686.235 2.686.235v2.953h-1.513c-1.491 0-1.953.928-1.953 1.878v2.254h3.328l-.532 3.442h-2.796V24C19.612 23.092 24 18.093 24 12.073z"
+            />
+            <path
+              class="facebook-white-path"
+              fill="#fff"
+              d="M16.671 15.515l.532-3.442h-3.328v-2.254c0-.95.462-1.878 1.953-1.878h1.513V5.988s-1.374-.235-2.686-.235c-2.74 0-4.533 1.66-4.533 4.677v2.143H7.078v3.442h3.047V24h3.041v-8.485h2.505z"
+            />
+          </svg>
+          <span class="social-text">bcpofficialpage</span>
+        </a>
+
+        <a
+          class="social-link"
+          href="https://bcp.edu.ph/"
+          target="_blank"
+          rel="noopener"
+          aria-label="Open website"
+        >
+          <svg
+            class="social-icon"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            width="18"
+            height="18"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <path
+              fill="#6b6b6b"
+              d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm6.93 6h-2.02a15.08 15.08 0 0 0-1.24-3.06A8.03 8.03 0 0 1 18.93 8zM12 4c.74 0 2.02 3.22 2.63 6H9.37C9.98 7.22 11.26 4 12 4zM4.07 8a8.03 8.03 0 0 1 3.29-3.06C7.09 6.78 6.39 8.26 6.07 10H4.07zM4 12c0-.91.12-1.79.34-2.62A13.02 13.02 0 0 0 8 12H4zm0 2h4a13.02 13.02 0 0 0-3.66 2.62A7.96 7.96 0 0 1 4 14zm8 6c-.74 0-2.02-3.22-2.63-6h5.26C14.02 16.78 12.74 20 12 20c-.74 0-1.98-3.22-2.63-6zM14.63 12c.13-.9.3-1.86.53-2.86.23 1 .4 1.96.53 2.86h-1.06zM16 18.62c.22-.83.34-1.71.34-2.62h4c0 1.46-.39 2.86-1.07 4.06A7.96 7.96 0 0 1 16 18.62zM9.37 14h5.26C13.98 16.78 12.74 20 12 20c-.74 0-1.98-3.22-2.63-6z"
+            />
+          </svg>
+          <span class="social-text">bcp.edu.ph</span>
+        </a>
+      </div>
     </nav>
     <div class="menu-backdrop" hidden></div>
 
-    <a href="landing.html" class="brand-top-right" aria-label="Go to homepage" title="Go to homepage">
-        <img src="img/bcp.png" alt="BCP" class="brand-img" width="84">
+    <a
+      href="landing.html"
+      class="brand-top-right"
+      aria-label="Go to homepage"
+      title="Go to homepage"
+    >
+      <img src="img/bcp.png" alt="BCP" class="brand-img" width="84" />
     </a>
 
     <main class="page-wrap">
-        <div class="content-card">
-            <button type="button" class="back-btn" onclick="goBack()" aria-label="Go back to floor selection">
-                Back to Floor Select
-            </button>
-            <h1 style="margin-top:48px">BCP MV GO - Ground Floor Map</h1>
-            <p style="opacity:0.9">Use the interactive map below to locate rooms and facilities on the Ground Floor.</p>
-            
-            <div class="map-container">
-                <p style="color:var(--map-text-color); font-weight:bold;">Ground Floor Layout (Interactive Map)</p>
-                
-                <div class="controls">
-                    <input type="text" id="start" placeholder="Starting Point (e.g., Entrance)" aria-label="Starting point">
-                    <input type="text" id="end" placeholder="Destination (e.g., Room 101)" aria-label="Destination">
-                    <button onclick="calculateAndDisplayRoute()">Get Directions</button>
-                </div>
+      <div class="content-card">
+        <button
+          type="button"
+          class="back-btn"
+          onclick="goBack()"
+          aria-label="Go back to floor selection"
+        >
+          Back to Floor Select
+        </button>
+        <h1 style="margin-top: 48px">Welcome to Ground Floor</h1>
+        <p style="opacity: 0.9">
+          Use the interactive map below to locate rooms and facilities on the
+          Ground Floor.
+        </p>
+          <!-- Interactive map starting point and destination controls -->
+        <div class="controls">
+            <input type="text" id="start" placeholder="Starting Point (e.g., Stairway South)" aria-label="Starting point">
+            <input type="text" id="end" placeholder="Destination (e.g., Library)" aria-label="Destination">
+            <button onclick="calculateAndDisplayRoute()">Get Directions</button>
+        </div>
+    <!-- Interactive map or content for the fifth floor goes here -->
+    <div class="interactive-map" id="interactiveMap" style="position: relative;">
+      <img
+        id="floorImg"
+        src="img3/GROUNDFLOOR.jpg"
+        alt="Ground Floor Plan"
+        style="width: 100%; border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); display: block;"
+      />
 
-                <div id="map"></div> 
-            </div>
-            </div>
+      <!-- SVG overlay for lines -->
+      <svg id="mapSvg" style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; pointer-events: none;" xmlns="http://www.w3.org/2000/svg"></svg>
+
+      <!-- Controls -->
+      <div id="mapControls" style="position: absolute; right: 12px; bottom: 12px; z-index: 20; display: flex; gap: 8px;">
+        <button id="addEndpointBtn" type="button" style="padding: 8px 10px; border-radius: 8px; font-weight:700; cursor:pointer;" hidden>Add Endpoint</button>
+        <button id="addWaypointBtn" type="button" style="padding: 8px 10px; border-radius: 8px; font-weight:700; cursor:pointer; background:#76c893;" hidden>Add Waypoint</button>
+        <button id="clearSelectionBtn" type="button" style="padding: 8px 10px; border-radius: 8px; font-weight:700; cursor:pointer;" hidden>Clear</button>
+      </div>
+
+      <!-- Endpoints container -->
+      <div id="endpointsContainer" aria-live="polite" style="position: absolute; left: 12px; bottom: 12px; z-index: 20; max-height: 220px; overflow:auto; min-width:160px; background: rgba(255,255,255,0.06); padding:8px; border-radius:8px;">
+        <strong style="display:block; margin-bottom:6px;">Endpoints</strong>
+        <ul id="endpointsList" style="list-style:none; margin:0; padding:0; font-size:0.95rem;" hidden></ul>
+        <hr style="opacity:0.08; margin:8px 0; border:none; height:1px; background:rgba(255,255,255,0.06);">
+        <strong style="display:block; margin-bottom:6px;">Waypoints</strong>
+        <ul id="waypointsList" style="list-style:none; margin:0; padding:0; font-size:0.95rem;" hidden></ul>
+      </div>
+    </div>
     </main>
 
     <script>
-        function goBack() {
-            window.location.href = "floorloc.html";
+      function goBack() {
+        window.location.href = "floorloc.html";
+      }
+
+      (function () {
+        const toggle = document.querySelector(".menu-toggle");
+        const menu = document.getElementById("sideMenu");
+        const closeBtn = document.querySelector(".menu-close");
+        const backdrop = document.querySelector(".menu-backdrop");
+        const brand = document.querySelector(".brand-top-right");
+        const darkModeToggle = document.querySelector(".dark-mode-toggle");
+        const body = document.body;
+
+        function applyDarkModePreference() {
+          const prefersDarkMode = localStorage.getItem("dark-mode") === "true";
+          if (prefersDarkMode) {
+            body.classList.add("dark-mode");
+            darkModeToggle.setAttribute("aria-pressed", "true");
+            darkModeToggle.querySelector(".dark-mode-icon").textContent = "☀️";
+          }
         }
 
-        (function(){
-            const toggle = document.querySelector('.menu-toggle');
-            const menu = document.getElementById('sideMenu');
-            const closeBtn = document.querySelector('.menu-close');
-            const backdrop = document.querySelector('.menu-backdrop');
-            const brand = document.querySelector('.brand-top-right');
-            const darkModeToggle = document.querySelector('.dark-mode-toggle');
-            const body = document.body;
+        function toggleDarkMode() {
+          const isDarkMode = body.classList.toggle("dark-mode");
+          localStorage.setItem("dark-mode", isDarkMode);
+          darkModeToggle.setAttribute("aria-pressed", String(isDarkMode));
+          darkModeToggle.setAttribute(
+            "aria-label",
+            isDarkMode ? "Toggle light mode" : "Toggle dark mode"
+          );
+          darkModeToggle.querySelector(".dark-mode-icon").textContent =
+            isDarkMode ? "☀️" : "🌙";
+          const screenReaderText =
+            darkModeToggle.querySelector(".dark-mode-text");
+          screenReaderText.textContent = isDarkMode
+            ? "Light Mode"
+            : "Dark Mode";
+        }
 
-            function applyDarkModePreference() {
-                const prefersDarkMode = localStorage.getItem('dark-mode') === 'true';
-                if (prefersDarkMode) {
-                    body.classList.add('dark-mode');
-                    darkModeToggle.setAttribute('aria-pressed', 'true');
-                    darkModeToggle.querySelector('.dark-mode-icon').textContent = '☀️';
+        applyDarkModePreference();
+        const initialIsDark = body.classList.contains("dark-mode");
+        darkModeToggle.setAttribute(
+          "aria-label",
+          initialIsDark ? "Toggle light mode" : "Toggle dark mode"
+        );
+        darkModeToggle.querySelector(".dark-mode-text").textContent =
+          initialIsDark ? "Light Mode" : "Dark Mode";
+
+        darkModeToggle.addEventListener("click", toggleDarkMode);
+
+        function toggleMenu() {
+          const isOpen = menu.classList.toggle("open");
+          toggle.classList.toggle("open", isOpen);
+          menu.setAttribute("aria-hidden", String(!isOpen));
+          toggle.setAttribute("aria-expanded", String(isOpen));
+          if (isOpen) {
+            backdrop.hidden = false;
+            backdrop.style.opacity = "1";
+            closeBtn.focus();
+          } else {
+            backdrop.style.opacity = "0";
+            setTimeout(() => (backdrop.hidden = true), 250);
+            toggle.focus();
+          }
+        }
+
+        toggle.addEventListener("click", toggleMenu);
+        closeBtn.addEventListener("click", toggleMenu);
+        backdrop.addEventListener("click", toggleMenu);
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "Escape" && menu.classList.contains("open"))
+            toggleMenu();
+        });
+
+        if (brand) {
+          setTimeout(() => brand.classList.add("visible"), 350);
+          brand.addEventListener("click", (e) => {
+            e.preventDefault();
+            brand.classList.add("zooming");
+            setTimeout(() => {
+              window.location.href = brand.href;
+            }, 600);
+          });
+        }
+      })();
+    
+      // Endpoint & drawing logic
+      (function () {
+        const interactiveMap = document.getElementById("interactiveMap");
+        const floorImg = document.getElementById("floorImg");
+        const svg = document.getElementById("mapSvg");
+        const addBtn = document.getElementById("addEndpointBtn");
+    const addWaypointBtn = document.getElementById("addWaypointBtn");
+        const clearBtn = document.getElementById("clearSelectionBtn");
+        const endpointsList = document.getElementById("endpointsList");
+    const waypointsList = document.getElementById("waypointsList");
+
+    let adding = false;
+    let addingWaypoint = false;
+    let endpoints = [
+ {
+    "id": "lpvtyfp",
+    "name": "Staircase 1",
+    "xPct": 0.922902,
+    "yPct": 0.662581
+  },
+  {
+    "id": "caxndyc",
+    "name": "Office of the Principal",
+    "xPct": 0.870521,
+    "yPct": 0.684064
+  },
+  {
+    "id": "4tkh3i3",
+    "name": "Office of the General Education",
+    "xPct": 0.806009,
+    "yPct": 0.7036169999999999
+  },
+  {
+    "id": "8suleo4",
+    "name": "Newslink Office",
+    "xPct": 0.7505670000000001,
+    "yPct": 0.719307
+  },
+  {
+    "id": "bvaz9ds",
+    "name": "Office of the Ascendens Asia",
+    "xPct": 0.697619,
+    "yPct": 0.733912
+  },
+  {
+    "id": "l6ofmjo",
+    "name": "Office of the Prefect Discipline",
+    "xPct": 0.635147,
+    "yPct": 0.7511709999999999
+  },
+  {
+    "id": "7xe8rlo",
+    "name": "Office of the Safety and Security",
+    "xPct": 0.563492,
+    "yPct": 0.773379
+  },
+  {
+    "id": "yadilee",
+    "name": "Office of the President",
+    "xPct": 0.40907,
+    "yPct": 0.824675
+  },
+  {
+    "id": "93becuc",
+    "name": "Foodcourt 1",
+    "xPct": 0.26972799999999997,
+    "yPct": 0.864021
+  },
+  {
+    "id": "7jitebh",
+    "name": "Staircase 2",
+    "xPct": 0.128912,
+    "yPct": 0.899023
+  },
+  {
+    "id": "pbyn6x0",
+    "name": "Foodcourt 2",
+    "xPct": 0.037982,
+    "yPct": 0.825882
+  },
+  {
+    "id": "up5fi2p",
+    "name": "Auditorium",
+    "xPct": 0.035373999999999996,
+    "yPct": 0.630113
+  },
+  {
+    "id": "wkp3o7n",
+    "name": "Staircase 3",
+    "xPct": 0.042517,
+    "yPct": 0.501935
+  },
+  {
+    "id": "511mnuo",
+    "name": "Foodcourt 3",
+    "xPct": 0.034014,
+    "yPct": 0.352514
+  },
+  {
+    "id": "npkcd5o",
+    "name": "Foodcourt 4",
+    "xPct": 0.046258,
+    "yPct": 0.202369
+  },
+  {
+    "id": "xtpd1ss",
+    "name": "Staircase 4",
+    "xPct": 0.032425999999999996,
+    "yPct": 0.128986
+  },
+  {
+    "id": "s3kr9fp",
+    "name": "Restroom 1",
+    "xPct": 0.060316999999999996,
+    "yPct": 0.05331
+  },
+  {
+    "id": "v579bhz",
+    "name": "Office of the Research Library and Director",
+    "xPct": 0.195578,
+    "yPct": 0.049809
+  },
+  {
+    "id": "41ex5sx",
+    "name": "Office of the Vice President of Ascendens Asia",
+    "xPct": 0.365306,
+    "yPct": 0.050292
+  },
+  {
+    "id": "8p8gep0",
+    "name": "Staircase 5",
+    "xPct": 0.472789,
+    "yPct": 0.038704999999999996
+  },
+  {
+    "id": "w67l1fg",
+    "name": "ROTC Armor and Supply",
+    "xPct": 0.526871,
+    "yPct": 0.040153999999999995
+  },
+  {
+    "id": "q1h107v",
+    "name": "Office of the Executive Vice President",
+    "xPct": 0.5837870000000001,
+    "yPct": 0.054275000000000004
+  },
+  {
+    "id": "ah71z5b",
+    "name": "Office of the Social Media",
+    "xPct": 0.635374,
+    "yPct": 0.057172
+  },
+  {
+    "id": "lgx8hjo",
+    "name": "Office of the Accrediation",
+    "xPct": 0.745578,
+    "yPct": 0.053068
+  },
+  {
+    "id": "3anl71x",
+    "name": "Office of the Guidance Counselor",
+    "xPct": 0.800453,
+    "yPct": 0.054879
+  },
+  {
+    "id": "nriydlv",
+    "name": "Clinic",
+    "xPct": 0.858617,
+    "yPct": 0.058137
+  },
+  {
+    "id": "6ma3m4c",
+    "name": "Restroom 2",
+    "xPct": 0.939456,
+    "yPct": 0.057051
+  },
+  {
+    "id": "r0lg4ko",
+    "name": "Staircase 6",
+    "xPct": 0.964739,
+    "yPct": 0.151435
+  },
+  {
+    "id": "aigo514",
+    "name": "Gymnasium",
+    "xPct": 0.885147,
+    "yPct": 0.413948
+  },
+  {
+    "id": "8artv3p",
+    "name": "Main Gate",
+    "xPct": 0.510999,
+    "yPct": 0.894919
+  },
+  {
+    "id": "uud2s6g",
+    "name": "Exit",
+    "xPct": 0.334808,
+    "yPct": 0.93149
+  }
+    ]; // {id, name, xPct, yPct}
+  let selected = new Set();
+  let waypoints = [
+    {
+    "id": "0q036rd",
+    "name": "WP 1",
+    "xPct": 0.47607700000000003,
+    "yPct": 0.822744,
+    "active": true
+  },
+  {
+    "id": "qbxxwwn",
+    "name": "WP 2",
+    "xPct": 0.453515,
+    "yPct": 0.726428,
+    "active": true
+  },
+  {
+    "id": "b52r1wy",
+    "name": "WP 3",
+    "xPct": 0.26576,
+    "yPct": 0.782914,
+    "active": true
+  },
+  {
+    "id": "am5ir57",
+    "name": "WP 4",
+    "xPct": 0.126417,
+    "yPct": 0.7850870000000001,
+    "active": true
+  },
+  {
+    "id": "3mar31r",
+    "name": "WP 5",
+    "xPct": 0.14421799999999999,
+    "yPct": 0.538626,
+    "active": true
+  },
+  {
+    "id": "muktko7",
+    "name": "WP 6",
+    "xPct": 0.145578,
+    "yPct": 0.303511,
+    "active": true
+  },
+  {
+    "id": "omse26c",
+    "name": "WP 7",
+    "xPct": 0.151587,
+    "yPct": 0.137796,
+    "active": true
+  },
+  {
+    "id": "x6obvdu",
+    "name": "WP 8",
+    "xPct": 0.33242600000000005,
+    "yPct": 0.13321,
+    "active": true
+  },
+  {
+    "id": "igx0omq",
+    "name": "WP 9",
+    "xPct": 0.5047619999999999,
+    "yPct": 0.128986,
+    "active": true
+  },
+  {
+    "id": "pa6e04q",
+    "name": "WP 10",
+    "xPct": 0.652948,
+    "yPct": 0.132969,
+    "active": true
+  },
+  {
+    "id": "pstsllg",
+    "name": "WP 11",
+    "xPct": 0.776531,
+    "yPct": 0.135262,
+    "active": true
+  },
+  {
+    "id": "bqg2kjd",
+    "name": "WP 12",
+    "xPct": 0.87483,
+    "yPct": 0.13755499999999998,
+    "active": true
+  }
+  ]; // {id, name, xPct, yPct, active}
+
+        function uid() {
+          return Math.random().toString(36).slice(2, 9);
+        }
+
+        function toPctCoords(clientX, clientY) {
+          const rect = floorImg.getBoundingClientRect();
+          const x = (clientX - rect.left) / rect.width;
+          const y = (clientY - rect.top) / rect.height;
+          return { x: Math.max(0, Math.min(1, x)), y: Math.max(0, Math.min(1, y)) };
+        }
+
+        function renderEndpoints() {
+          // clear existing markers
+          const existing = interactiveMap.querySelectorAll('.ep-marker');
+          existing.forEach(n => n.remove());
+
+          // update SVG size/coords
+          const rect = floorImg.getBoundingClientRect();
+          svg.setAttribute('width', rect.width);
+          svg.setAttribute('height', rect.height);
+
+          // render markers
+          endpoints.forEach(ep => {
+            const marker = document.createElement('button');
+            marker.className = 'ep-marker';
+            marker.setAttribute('data-id', ep.id);
+            marker.title = ep.name;
+            marker.style.position = 'absolute';
+            marker.style.left = `calc(${(ep.xPct * 100).toFixed(4)}% - 10px)`;
+            marker.style.top = `calc(${(ep.yPct * 100).toFixed(4)}% - 10px)`;
+            marker.style.width = '20px';
+            marker.style.height = '20px';
+            marker.style.borderRadius = '50%';
+            marker.style.border = '2px solid #ffffff';
+            marker.style.boxSizing = 'border-box';
+            marker.style.background = selected.has(ep.id) ? '#ffcc00' : '#0077cc';
+            marker.style.cursor = 'pointer';
+            marker.style.zIndex = 30;
+            marker.setAttribute('aria-label', `Endpoint ${ep.name}`);
+            // click toggles selection
+            marker.addEventListener('click', (ev) => {
+              ev.stopPropagation();
+              toggleSelect(ep.id);
+            });
+            marker.addEventListener('keydown', (ev) => {
+              if (ev.key === 'Enter' || ev.key === ' ') {
+                ev.preventDefault();
+                toggleSelect(ep.id);
+              }
+            });
+
+            // drag handling
+            let dragging = false;
+            let startPointer = null;
+            let startPos = null;
+
+            function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
+
+            marker.addEventListener('pointerdown', (ev) => {
+              // start dragging only with primary button
+              if (ev.button !== 0) return;
+              ev.preventDefault();
+              dragging = true;
+              marker.setPointerCapture(ev.pointerId);
+              startPointer = { x: ev.clientX, y: ev.clientY };
+              const rect = floorImg.getBoundingClientRect();
+              startPos = { left: rect.left + ep.xPct * rect.width, top: rect.top + ep.yPct * rect.height };
+              marker.style.transition = 'none';
+            });
+
+            marker.addEventListener('pointermove', (ev) => {
+              if (!dragging) return;
+              ev.preventDefault();
+              const dx = ev.clientX - startPointer.x;
+              const dy = ev.clientY - startPointer.y;
+              const rect = floorImg.getBoundingClientRect();
+              let newLeft = startPos.left + dx;
+              let newTop = startPos.top + dy;
+              // clamp inside image rect
+              newLeft = clamp(newLeft, rect.left, rect.right);
+              newTop = clamp(newTop, rect.top, rect.bottom);
+              const xPct = (newLeft - rect.left) / rect.width;
+              const yPct = (newTop - rect.top) / rect.height;
+              marker.style.left = `calc(${(xPct * 100).toFixed(4)}% - 10px)`;
+              marker.style.top = `calc(${(yPct * 100).toFixed(4)}% - 10px)`;
+              // update temporary ep coords for live line drawing
+              const idx = endpoints.findIndex(e => e.id === ep.id);
+              if (idx !== -1) {
+                endpoints[idx].xPct = xPct;
+                endpoints[idx].yPct = yPct;
+              }
+              drawLines();
+            });
+
+            marker.addEventListener('pointerup', (ev) => {
+              if (!dragging) return;
+              dragging = false;
+              marker.releasePointerCapture(ev.pointerId);
+              marker.style.transition = '';
+              // ensure final coords persisted
+              const rect = floorImg.getBoundingClientRect();
+              const leftStyle = marker.style.left;
+              const topStyle = marker.style.top;
+              // parse percent from calc(x% - 10px)
+              const pctMatchX = leftStyle.match(/([0-9.]+)%/);
+              const pctMatchY = topStyle.match(/([0-9.]+)%/);
+              if (pctMatchX && pctMatchY) {
+                const xPct = parseFloat(pctMatchX[1]) / 100;
+                const yPct = parseFloat(pctMatchY[1]) / 100;
+                const idx = endpoints.findIndex(e => e.id === ep.id);
+                if (idx !== -1) {
+                  endpoints[idx].xPct = clamp(xPct, 0, 1);
+                  endpoints[idx].yPct = clamp(yPct, 0, 1);
                 }
-            }
+                console.log('Endpoint moved. Updated endpoint:', endpoints.find(e => e.id === ep.id));
+                console.log('Full endpoints array (paste into code):');
+                console.log(JSON.stringify(endpoints, null, 2));
+              }
+              renderEndpoints();
+            });
+            interactiveMap.appendChild(marker);
+          });
 
-            function toggleDarkMode() {
-                const isDarkMode = body.classList.toggle('dark-mode');
-                localStorage.setItem('dark-mode', isDarkMode); 
-                darkModeToggle.setAttribute('aria-pressed', String(isDarkMode));
-                darkModeToggle.setAttribute('aria-label', isDarkMode ? 'Toggle light mode' : 'Toggle dark mode');
-                darkModeToggle.querySelector('.dark-mode-icon').textContent = isDarkMode ? '☀️' : '🌙';
-                const screenReaderText = darkModeToggle.querySelector('.dark-mode-text');
-                screenReaderText.textContent = isDarkMode ? 'Light Mode' : 'Dark Mode';
-            }
+            // render waypoints
+            waypoints.forEach(wp => {
+              const wmarker = document.createElement('button');
+              wmarker.className = 'wp-marker';
+              wmarker.setAttribute('data-id', wp.id);
+              wmarker.title = wp.name;
+              wmarker.style.position = 'absolute';
+              wmarker.style.left = `calc(${(wp.xPct * 100).toFixed(4)}% - 8px)`;
+              wmarker.style.top = `calc(${(wp.yPct * 100).toFixed(4)}% - 8px)`;
+              wmarker.style.width = '16px';
+              wmarker.style.height = '16px';
+              wmarker.style.borderRadius = '50%';
+              wmarker.style.border = '2px solid #fff';
+              wmarker.style.boxSizing = 'border-box';
+              wmarker.style.background = wp.active ? '#f39c12' : '#444';
+              wmarker.style.cursor = 'grab';
+              wmarker.style.zIndex = 28;
+              wmarker.setAttribute('aria-label', `Waypoint ${wp.name}`);
 
-            applyDarkModePreference();
-            const initialIsDark = body.classList.contains('dark-mode');
-            darkModeToggle.setAttribute('aria-label', initialIsDark ? 'Toggle light mode' : 'Toggle dark mode');
-            darkModeToggle.querySelector('.dark-mode-text').textContent = initialIsDark ? 'Light Mode' : 'Dark Mode';
-
-            darkModeToggle.addEventListener('click', toggleDarkMode);
-
-            function toggleMenu(){
-                const isOpen = menu.classList.toggle('open');
-                toggle.classList.toggle('open', isOpen);
-                menu.setAttribute('aria-hidden', String(!isOpen));
-                toggle.setAttribute('aria-expanded', String(isOpen));
-                if(isOpen){
-                    backdrop.hidden = false; backdrop.style.opacity = '1'; closeBtn.focus();
-                } else {
-                    backdrop.style.opacity = '0'; setTimeout(()=>backdrop.hidden = true, 250); toggle.focus();
+              // drag handling for waypoint (similar to endpoints)
+              let dragging = false;
+              let startPointer = null;
+              let startPos = null;
+              function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
+              wmarker.addEventListener('pointerdown', (ev) => {
+                if (ev.button !== 0) return;
+                ev.preventDefault();
+                dragging = true;
+                wmarker.setPointerCapture(ev.pointerId);
+                startPointer = { x: ev.clientX, y: ev.clientY };
+                const rect = floorImg.getBoundingClientRect();
+                startPos = { left: rect.left + wp.xPct * rect.width, top: rect.top + wp.yPct * rect.height };
+                wmarker.style.transition = 'none';
+              });
+              wmarker.addEventListener('pointermove', (ev) => {
+                if (!dragging) return;
+                ev.preventDefault();
+                const dx = ev.clientX - startPointer.x;
+                const dy = ev.clientY - startPointer.y;
+                const rect = floorImg.getBoundingClientRect();
+                let newLeft = startPos.left + dx;
+                let newTop = startPos.top + dy;
+                newLeft = clamp(newLeft, rect.left, rect.right);
+                newTop = clamp(newTop, rect.top, rect.bottom);
+                const xPct = (newLeft - rect.left) / rect.width;
+                const yPct = (newTop - rect.top) / rect.height;
+                wmarker.style.left = `calc(${(xPct * 100).toFixed(4)}% - 8px)`;
+                wmarker.style.top = `calc(${(yPct * 100).toFixed(4)}% - 8px)`;
+                const idx = waypoints.findIndex(e => e.id === wp.id);
+                if (idx !== -1) {
+                  waypoints[idx].xPct = xPct;
+                  waypoints[idx].yPct = yPct;
                 }
+                drawLines();
+              });
+              wmarker.addEventListener('pointerup', (ev) => {
+                if (!dragging) return;
+                dragging = false;
+                wmarker.releasePointerCapture(ev.pointerId);
+                wmarker.style.transition = '';
+                const leftStyle = wmarker.style.left;
+                const topStyle = wmarker.style.top;
+                const pctMatchX = leftStyle.match(/([0-9.]+)%/);
+                const pctMatchY = topStyle.match(/([0-9.]+)%/);
+                if (pctMatchX && pctMatchY) {
+                  const xPct = parseFloat(pctMatchX[1]) / 100;
+                  const yPct = parseFloat(pctMatchY[1]) / 100;
+                  const idx = waypoints.findIndex(e => e.id === wp.id);
+                  if (idx !== -1) {
+                    waypoints[idx].xPct = clamp(xPct, 0, 1);
+                    waypoints[idx].yPct = clamp(yPct, 0, 1);
+                  }
+                  console.log('Waypoint moved. Updated waypoint:', waypoints.find(e => e.id === wp.id));
+                  console.log('Full waypoints array:');
+                  console.log(JSON.stringify(waypoints, null, 2));
+                }
+                renderEndpoints();
+              });
+
+              interactiveMap.appendChild(wmarker);
+            });
+
+          // update endpoints list
+          endpointsList.innerHTML = '';
+          endpoints.forEach(ep => {
+            const li = document.createElement('li');
+            li.style.display = 'flex';
+            li.style.justifyContent = 'space-between';
+            li.style.alignItems = 'center';
+            li.style.marginBottom = '6px';
+            const left = document.createElement('div');
+            left.textContent = ep.name;
+            const right = document.createElement('div');
+            right.style.display = 'flex';
+            right.style.gap = '6px';
+            const selBtn = document.createElement('button');
+            selBtn.textContent = selected.has(ep.id) ? 'Selected' : 'Select';
+            selBtn.style.cursor = 'pointer';
+            selBtn.addEventListener('click', () => toggleSelect(ep.id));
+            const delBtn = document.createElement('button');
+            delBtn.textContent = 'Delete';
+            delBtn.style.cursor = 'pointer';
+            delBtn.addEventListener('click', () => { deleteEndpoint(ep.id); });
+            right.appendChild(selBtn);
+            right.appendChild(delBtn);
+            li.appendChild(left);
+            li.appendChild(right);
+            endpointsList.appendChild(li);
+          });
+
+          //           endpointsList.innerHTML = '';
+          // endpoints.forEach(ep => {
+          //   const li = document.createElement('li');
+          //   li.style.display = 'flex';
+          //   li.style.justifyContent = 'space-between';
+          //   li.style.alignItems = 'center';
+          //   li.style.marginBottom = '6px';
+          //   const left = document.createElement('div');
+          //   left.textContent = ep.name;
+          //   const right = document.createElement('div');
+          //   right.style.display = 'flex';
+          //   right.style.gap = '6px';
+          //   const selBtn = document.createElement('button');
+          //   selBtn.textContent = selected.has(ep.id) ? 'Selected' : 'Select';
+          //   selBtn.style.cursor = 'pointer';
+          //   selBtn.addEventListener('click', () => toggleSelect(ep.id));
+          //   const delBtn = document.createElement('button');
+          //   delBtn.textContent = 'Delete';
+          //   delBtn.style.cursor = 'pointer';
+          //   delBtn.addEventListener('click', () => { deleteEndpoint(ep.id); });
+          //   right.appendChild(selBtn);
+          //   right.appendChild(delBtn);
+          //   li.appendChild(left);
+          //   li.appendChild(right);
+          //   endpointsList.appendChild(li);
+          // });
+
+          // update waypoint list UI
+          renderWaypointsList();
+          drawLines();
+        }
+
+        function toggleSelect(id) {
+          if (selected.has(id)) selected.delete(id);
+          else selected.add(id);
+
+          // limit to two selected
+          if (selected.size > 2) {
+            // remove oldest
+            const it = selected.values();
+            const first = it.next().value;
+            selected.delete(first);
+          }
+          renderEndpoints();
+        }
+
+        function deleteEndpoint(id) {
+          endpoints = endpoints.filter(e => e.id !== id);
+          selected.delete(id);
+          console.log('Endpoint deleted. Updated endpoints array:', JSON.stringify(endpoints, null, 2));
+          renderEndpoints();
+        }
+
+        function drawLines() {
+          // clear svg
+          while (svg.firstChild) svg.removeChild(svg.firstChild);
+          if (selected.size !== 2) return;
+          const ids = Array.from(selected);
+          const a = endpoints.find(e => e.id === ids[0]);
+          const b = endpoints.find(e => e.id === ids[1]);
+          if (!a || !b) return;
+
+          const rect = floorImg.getBoundingClientRect();
+
+          // Build list of points: start endpoint, active waypoints (in creation order), end endpoint
+          const pts = [];
+          pts.push({ x: a.xPct * rect.width, y: a.yPct * rect.height });
+          waypoints.filter(w => w.active).forEach(w => {
+            pts.push({ x: w.xPct * rect.width, y: w.yPct * rect.height });
+          });
+          pts.push({ x: b.xPct * rect.width, y: b.yPct * rect.height });
+
+          // draw polyline
+          const poly = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
+          const pointsAttr = pts.map(p => `${p.x},${p.y}`).join(' ');
+          poly.setAttribute('points', pointsAttr);
+          poly.setAttribute('fill', 'none');
+          poly.setAttribute('stroke', '#ffcc00');
+          poly.setAttribute('stroke-width', '4');
+          poly.setAttribute('stroke-linecap', 'round');
+          poly.setAttribute('stroke-linejoin', 'round');
+          poly.style.pointerEvents = 'none';
+          svg.appendChild(poly);
+        }
+
+        function logEndpointCode(ep) {
+          const single = `{ id: '${ep.id}', name: '${ep.name}', xPct: ${ep.xPct.toFixed(6)}, yPct: ${ep.yPct.toFixed(6)} }`;
+          console.log('New endpoint created (single):', single);
+          console.log('Full endpoints array (paste into code):');
+          console.log(JSON.stringify(endpoints, null, 2));
+        }
+
+          function logWaypointCode(wp) {
+            const single = `{ id: '${wp.id}', name: '${wp.name}', xPct: ${wp.xPct.toFixed(6)}, yPct: ${wp.yPct.toFixed(6)}, active: ${wp.active} }`;
+            console.log('New waypoint created (single):', single);
+            console.log('Full waypoints array (paste into code):');
+            console.log(JSON.stringify(waypoints, null, 2));
+          }
+
+          function toggleWaypointActive(id) {
+            const idx = waypoints.findIndex(w => w.id === id);
+            if (idx === -1) return;
+            waypoints[idx].active = !waypoints[idx].active;
+            console.log('Waypoint toggled. Updated waypoint:', waypoints[idx]);
+            console.log('Full waypoints array:');
+            console.log(JSON.stringify(waypoints, null, 2));
+            renderEndpoints();
+          }
+
+          function deleteWaypoint(id) {
+            waypoints = waypoints.filter(w => w.id !== id);
+            console.log('Waypoint deleted. Updated waypoints array:', JSON.stringify(waypoints, null, 2));
+            renderEndpoints();
+          }
+
+          function renderWaypointsList() {
+            if (!waypointsList) return;
+            waypointsList.innerHTML = '';
+            waypoints.forEach(wp => {
+              const li = document.createElement('li');
+              li.style.display = 'flex';
+              li.style.justifyContent = 'space-between';
+              li.style.alignItems = 'center';
+              li.style.marginBottom = '6px';
+              const left = document.createElement('div');
+              left.textContent = wp.name;
+              const right = document.createElement('div');
+              right.style.display = 'flex';
+              right.style.gap = '6px';
+              const useBtn = document.createElement('button');
+              useBtn.textContent = wp.active ? 'Using' : 'Use';
+              useBtn.style.cursor = 'pointer';
+              useBtn.addEventListener('click', () => toggleWaypointActive(wp.id));
+              const delBtn = document.createElement('button');
+              delBtn.textContent = 'Delete';
+              delBtn.style.cursor = 'pointer';
+              delBtn.addEventListener('click', () => deleteWaypoint(wp.id));
+              right.appendChild(useBtn);
+              right.appendChild(delBtn);
+              li.appendChild(left);
+              li.appendChild(right);
+              waypointsList.appendChild(li);
+            });
+          }
+
+          addBtn.addEventListener('click', () => {
+            adding = !adding;
+            // if switching to add endpoint, turn off waypoint mode
+            if (adding && addingWaypoint) {
+              addingWaypoint = false;
+              addWaypointBtn.textContent = 'Add Waypoint';
+              addWaypointBtn.style.background = '#76c893';
+            }
+            addBtn.textContent = adding ? 'Click on map...' : 'Add Endpoint';
+            addBtn.style.background = adding ? '#ffd54f' : '';
+          });
+
+          addWaypointBtn.addEventListener('click', () => {
+            addingWaypoint = !addingWaypoint;
+            // if switching to add waypoint, turn off endpoint mode
+            if (addingWaypoint && adding) {
+              adding = false;
+              addBtn.textContent = 'Add Endpoint';
+              addBtn.style.background = '';
+            }
+            addWaypointBtn.textContent = addingWaypoint ? 'Click on map...' : 'Add Waypoint';
+            addWaypointBtn.style.background = addingWaypoint ? '#ffd54f' : '#76c893';
+          });
+
+          clearBtn.addEventListener('click', () => {
+            selected.clear();
+            renderEndpoints();
+          });
+
+          interactiveMap.addEventListener('click', (ev) => {
+            // ensure click is inside image area
+            const rect = floorImg.getBoundingClientRect();
+            if (ev.clientX < rect.left || ev.clientX > rect.right || ev.clientY < rect.top || ev.clientY > rect.bottom) return;
+
+            const coords = toPctCoords(ev.clientX, ev.clientY);
+
+            if (addingWaypoint) {
+              let wname = prompt('Enter waypoint name (optional):', 'WP ' + (waypoints.length + 1));
+              if (wname === null) {
+                addingWaypoint = false;
+                addWaypointBtn.textContent = 'Add Waypoint';
+                addWaypointBtn.style.background = '#76c893';
+                return;
+              }
+              wname = wname.trim() || ('WP ' + (waypoints.length + 1));
+              const wp = { id: uid(), name: wname, xPct: coords.x, yPct: coords.y, active: true };
+              waypoints.push(wp);
+              logWaypointCode(wp);
+              addingWaypoint = false;
+              addWaypointBtn.textContent = 'Add Waypoint';
+              addWaypointBtn.style.background = '#76c893';
+              renderEndpoints();
+              return;
             }
 
-            toggle.addEventListener('click', toggleMenu);
-            closeBtn.addEventListener('click', toggleMenu);
-            backdrop.addEventListener('click', toggleMenu);
-            document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape' && menu.classList.contains('open')) toggleMenu(); });
+            if (!adding) return;
 
-            if(brand){
-                setTimeout(()=>brand.classList.add('visible'), 350);
-                brand.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    brand.classList.add('zooming');
-                    setTimeout(() => {
-                        window.location.href = brand.href;
-                    }, 600);
-                });
+            let name = prompt('Enter endpoint name (e.g., Room 501):', 'Endpoint ' + (endpoints.length + 1));
+            if (name === null) {
+              // cancelled
+              adding = false;
+              addBtn.textContent = 'Add Endpoint';
+              addBtn.style.background = '';
+              return;
             }
+            name = name.trim() || ('Endpoint ' + (endpoints.length + 1));
+            const ep = { id: uid(), name, xPct: coords.x, yPct: coords.y };
+            endpoints.push(ep);
+            // log code-ready snippet
+            logEndpointCode(ep);
+
+            adding = false;
+            addBtn.textContent = 'Add Endpoint';
+            addBtn.style.background = '';
+            renderEndpoints();
+          });
+
+        // redraw on resize to keep svg coords accurate
+        window.addEventListener('resize', () => {
+          renderEndpoints();
+        });
+
+        // UI: add controls for pathfinding k and show-graph toggle
+        (function attachPathControls(){
+          const controlsBar = document.querySelector('.controls');
+          if (!controlsBar) return;
+          const kLabel = document.createElement('label');
+          kLabel.style.marginLeft = '12px';
+          kLabel.style.fontSize = '13px';
+          kLabel.textContent = 'k:';
+          const kInput = document.createElement('input');
+          kInput.type = 'number';
+          kInput.min = '1';
+          kInput.max = '20';
+          kInput.value = '6';
+          kInput.style.width = '54px';
+          kInput.id = 'kNearestInput';
+          kInput.title = 'Number of nearest neighbors when building graph';
+          kLabel.appendChild(kInput);
+          controlsBar.appendChild(kLabel);
+
+          const showGraphBtn = document.createElement('button');
+          showGraphBtn.textContent = 'Show Graph';
+          showGraphBtn.style.marginLeft = '8px';
+          showGraphBtn.id = 'showGraphBtn';
+          showGraphBtn.dataset.on = '0';
+          showGraphBtn.addEventListener('click', () => {
+            const on = showGraphBtn.dataset.on === '1';
+            showGraphBtn.dataset.on = on ? '0' : '1';
+            showGraphBtn.textContent = on ? 'Show Graph' : 'Hide Graph';
+            renderGraphOverlay();
+          });
+          controlsBar.appendChild(showGraphBtn);
         })();
 
+        // Use the Start/End inputs to auto-select nearest waypoints and draw route
+        window.calculateAndDisplayRoute = function () {
+          const startInputEl = document.getElementById('start');
+          const destInputEl = document.getElementById('end');
+          if (!startInputEl || !destInputEl) {
+            console.warn('Start/Dest inputs not found');
+            return;
+          }
+          const startName = (startInputEl.value || '').trim();
+          const destName = (destInputEl.value || '').trim();
+          if (!startName || !destName) {
+            alert('Please enter both Starting Point and Destination names.');
+            return;
+          }
 
-        const API_KEY = "YOUR_API_KEY"; 
-        
-        let map;
-        let infoWindow;
-        let markers = [];
-        let routeMarkers = [];
+          function findEndpointByName(name) {
+            if (!name) return null;
+            const n = name.toLowerCase();
+            // exact match first
+            let ep = endpoints.find(e => e.name.toLowerCase() === n);
+            if (ep) return ep;
+            // substring match
+            ep = endpoints.find(e => e.name.toLowerCase().includes(n));
+            if (ep) return ep;
+            // startsWith
+            ep = endpoints.find(e => e.name.toLowerCase().startsWith(n));
+            return ep || null;
+          }
 
-        const BCP_MV_GO_COORDS = { lat: 14.5995, lng: 120.9842 }; 
+          const startEp = findEndpointByName(startName);
+          const destEp = findEndpointByName(destName);
+          if (!startEp || !destEp) {
+            alert('Could not find matching Start or Destination endpoints. Make sure names match an existing endpoint.');
+            console.warn('startEp,destEp', startEp, destEp);
+            return;
+          }
 
-        const groundFloorFacilities = [
-            { name: "Entrance", type: "Main Access", lat: 14.59965, lng: 120.98415 },
-            { name: "Administration Office", type: "Office", lat: 14.59955, lng: 120.98435 },
-            { name: "Accounting Office", type: "Office", lat: 14.59950, lng: 120.98438 },
-            { name: "Registrar's Office", type: "Office", lat: 14.59945, lng: 120.98405 },
-            { name: "Student Lounge", type: "Recreational", lat: 14.59940, lng: 120.98425 },
-            { name: "Clinic", type: "Health Services", lat: 14.59960, lng: 120.98420 },
-            { name: "Security Desk", type: "Service Point", lat: 14.59963, lng: 120.98408 },
-            { name: "Room 101", type: "Classroom", lat: 14.59935, lng: 120.98415 },
-            { name: "Room 102", type: "Classroom", lat: 14.59930, lng: 120.98430 }
-        ];
+          // Convert endpoint pct coords to pixel coordinates relative to image rect
+          const rect = floorImg.getBoundingClientRect();
+          const startPt = { x: startEp.xPct * rect.width, y: startEp.yPct * rect.height };
+          const destPt = { x: destEp.xPct * rect.width, y: destEp.yPct * rect.height };
 
-        function addFacilityMarkers() {
-            infoWindow = new google.maps.InfoWindow();
-            
-            groundFloorFacilities.forEach((facility) => {
-                const marker = new google.maps.Marker({
-                    position: { lat: facility.lat, lng: facility.lng },
-                    map: map,
-                    title: facility.name,
-                    icon: {
-                        url: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath fill='%231B5E20' d='M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z'/%3E%3C/svg%3E",
-                        scaledSize: new google.maps.Size(30, 30)
-                    }
-                });
-                
-                markers.push(marker);
-
-                marker.addListener("click", () => {
-                    infoWindow.setContent(`
-                        <div style="color: black;">
-                            <strong>${facility.name}</strong><br>
-                            Type: ${facility.type}
-                        </div>
-                    `);
-                    infoWindow.open(map, marker);
-                });
+          // find nearest waypoint to a given point
+          function nearestWaypointIndexToPoint(pt) {
+            if (!waypoints || waypoints.length === 0) return -1;
+            let bestIdx = -1;
+            let bestDist = Infinity;
+            waypoints.forEach((w, idx) => {
+              const wx = w.xPct * rect.width;
+              const wy = w.yPct * rect.height;
+              const dx = wx - pt.x;
+              const dy = wy - pt.y;
+              const d2 = dx * dx + dy * dy;
+              if (d2 < bestDist) {
+                bestDist = d2;
+                bestIdx = idx;
+              }
             });
-        }
-        
-        function clearRouteMarkers() {
-            routeMarkers.forEach(marker => marker.setMap(null));
-            routeMarkers = [];
-        }
+            return bestIdx;
+          }
 
-        function initMap() {
-            map = new google.maps.Map(document.getElementById('map'), {
-                zoom: 19,
-                center: BCP_MV_GO_COORDS,
-                mapTypeId: 'satellite', 
-                streetViewControl: false,
-                tilt: 0
+          const startWpIdx = nearestWaypointIndexToPoint(startPt);
+          const destWpIdx = nearestWaypointIndexToPoint(destPt);
+          if (startWpIdx === -1 || destWpIdx === -1) {
+            alert('No waypoints available to route through.');
+            return;
+          }
+
+          // Build adjacency graph between waypoints using k-nearest neighbors
+          function buildAdjacency(k = 6, maxDist = Infinity) {
+            const n = waypoints.length;
+            const pos = waypoints.map(w => ({ x: w.xPct * rect.width, y: w.yPct * rect.height }));
+            const adj = Array.from({ length: n }, () => []);
+            for (let i = 0; i < n; i++) {
+              const dists = [];
+              for (let j = 0; j < n; j++) {
+                if (i === j) continue;
+                const dx = pos[j].x - pos[i].x;
+                const dy = pos[j].y - pos[i].y;
+                const d = Math.hypot(dx, dy);
+                dists.push({ idx: j, d });
+              }
+              dists.sort((a, b) => a.d - b.d);
+              for (let m = 0; m < Math.min(k, dists.length); m++) {
+                const { idx, d } = dists[m];
+                if (d <= maxDist) {
+                  adj[i].push({ to: idx, weight: d });
+                }
+              }
+            }
+            // make graph symmetric (undirected)
+            for (let i = 0; i < n; i++) {
+              adj[i].forEach(edge => {
+                const { to, weight } = edge;
+                const exists = adj[to].some(e => e.to === i);
+                if (!exists) adj[to].push({ to: i, weight });
+              });
+            }
+            return { adj, pos };
+          }
+
+          // A* algorithm using Euclidean heuristic
+          function aStar(adj, pos, start, goal) {
+            const n = adj.length;
+            const open = new Set([start]);
+            const gScore = new Array(n).fill(Infinity);
+            const fScore = new Array(n).fill(Infinity);
+            const cameFrom = new Array(n).fill(null);
+            function heuristic(i, j) {
+              const dx = pos[i].x - pos[j].x;
+              const dy = pos[i].y - pos[j].y;
+              return Math.hypot(dx, dy);
+            }
+            gScore[start] = 0;
+            fScore[start] = heuristic(start, goal);
+
+            while (open.size > 0) {
+              // pick node in open with lowest fScore
+              let current = null;
+              let bestF = Infinity;
+              open.forEach(u => {
+                if (fScore[u] < bestF) { bestF = fScore[u]; current = u; }
+              });
+              if (current === null) break;
+              if (current === goal) break;
+              open.delete(current);
+              for (const { to, weight } of adj[current]) {
+                const tentativeG = gScore[current] + weight;
+                if (tentativeG < gScore[to]) {
+                  cameFrom[to] = current;
+                  gScore[to] = tentativeG;
+                  fScore[to] = tentativeG + heuristic(to, goal);
+                  if (!open.has(to)) open.add(to);
+                }
+              }
+            }
+            if (gScore[goal] === Infinity) return { path: [], cost: Infinity };
+            const path = [];
+            let cur = goal;
+            while (cur !== null) {
+              path.push(cur);
+              cur = cameFrom[cur];
+            }
+            path.reverse();
+            return { path, cost: gScore[goal] };
+          }
+
+          // determine k from UI
+          const kInput = document.getElementById('kNearestInput');
+          const k = (kInput && parseInt(kInput.value, 10)) || 6;
+
+          // build graph and compute shortest path using A*
+          const { adj, pos } = buildAdjacency(k, Infinity);
+          const { path, cost } = aStar(adj, pos, startWpIdx, destWpIdx);
+
+          if (!path || path.length === 0) {
+            console.warn('No path found between selected waypoints. Falling back to contiguous-range activation.');
+            // fallback: activate waypoints between indices
+            const a = Math.min(startWpIdx, destWpIdx);
+            const b = Math.max(startWpIdx, destWpIdx);
+            waypoints.forEach((w, i) => w.active = (i >= a && i <= b));
+            // select the endpoints
+            selected.clear();
+            selected.add(startEp.id);
+            selected.add(destEp.id);
+            startInputEl.value = startEp.name;
+            destInputEl.value = destEp.name;
+            console.log('Auto-selected start endpoint:', startEp);
+            console.log('Auto-selected dest endpoint:', destEp);
+            console.log('Activated waypoints indices (fallback):', a, 'to', b);
+            renderEndpoints();
+            return;
+          }
+
+          // activate only waypoints that are part of the computed shortest path
+          const pathSet = new Set(path);
+          waypoints.forEach((w, i) => w.active = pathSet.has(i));
+
+          // select the endpoints
+          selected.clear();
+          selected.add(startEp.id);
+          selected.add(destEp.id);
+
+          // update input display to canonical endpoint names
+          startInputEl.value = startEp.name;
+          destInputEl.value = destEp.name;
+
+          // Log chosen waypoints and path info
+          console.log('Auto-selected start endpoint:', startEp);
+          console.log('Auto-selected dest endpoint:', destEp);
+          console.log('Shortest path waypoint indices:', path);
+          console.log('Shortest path waypoints:', path.map(i => waypoints[i]));
+          console.log('Path cost (pixels):', cost);
+
+          // if graph visualization is on, render it
+          renderGraphOverlay();
+
+          renderEndpoints();
+        };
+
+        // Graph overlay drawing: draws adjacency edges when toggled
+        function renderGraphOverlay() {
+          // find showGraph state
+          const btn = document.getElementById('showGraphBtn');
+          const on = btn && btn.dataset.on === '1';
+          // remove any old overlay group
+          const existing = svg.querySelector('#graphEdgesGroup');
+          if (existing) existing.remove();
+          if (!on) return;
+          // build graph
+          const rect = floorImg.getBoundingClientRect();
+          const kInput = document.getElementById('kNearestInput');
+          const k = (kInput && parseInt(kInput.value, 10)) || 6;
+          const { adj, pos } = (function buildAdjacencyLocal(){
+            const n = waypoints.length;
+            const pos = waypoints.map(w => ({ x: w.xPct * rect.width, y: w.yPct * rect.height }));
+            const adj = Array.from({ length: n }, () => []);
+            for (let i = 0; i < n; i++) {
+              const dists = [];
+              for (let j = 0; j < n; j++) {
+                if (i === j) continue;
+                const dx = pos[j].x - pos[i].x;
+                const dy = pos[j].y - pos[i].y;
+                const d = Math.hypot(dx, dy);
+                dists.push({ idx: j, d });
+              }
+              dists.sort((a, b) => a.d - b.d);
+              for (let m = 0; m < Math.min(k, dists.length); m++) {
+                const { idx, d } = dists[m];
+                adj[i].push({ to: idx, weight: d });
+              }
+            }
+            for (let i = 0; i < n; i++) {
+              adj[i].forEach(edge => {
+                const { to, weight } = edge;
+                const exists = adj[to].some(e => e.to === i);
+                if (!exists) adj[to].push({ to: i, weight });
+              });
+            }
+            return { adj, pos };
+          })();
+
+          const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+          g.id = 'graphEdgesGroup';
+          g.style.pointerEvents = 'none';
+          adj.forEach((edges, i) => {
+            edges.forEach(e => {
+              if (e.to <= i) return; // draw each undirected edge only once
+              const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+              line.setAttribute('x1', pos[i].x);
+              line.setAttribute('y1', pos[i].y);
+              line.setAttribute('x2', pos[e.to].x);
+              line.setAttribute('y2', pos[e.to].y);
+              line.setAttribute('stroke', 'rgba(200,200,200,0.6)');
+              line.setAttribute('stroke-width', '1');
+              g.appendChild(line);
             });
-
-            const imageBounds = {
-                north: 14.5997, 
-                south: 14.5993, 
-                east: 120.9844,
-                west: 120.9840,
-            };
-            
-            const groundOverlay = new google.maps.GroundOverlay(
-                'GroundFloor.png',
-                imageBounds
-            );
-            
-            groundOverlay.setMap(map);
-
-            addFacilityMarkers();
+          });
+          svg.appendChild(g);
         }
 
-        function calculateAndDisplayRoute() {
-            clearRouteMarkers();
-            const panel = document.getElementById('directions-panel');
-            const startInput = document.getElementById('start').value.trim();
-            const endInput = document.getElementById('end').value.trim();
+        // ensure overlay updates when resizing or moving markers
+        const origRenderEndpoints = renderEndpoints;
+        renderEndpoints = function() {
+          // call original implementation body by copying content
+          // (we'll call the function defined earlier by invoking origRenderEndpoints)
+          origRenderEndpoints();
+          // then render graph overlay if requested
+          renderGraphOverlay();
+        };
 
-            const startFacility = groundFloorFacilities.find(f => f.name.toLowerCase() === startInput.toLowerCase());
-            const endFacility = groundFloorFacilities.find(f => f.name.toLowerCase() === endInput.toLowerCase());
-
-            if (startInput && !endInput) {
-                if (startFacility) {
-                    const marker = new google.maps.Marker({
-                        position: { lat: startFacility.lat, lng: startFacility.lng },
-                        map: map,
-                        title: startFacility.name,
-                        label: 'A',
-                    });
-                    routeMarkers.push(marker);
-                    map.panTo(marker.getPosition());
-
-                    panel.innerHTML = `
-                        <p style="color:var(--map-text-color);">
-                            <strong>Location Found: ${startFacility.name}</strong> (${startFacility.type}). 
-                            A marker has been placed on the map to show its location on the Ground Floor plan.
-                        </p>`;
-                } else {
-                    panel.innerHTML = `
-                        <p style="color:var(--map-text-color);">
-                            **Error:** Facility named "${startInput}" not found on the Ground Floor list. Please check the spelling.
-                        </p>`;
-                }
-                return;
-            }
-
-            if (startFacility && endFacility) {
-                const startMarker = new google.maps.Marker({
-                    position: { lat: startFacility.lat, lng: startFacility.lng },
-                    map: map,
-                    label: 'S',
-                    title: `Start: ${startFacility.name}`,
-                    icon: {
-                        path: google.maps.SymbolPath.CIRCLE,
-                        fillColor: 'blue',
-                        fillOpacity: 0.9,
-                        strokeWeight: 0,
-                        scale: 10
-                    }
-                });
-                routeMarkers.push(startMarker);
-
-                const endMarker = new google.maps.Marker({
-                    position: { lat: endFacility.lat, lng: endFacility.lng },
-                    map: map,
-                    label: 'E',
-                    title: `End: ${endFacility.name}`,
-                    icon: {
-                        path: google.maps.SymbolPath.CIRCLE,
-                        fillColor: 'red',
-                        fillOpacity: 0.9,
-                        strokeWeight: 0,
-                        scale: 10
-                    }
-                });
-                routeMarkers.push(endMarker);
-
-                const bounds = new google.maps.LatLngBounds();
-                bounds.extend(startMarker.getPosition());
-                bounds.extend(endMarker.getPosition());
-                map.fitBounds(bounds);
-
-
-                panel.innerHTML = `
-                    <p style="color:var(--map-text-color);">
-                        **Route Guidance:** From **${startFacility.name}** to **${endFacility.name}**.
-                    </p>
-                    <p style="color:var(--map-text-color);">
-                        **Guidance:** Markers labeled 'S' (Start) and 'E' (End) have been placed on the map. 
-                        Please follow the pathways on the **Ground Floor map overlay** to move between the pins.
-                    </p>`;
-
-            } else {
-                let errorMessage = "";
-                if (!startInput || !endInput) {
-                    errorMessage = "Please enter both a starting point and a destination.";
-                } else {
-                    errorMessage = `One or both facilities were not found in the Ground Floor list. 
-                                    (Start: ${startInput}, End: ${endInput}). 
-                                    Check the list of available facilities for correct spelling.`;
-                }
-                
-                panel.innerHTML = `<p style="color:var(--map-text-color);">**Error:** ${errorMessage}</p>`;
-            }
-        }
+        // initial render (if you want to programatically seed endpoints, set endpoints array here)
+        // Example seed (commented out):
+        // endpoints.push({id: 'a1', name: 'Seed A', xPct:0.3, yPct:0.4});
+        renderEndpoints();
+      })();
     </script>
-    <script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap">
-        </script>
-</body>
+  </body>
 </html>
